@@ -1,5 +1,4 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
+// Merged Prisma Schema
 
 datasource db {
   provider = "postgres"
@@ -10,14 +9,136 @@ generator client {
   provider = "prisma-client-js"
 }
 
+// Models from the "base" schema
 model Post {
-  id    String @id @default(uuid())
-  title String
-  text  String
-
-  // To return `Date`s intact through the API we use transformers
-  // https://trpc.io/docs/data-transformers
-  // This is unique so it can be used for cursor-based pagination
+  id        String   @id @default(uuid())
+  title     String
+  text      String
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
+}
+
+// Models from your application schema
+
+// Primary Tables
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model User {
+  id                String           @id @default(cuid())
+  walletAddress     String           @unique
+  ENSName           String?          @unique
+  username          String?          @unique
+  displayName       String?
+  associatedEmail   String?          @unique
+  Xhandle           String?          @unique
+  discordID         String?          @unique
+  avatar            String?
+  referrals         Referral[]
+  tokens            Token[]
+  userPoints        UserPoints?
+  userMissions      UserMission[]
+  userDailyReward   UserDailyReward?
+  userProfile       UserProfile?
+  sessions          Session[]
+  accounts          Account[]
+}
+
+model Mission {
+  id              Int           @id @default(autoincrement())
+  name            String
+  description     String
+  completionBonus Int
+  startAt         DateTime
+  endAt           DateTime
+  platform        String
+  userMissions    UserMission[]
+}
+
+model DailyReward {
+  day         Int    @id
+  bonusAmount Int
+}
+
+// Secondary Tables
+model Referral {
+  id           Int    @id @default(autoincrement())
+  userId       String @map("user_id")
+  referralCode Int
+  rewardAmount Int
+  user         User   @relation(fields: [userId], references: [id])
+}
+
+model Token {
+  tokenID         Int       @id
+  traits          String[]
+  image           String
+  name            String
+  ownerID         String    @map("owner_id")
+  lastTransaction DateTime
+  owner           User      @relation(fields: [ownerID], references: [id])
+}
+
+model UserPoints {
+  userId      String @id @map("user_id")
+  lastUpdated DateTime
+  totalPoints Int
+  user        User   @relation(fields: [userId], references: [id])
+}
+
+model UserMission {
+  userId     String   @id @map("user_id")
+  missionId  Int      @map("mission_id")
+  startedAt  DateTime
+  isComplete Boolean
+  user       User     @relation(fields: [userId], references: [id])
+  mission    Mission  @relation(fields: [missionId], references: [id])
+}
+
+model UserDailyReward {
+  userId String @id @map("user_id")
+  currentDay Int  @default(0)
+  user    User   @relation(fields: [userId], references: [id])
+}
+
+model UserProfile {
+  userId            String @id @map("user_id")
+  nickname          String?
+  bio               String?
+  walletAddress     String @unique
+  location          String?
+  level             Int
+  joinedDate        DateTime
+  currentPoints     Int
+  profile_image_url_https String?
+  user              User   @relation(fields: [userId], references: [id])
+}
+
+// Security
+model Session {
+  id        Int    @id @default(autoincrement())
+  userId    String @map("user_id")
+  token     String
+  issuedAt  DateTime
+  expiry    DateTime
+  user      User   @relation(fields: [userId], references: [id])
+}
+
+// Leveling
+model Level {
+  level  Int @id
+  points Int @unique
 }

@@ -1,48 +1,52 @@
-/**
- * This is your entry point to setup the root configuration for tRPC on the server.
- * - `initTRPC` should only be used once per app.
- * - We export only the functionality that we use so we can enforce which base procedures should be used
- *
- * Learn how to create protected base procedures and other things below:
- * @see https://trpc.io/docs/v10/router
- * @see https://trpc.io/docs/v10/procedures
- */
+import { inferAsyncReturnType, initTRPC, TRPCError } from '@trpc/server';
+import { CreateNextContextOptions } from '@trpc/server/adapters/next';
+import superjson from 'superjson';
+import { getSession } from 'next-auth/react';
+import { prisma } from './context/db';
 
-import { initTRPC } from '@trpc/server';
-import { transformer } from '~/utils/transformer';
-import { Context } from './context';
+type InnerContextOptions = {
+  session: any | null; // Adjust the type of session based on your needs
+};
+
+export const createInnerContext = async (opts: InnerContextOptions) => {
+  return {
+    session: opts.session,
+    prisma,
+  };
+};
+
+export const createContext = async (opts: CreateNextContextOptions) => {
+  const { req, res } = opts;
+
+  const session = await getSession({ req });
+
+  const ctx = await createInnerContext({
+    session,
+  });
+
+  return ctx;
+};
+
+type Context = inferAsyncReturnType<typeof createContext>;
 
 const t = initTRPC.context<Context>().create({
-  /**
-   * @see https://trpc.io/docs/v10/data-transformers
-   */
-  transformer,
-  /**
-   * @see https://trpc.io/docs/v10/error-formatting
-   */
-  errorFormatter({ shape }) {
-    return shape;
-  },
+  transformer: superjson,
 });
 
-/**
- * Create a router
- * @see https://trpc.io/docs/v10/router
- */
+const isAuthed = t.middleware(({ ctx, next }) => {
+  if (!ctx.session?.user) {
+    throw new TRPCError({ code: 'UNAUTHORIZED' });
+  }
+
+  return next({
+    ctx: {
+      ...ctx,
+      // infers that `session` is non-nullable to downstream resolvers
+      session: { ...ctx.session, user: ctx.session.user },
+    },
+  });
+});
+
 export const router = t.router;
-
-/**
- * Create an unprotected procedure
- * @see https://trpc.io/docs/v10/procedures
- **/
-export const publicProcedure = t.procedure;
-
-/**
- * @see https://trpc.io/docs/v10/middlewares
- */
-export const middleware = t.middleware;
-
-/**
- * @see https://trpc.io/docs/v10/merging-routers
- */
-export const mergeRouters = t.mergeRouters;
+export const procedure = t.procedure;
+export const protectedProcedure = t.procedure.use(isAuthed);

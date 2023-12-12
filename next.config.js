@@ -26,6 +26,12 @@ module.exports = getConfig({
   publicRuntimeConfig: {
     NODE_ENV: env.NODE_ENV,
   },
+  reactStrictMode: true,
+  swcMinify: true,
+  i18n: {
+    locales: ['en'],
+    defaultLocale: 'en',
+  },
   /** We run eslint as a separate task in CI */
   eslint: { ignoreDuringBuilds: !!process.env.CI },
 });
