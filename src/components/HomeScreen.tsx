@@ -234,17 +234,7 @@ const HomeScreen: NextPage = () => {
         </span>
       </div>
       <div className="absolute top-[483px] left-[50px] w-[175.3px] h-[148.7px] text-left text-[43.42px] font-outfit">
-        <Button
-          buttonBorderRadius="42.27px"
-          buttonBoxShadow="0px 5px 14.92px rgba(0, 0, 0, 0.1)"
-          buttonHeight="49.7px"
-          buttonPosition="absolute"
-          buttonWidth="175.3px"
-          buttonTop="0px"
-          buttonLeft="15px"
-          connectWalletFontSize="19.89px"
-          connectWalletLineHeight="24.87px"
-        />
+        <Button buttonBorder="42.27px" />
         <div
           className="absolute top-[4.81px] left-[198.27px] text-[33.42px] tracking-[1.09px] leading-[36.18px] [background:linear-gradient(90deg,_#fbd099,_#fcefdf_59.9%,_#ffe299)] [-webkit-background-clip:text] [-webkit-text-fill-color:transparent] [text-shadow:4.806451320648193px_-2.4032256603240967px_4.81px_rgba(0,_0,_0,_0.25)]"
           style={textStyle}
