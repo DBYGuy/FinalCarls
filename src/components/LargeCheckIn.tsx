@@ -6,7 +6,6 @@ type LargeCheckInProps = {
   tp: number;
   imageSrc: string;
   isClaimed: boolean;
-  claimedPoints?: number;
 };
 
 const LargeCheckIn: React.FC<LargeCheckInProps> = ({
@@ -14,7 +13,6 @@ const LargeCheckIn: React.FC<LargeCheckInProps> = ({
   tp,
   imageSrc,
   isClaimed,
-  claimedPoints,
 }) => {
   return (
     <div className="relative shadow-[5px_4px_4px_rgba(0,_0,_0,_0.25)] w-72 h-[257px] border-8 border-double border-yellow-100">
@@ -31,7 +29,7 @@ const LargeCheckIn: React.FC<LargeCheckInProps> = ({
         <b className="relative text-5xl tracking-[-0.01em] leading-[3px] flex font-outfit text-center items-center justify-center w-[106px] h-7 shrink-0">
           {tp} TP
         </b>
-        <CheckInButton currentDay={day} rewardDay={4} rewardTime="23:23:23" />
+        <CheckInButton currentDay={day} rewardDay={4} />
       </div>
       {isClaimed && (
         <div className="absolute top-[108.57px] left-[-31px] bg-gradient-to-r from-[#fbd099] via-[#fcefdf] to-[#ffe299] shadow-[0px_4px_4px_rgba(0,_0,_0,_0.25)] w-[326px] h-[38px] transform rotate-[-53.47deg] text-center">

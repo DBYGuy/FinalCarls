@@ -10,6 +10,14 @@ const rectangleCardData = Array.from({ length: 12 }, (_, index) => ({
   buttonText: index % 3 === 0 ? 'Claim' : 'See More',
 }));
 
+const textStyle = {
+  background: 'linear-gradient(90deg, #fbd099, #fcefdf 59.9%, #ffe299)',
+  WebkitBackgroundClip: 'text',
+  WebkitTextFillColor: 'transparent',
+  textShadow: '4.8px -2.4px 4.81px rgba(0, 0, 0, 0.25)',
+  color: 'black', // Fallback color
+};
+
 const DesktopDirectory: NextPage = () => {
   return (
     <div className="relative bg-gray-100 w-full h-[1930px] overflow-hidden text-left text-5xl text-white font-outfit">
@@ -62,7 +70,10 @@ const DesktopDirectory: NextPage = () => {
         </div>
         <img className="relative w-11 h-10" alt="" src="/buttons.svg" />
       </div>
-      <div className="absolute top-[287px] left-[367px] text-inherit tracking-[1.02px] leading-[26px] font-inherit [background:linear-gradient(90deg,_#fbd099,_#fcefdf_59.9%,_#ffe299)] [-webkit-background-clip:text] [-webkit-text-fill-color:transparent] flex items-center w-[375px]">
+      <div
+        className="absolute top-[287px] left-[367px] text-inherit tracking-[1.02px] leading-[26px] font-inherit flex items-center w-[375px]"
+        style={textStyle}
+      >
         <span className="[line-break:anywhere] w-full">
           <p className="m-0">{`Lorem ipsum dolor sit amet, consectetur `}</p>
           <ul className="m-0 pl-8">
@@ -78,7 +89,10 @@ const DesktopDirectory: NextPage = () => {
         src="/isolation-mode.svg"
       />
       <div className="absolute top-[0.68px] left-[calc(50%_-_1917px)] w-[3250.29px] h-[209.26px] text-center text-45xl font-title">
-        <div className="absolute top-[0px] left-[calc(50%_-_31.15px)] tracking-[3.4px] leading-[64px] [background:linear-gradient(90deg,_#fbd099,_#fcefdf_59.9%,_#ffe299)] [-webkit-background-clip:text] [-webkit-text-fill-color:transparent] flex items-center w-[647px] h-[119.34px] [text-shadow:6px_-5px_4px_rgba(0,_0,_0,_0.25)]">
+        <div
+          className="absolute top-[0px] left-[calc(50%_-_31.15px)] tracking-[3.4px] leading-[64px] flex items-center w-[647px] h-[119.34px] [text-shadow:6px_-5px_4px_rgba(0,_0,_0,_0.25)]"
+          style={textStyle}
+        >
           <span className="[line-break:anywhere] w-full">
             <p className="m-0">{`TIGER GALLERY `}</p>
             <p className="m-0">MEMBER DIRECTORY</p>

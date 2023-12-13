@@ -25,7 +25,6 @@ const DailyCheckIn: NextPage = () => {
               tp={15}
               imageSrc="/day-2-mask.svg"
               isClaimed={true}
-              claimedPoints={15}
             />
             <ThinCheckIn
               day={3}
@@ -38,7 +37,6 @@ const DailyCheckIn: NextPage = () => {
               tp={30}
               imageSrc="/day-4-shoes.svg"
               isClaimed={false}
-              claimedPoints={30}
             />
           </div>
           {/* Large Check-Ins */}
@@ -54,7 +52,6 @@ const DailyCheckIn: NextPage = () => {
               tp={50}
               imageSrc="/day-6-ship.svg"
               isClaimed={false}
-              claimedPoints={50}
             />
             <LargeCheckIn
               day={7}

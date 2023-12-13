@@ -144,6 +144,7 @@ const MyApp = (({
                   <DesktopHeader />
                   <HomeScreen />
                   <DailyCheckIn />
+
                   <DesktopDirectory />
                   {/* <div>
                     <DefaultLayout>{page}</DefaultLayout>

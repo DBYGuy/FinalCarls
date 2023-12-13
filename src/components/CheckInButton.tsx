@@ -3,16 +3,15 @@ import React, { useState, useEffect } from 'react';
 type CheckInButtonProps = {
   currentDay: number;
   rewardDay: number;
-  rewardTime: string; // Assuming this is a string like "23:59:59"
 };
 
 const CheckInButton: React.FC<CheckInButtonProps> = ({
   currentDay,
   rewardDay,
-  rewardTime,
 }) => {
   const [currentTime, setCurrentTime] = useState(new Date());
 
+  const rewardTime = '23:23:23';
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentTime(new Date());
@@ -23,18 +22,18 @@ const CheckInButton: React.FC<CheckInButtonProps> = ({
 
   const isTimeToClaim = () => {
     const rewardDate = new Date();
-    rewardDate.setHours(parseInt(rewardTime.split(':')[0]));
-    rewardDate.setMinutes(parseInt(rewardTime.split(':')[1]));
-    rewardDate.setSeconds(parseInt(rewardTime.split(':')[2]));
+    rewardDate.setHours(parseInt(rewardTime.split(':')[0] ?? '23'));
+    rewardDate.setMinutes(parseInt(rewardTime.split(':')[1] ?? '23'));
+    rewardDate.setSeconds(parseInt(rewardTime.split(':')[2] ?? '23'));
 
     return currentTime < rewardDate;
   };
 
   const formatTimeLeft = () => {
     const rewardDate = new Date();
-    rewardDate.setHours(parseInt(rewardTime.split(':')[0]));
-    rewardDate.setMinutes(parseInt(rewardTime.split(':')[1]));
-    rewardDate.setSeconds(parseInt(rewardTime.split(':')[2]));
+    rewardDate.setHours(parseInt(rewardTime.split(':')[0] ?? '23'));
+    rewardDate.setMinutes(parseInt(rewardTime.split(':')[1] ?? '23'));
+    rewardDate.setSeconds(parseInt(rewardTime.split(':')[2] ?? '23'));
 
     const timeLeft = rewardDate.getTime() - currentTime.getTime();
     const hours = Math.floor((timeLeft / (1000 * 60 * 60)) % 24);
@@ -70,7 +69,7 @@ const CheckInButton: React.FC<CheckInButtonProps> = ({
     }
   } else {
     return (
-      <div className="rounded-3xl [background:lightslategray] shadow-[0px_4px_12px_rgba(0,_0,_0,_0.1)] h-10 flex flex-row items-center justify-start py-2 px-4 box-border text-silver mt-1">
+      <div className="rounded-3xl [background:lightslategray] shadow-[0px_4px_12px_rgba(0,_0,_0,_0.1)] h-10 flex flex-row items-center justify-start py-2 px-4 box-border text-silver mt-2">
         <b className="relative tracking-[0.6px] leading-[30px]">Wait...</b>
       </div>
     );

@@ -10,7 +10,7 @@ const HomeScreen: NextPage = () => {
     color: 'black', // Fallback color
   };
   return (
-    <div className="bg-itsc-black w-screen h-[585px] overflow-hidden h-[90%] object-contain text-center text-[90px]">
+    <div className="bg-itsc-black w-screen h-[605px] overflow-hidden h-[90%] object-contain text-center text-[90px]">
       <img
         className="absolute top-0 left-0  overflow-hidden"
         alt=""
@@ -209,7 +209,7 @@ const HomeScreen: NextPage = () => {
         />
       </div>
       <div
-        className="absolute top-[93px] text-[4vw] left-[calc(50%_-_490px)] tracking-[-1.1px] leading-[114.66px] flex items-center justify-center max-w-fit h-[107.6px] font-omegle"
+        className="absolute top-[73px] text-[4vw] left-[calc(50%_-_500px)] tracking-[-1.1px] leading-[114.66px] flex items-center justify-center max-w-fit h-[107.6px] font-omegle"
         style={textStyle}
       >
         IMPATIENT TIGER SOCIAL CLUB
@@ -245,14 +245,23 @@ const HomeScreen: NextPage = () => {
           connectWalletFontSize="19.89px"
           connectWalletLineHeight="24.87px"
         />
-        <div className="absolute top-[4.81px] left-[198.27px] text-[33.42px] tracking-[1.09px] leading-[36.18px] [background:linear-gradient(90deg,_#fbd099,_#fcefdf_59.9%,_#ffe299)] [-webkit-background-clip:text] [-webkit-text-fill-color:transparent] [text-shadow:4.806451320648193px_-2.4032256603240967px_4.81px_rgba(0,_0,_0,_0.25)]">
+        <div
+          className="absolute top-[4.81px] left-[198.27px] text-[33.42px] tracking-[1.09px] leading-[36.18px] [background:linear-gradient(90deg,_#fbd099,_#fcefdf_59.9%,_#ffe299)] [-webkit-background-clip:text] [-webkit-text-fill-color:transparent] [text-shadow:4.806451320648193px_-2.4032256603240967px_4.81px_rgba(0,_0,_0,_0.25)]"
+          style={textStyle}
+        >
           to claim
         </div>
-        <div className="absolute top-[145.74px] left-[73.3px] text-[43px] tracking-[1.27px] leading-[42.26px] [background:linear-gradient(90deg,_#fbd099,_#fcefdf_59.9%,_#ffe299)] [-webkit-background-clip:text] [-webkit-text-fill-color:transparent] [text-shadow:4.806451320648193px_-2.4032256603240967px_4.81px_rgba(0,_0,_0,_0.25)]">
+        <div
+          className="absolute top-[142.74px] left-[88.3px] text-[43px] tracking-[1.27px] leading-[42.26px] [background:linear-gradient(90deg,_#fbd099,_#fcefdf_59.9%,_#ffe299)] [-webkit-background-clip:text] [-webkit-text-fill-color:transparent] [text-shadow:4.806451320648193px_-2.4032256603240967px_4.81px_rgba(0,_0,_0,_0.25)]"
+          style={textStyle}
+        >
           <span>join the</span>
           <b> club</b>
         </div>
-        <div className="absolute top-[56.54px] left-[9.61px] text-[45.59px] tracking-[1.21px] leading-[40.49px] [background:linear-gradient(90deg,_#fbd099,_#fcefdf_59.9%,_#ffe299)] [-webkit-background-clip:text] [-webkit-text-fill-color:transparent] [text-shadow:4.806451320648193px_-2.4032256603240967px_4.81px_rgba(0,_0,_0,_0.25)]">
+        <div
+          className="absolute top-[56.54px] left-[19.61px] text-[45.59px] tracking-[1.21px] leading-[40.49px] [background:linear-gradient(90deg,_#fbd099,_#fcefdf_59.9%,_#ffe299)] [-webkit-background-clip:text] [-webkit-text-fill-color:transparent] [text-shadow:4.806451320648193px_-2.4032256603240967px_4.81px_rgba(0,_0,_0,_0.25)]"
+          style={textStyle}
+        >
           <span>{`daily `}</span>
           <b>{`rewards `}</b>
           <span>{`& `}</span>

@@ -30,7 +30,7 @@ const ThinCheckIn: React.FC<ThinCheckInProps> = ({
         <b className="relative text-5xl tracking-[-0.01em] leading-[3px] flex font-outfit text-center items-center justify-center w-[106px] h-7 shrink-0">
           {tp} TP
         </b>
-        <CheckInButton currentDay={day} rewardDay={4} rewardTime="23:23:23" />
+        <CheckInButton currentDay={day} rewardDay={4} />
       </div>
       {isClaimed && (
         <div className="absolute top-[114.57px] left-[-38px] bg-gradient-to-r from-[#fbd099] via-[#fcefdf] to-[#ffe299] shadow-[4px_4px_4px_rgba(0,_0,_0,_0.25)] w-[140%] h-[38px] transform rotate-[-53.47deg]">
