@@ -14,7 +14,7 @@ const config: Config = {
         'white-gold-itsc': '#f1dfd5',
         'itsc-black': '#1a1a1a',
         black: '#000',
-        gray: '#23262f',
+        // gray: '#23262f',
         gray: '#1a1a1a',
         'dusty-red': '#d15454',
         lightslategray: '#89969f',
