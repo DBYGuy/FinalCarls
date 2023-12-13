@@ -44,7 +44,7 @@ const ConnectMenu: NextPage<ConnectMenuType> = ({
         <div className="rounded-sm bg-dark-connectbuttonbackground shadow-[0px_4px_12px_rgba(0,_0,_0,_0.1)] h-10 flex flex-row items-center justify-start py-0 px-0.5 box-border gap-[8px]">
           <div className="rounded-smi bg-dark-actionbuttonsecondarybackground h-9 flex flex-row items-center justify-start p-2 box-border">
             <div className="flex flex-row items-center justify-start">
-              <b className="relative tracking-[0.6px] leading-[20px]">150 TP</b>
+              <b className="relative tracking-[0.6px] leading-[20px]">42069 TP</b>
             </div>
           </div>
           <div className="rounded-sm bg-dark-connectbuttonbackground shadow-[0px_4px_12px_rgba(0,_0,_0,_0.1)] h-10 flex flex-row items-center justify-start py-0 px-0.5 box-border gap-[8px]">
@@ -52,7 +52,7 @@ const ConnectMenu: NextPage<ConnectMenuType> = ({
               <div className="rounded-smi bg-dark-actionbuttonsecondarybackground h-9 flex flex-row items-center justify-start p-2 box-border">
                 <div className="flex flex-row items-center justify-start">
                   <b className="relative tracking-[0.6px] leading-[20px]">
-                    Level 1
+                    Level 20
                   </b>
                 </div>
               </div>
@@ -67,7 +67,7 @@ const ConnectMenu: NextPage<ConnectMenuType> = ({
               </div>
               <div className="flex flex-row items-center justify-start gap-[2px]">
                 <b className="relative tracking-[0.6px] leading-[20px]">
-                  gmgmi.eth
+                  0xTiger.eth
                 </b>
                 <img className="relative w-6 h-6" alt="" src={icon} />
               </div>

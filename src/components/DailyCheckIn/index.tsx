@@ -4,8 +4,8 @@ import ThinCheckIn from '../ThinCheckIn';
 
 const DailyCheckIn: NextPage = () => {
   return (
-    <div className="relative w-full h-screen mx-auto text-center text-base text-white font-rainbow-buttons-1">
-      <div className="absolute top-0 left-0 w-full h-full ">
+    <div className="relative w-full h-[95vh] mx-4 text-center text-base text-white font-rainbow-buttons-1">
+      <div className="relative top-0 left-0 w-full h-full ">
         <div className="bg-gray w-full h-full" />
         <img
           className="absolute top-[10%] left-0  min-w-full overflow-hidden max-h-full"

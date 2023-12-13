@@ -10,7 +10,7 @@ const HomeScreen: NextPage = () => {
     color: 'black', // Fallback color
   };
   return (
-    <div className="bg-itsc-black w-screen h-[605px] overflow-hidden h-[90%] object-contain text-center text-[90px]">
+    <div className="bg-itsc-black w-screen h-[605px] overflow-hidden object-contain text-center text-[90px]">
       <img
         className="absolute top-0 left-0  overflow-hidden"
         alt=""

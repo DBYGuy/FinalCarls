@@ -90,7 +90,7 @@ const DesktopDirectory: NextPage = () => {
       />
       <div className="absolute top-[0.68px] left-[calc(50%_-_1917px)] w-[3250.29px] h-[209.26px] text-center text-45xl font-title">
         <div
-          className="absolute top-[0px] left-[calc(50%_-_31.15px)] tracking-[3.4px] leading-[64px] flex items-center w-[647px] h-[119.34px] [text-shadow:6px_-5px_4px_rgba(0,_0,_0,_0.25)]"
+          className="absolute top-[0px] left-[calc(50%_-_31.15px)] tracking-[3.4px] leading-[64px] flex items-center w-[647px] h-[126.34px] [text-shadow:6px_-5px_4px_rgba(0,_0,_0,_0.25)]"
           style={textStyle}
         >
           <span className="[line-break:anywhere] w-full">
