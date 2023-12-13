@@ -2,6 +2,11 @@
   "name": "@examples/trpc-next-prisma-starter",
   "version": "10.44.1",
   "private": true,
+  "browser": {
+    "fs": false,
+    "tls": false,
+    "net": false
+  },
   "scripts": {
     "generate": "prisma generate",
     "prisma-studio": "prisma studio",
