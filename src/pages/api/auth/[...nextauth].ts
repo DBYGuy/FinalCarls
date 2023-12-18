@@ -114,11 +114,13 @@ export function getServerContext(
           const sessionMaxAge = 60 * 60 * 24 * 30; // 30 Days
           const expires = getExpiryDate(sessionMaxAge);
 
-          await adapter.createSession({
-            sessionToken,
-            userId: user.id,
-            expires,
-          });
+          if (adapter && adapter.createSession) {
+            await adapter.createSession({
+              sessionToken,
+              userId: user.id,
+              expires,
+            });
+          }
 
           const provider = new InfuraProvider(
             1, // Ethereum Mainnet
