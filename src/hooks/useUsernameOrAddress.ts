@@ -1,4 +1,4 @@
-import { useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/router';
 import { isEthereumWalletAddress } from '../utils/wallet';
 
 /**
@@ -6,9 +6,8 @@ import { isEthereumWalletAddress } from '../utils/wallet';
  * by looking at the router path param
  */
 export const useUsernameOrAddress = () => {
-  const searchParams = useSearchParams();
-  const usernameOrAddress = searchParams?.get('user');
-  const isAddress = isEthereumWalletAddress(usernameOrAddress!);
+  const usernameOrAddress = useRouter().query.user as string;
+  const isAddress = isEthereumWalletAddress(usernameOrAddress);
   const isUsername = !isAddress;
 
   return { usernameOrAddress, isAddress, isUsername };

@@ -108,13 +108,13 @@ export function getServerContext(
       }),
     ],
     callbacks: {
-      async signIn({ user, account, profile }) {
+      async signIn({ user }) {
         if (isCredentialsCallback(req) && user) {
           const sessionToken = generateSessionToken();
           const sessionMaxAge = 60 * 60 * 24 * 30; // 30 Days
           const expires = getExpiryDate(sessionMaxAge);
 
-          if (adapter && adapter.createSession) {
+          if (adapter?.createSession) {
             await adapter.createSession({
               sessionToken,
               userId: user.id,

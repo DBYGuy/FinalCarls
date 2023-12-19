@@ -5,7 +5,7 @@ import { getSession } from 'next-auth/react';
 import { prisma } from './context/db';
 
 type InnerContextOptions = {
-  session: any | null; // Adjust the type of session based on your needs
+  session: any; // Adjust the type of session based on your needs
 };
 
 export const createInnerContext = async (opts: InnerContextOptions) => {

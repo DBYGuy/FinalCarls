@@ -1,5 +1,7 @@
 import type { NextPage } from 'next';
 import { useMemo, type CSSProperties } from 'react';
+import { getTruncatedWalletAddress } from '~/utils/wallet';
+import { useMe } from '~/hooks/useMe';
 
 type ConnectMenuType = {
   avatar?: string;
@@ -27,6 +29,7 @@ const ConnectMenu: NextPage<ConnectMenuType> = ({
       display: connectWalletDisplay,
     };
   }, [connectWalletDisplay]);
+  const user = useMe();
 
   return (
     <div className="rounded-50xl h-10 flex flex-row items-center justify-center gap-[8px] text-left text-base text-white-gold-itsc font-bold">
@@ -69,7 +72,7 @@ const ConnectMenu: NextPage<ConnectMenuType> = ({
               </div>
               <div className="flex flex-row items-center justify-start gap-[2px]">
                 <b className="relative tracking-[0.6px] leading-[20px]">
-                  0xTiger.eth
+                  {user?.ENSName ?? ''}
                 </b>
                 <img className="relative w-6 h-6" alt="" src={icon} />
               </div>
