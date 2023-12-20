@@ -32,6 +32,7 @@ export const setAuthToken = (newToken: string) => {
 const getHeaders = (): HTTPHeaders => ({ authorization: token });
 
 export const trpc = createTRPCNext<AppRouter>({
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   config({ ctx }) {
     return {
       transformer: superjson,

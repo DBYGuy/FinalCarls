@@ -1,7 +1,9 @@
 import type { NextPage } from 'next';
 import { useMemo, type CSSProperties } from 'react';
 import { getTruncatedWalletAddress } from '~/utils/wallet';
+import { useGetPoints } from '~/hooks/useGetPoints';
 import { useMe } from '~/hooks/useMe';
+import { useGetLevel } from '~/hooks/useGetLevel';
 
 type ConnectMenuType = {
   avatar?: string;
@@ -30,6 +32,8 @@ const ConnectMenu: NextPage<ConnectMenuType> = ({
     };
   }, [connectWalletDisplay]);
   const user = useMe();
+  const { points } = useGetPoints();
+  const { level } = useGetLevel();
 
   return (
     <div className="rounded-50xl h-10 flex flex-row items-center justify-center gap-[8px] text-left text-base text-white-gold-itsc font-bold">
@@ -48,7 +52,7 @@ const ConnectMenu: NextPage<ConnectMenuType> = ({
           <div className="rounded-smi bg-dark-actionbuttonsecondarybackground h-9 flex flex-row items-center justify-start p-2 box-border">
             <div className="flex flex-row items-center justify-start">
               <b className="relative tracking-[0.6px] leading-[20px]">
-                42069 TP
+                {points} TP
               </b>
             </div>
           </div>
@@ -57,7 +61,7 @@ const ConnectMenu: NextPage<ConnectMenuType> = ({
               <div className="rounded-smi bg-dark-actionbuttonsecondarybackground h-9 flex flex-row items-center justify-start p-2 box-border">
                 <div className="flex flex-row items-center justify-start">
                   <b className="relative tracking-[0.6px] leading-[20px]">
-                    Level 20
+                    Level {level}
                   </b>
                 </div>
               </div>

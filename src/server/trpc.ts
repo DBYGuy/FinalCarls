@@ -1,11 +1,12 @@
 import { inferAsyncReturnType, initTRPC, TRPCError } from '@trpc/server';
 import { CreateNextContextOptions } from '@trpc/server/adapters/next';
+import { type Session } from 'next-auth';
 import superjson from 'superjson';
-import { getSession } from 'next-auth/react';
+import { getServerAuthSession } from './context/auth';
 import { prisma } from './context/db';
 
 type InnerContextOptions = {
-  session: any; // Adjust the type of session based on your needs
+  session: Session | null;
 };
 
 export const createInnerContext = async (opts: InnerContextOptions) => {
@@ -18,7 +19,7 @@ export const createInnerContext = async (opts: InnerContextOptions) => {
 export const createContext = async (opts: CreateNextContextOptions) => {
   const { req, res } = opts;
 
-  const session = await getSession({ req });
+  const session = await getServerAuthSession({ req, res });
 
   const ctx = await createInnerContext({
     session,

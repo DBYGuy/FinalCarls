@@ -33,6 +33,7 @@ declare module 'next-auth' {
     walletAddress: string;
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-empty-interface
   interface Account {}
 
   interface Profile {
