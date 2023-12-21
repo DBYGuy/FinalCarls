@@ -65,7 +65,8 @@ const DailyCheckIn: NextPage = () => {
           DAILY CHECK-IN
         </div>
         <div className="absolute top-[12%] left-[50%] translate-x-[-50%] text-[2vw] leading-[2.5vw] font-outfit bg-gradient-to-r from-[#fbd099] via-[#fcefdf] to-[#ffe299] bg-clip-text text-transparent">
-          Fill in the blank with streak rules and encouragement
+          Come back every day to claim reward points! Streak resets 48 hours
+          after claim
         </div>
       </div>
     </div>

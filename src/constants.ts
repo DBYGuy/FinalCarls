@@ -12,14 +12,14 @@ export const LOCALSTORAGE_AUTH_TOKEN_KEY = 'authtoken';
 
 export const DOMAIN =
   process.env.NEXT_PUBLIC_APP_ENV === 'production'
-    ? 'https://itsc.vercel.app'
+    ? 'itsc.vercel.app'
     : process.env.NEXT_PUBLIC_APP_ENV === 'development'
     ? 'localhost'
     : 'localhost';
 
 export const websiteUrl =
   process.env.NEXT_PUBLIC_APP_ENV === 'production'
-    ? `https://${DOMAIN}`
+    ? `https://itsc.vercel.app`
     : process.env.NEXT_PUBLIC_APP_ENV === 'development'
     ? `http://${DOMAIN}:3000`
     : `https://${DOMAIN}`;
