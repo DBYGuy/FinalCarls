@@ -76,7 +76,8 @@ const ConnectMenu: NextPage<ConnectMenuType> = ({
               </div>
               <div className="flex flex-row items-center justify-start gap-[2px]">
                 <b className="relative tracking-[0.6px] leading-[20px]">
-                  {user?.ENSName ?? ''}
+                  {user?.ENSName ??
+                    getTruncatedWalletAddress(user?.walletAddress ?? '')}
                 </b>
                 <img className="relative w-6 h-6" alt="" src={icon} />
               </div>
