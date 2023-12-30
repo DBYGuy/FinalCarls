@@ -1,8 +1,48 @@
+import React from 'react';
 import type { NextPage } from 'next';
 import LargeCheckIn from '../LargeCheckIn';
 import ThinCheckIn from '../ThinCheckIn';
+import { useGetAllDailyRewards } from '~/hooks/useGetAllDailyRewards'; // Adjust the import path based on your project structure
+import { useGetUserReward } from '~/hooks/useGetUserRewards';
+import { useMe } from '~/hooks/useMe';
+
+type DailyReward = {
+  day: number;
+  bonusAmount: number;
+};
+
+type UserReward = {
+  currentDay: number;
+  lastClaimed: Date | null;
+};
 
 const DailyCheckIn: NextPage = () => {
+  const user = useMe();
+
+  const {
+    data: rewards,
+    isLoading: isLoadingRewards,
+    error: errorRewards,
+  } = useGetAllDailyRewards();
+  const {
+    data: userReward,
+    isLoading: isLoadingUserReward,
+    error: errorUserReward,
+  } = useGetUserReward(user?.id ?? '');
+  if (isLoadingRewards || isLoadingUserReward) return <div>Loading...</div>;
+  if (errorRewards ?? errorUserReward) return <div>Error loading rewards</div>;
+
+  // Define the image sources for each day
+  const imageSources = [
+    '/day-1-fan.svg',
+    '/day-2-mask.svg',
+    '/day-3-flower.svg',
+    '/day-4-shoes.svg',
+    '/day-5-bag.svg',
+    '/day-6-ship.svg',
+    '/day-7-tiger.svg',
+  ];
+
   return (
     <div className="relative w-full h-[1000px] mx-4 text-center text-base text-white font-rainbow-buttons-1">
       <div className="relative top-0 left-0 w-full h-full ">
@@ -13,52 +53,30 @@ const DailyCheckIn: NextPage = () => {
           src="/group-1022.svg"
         />
         <div className="absolute top-[26%] left-[20%] w-[60%] h-[50%] text-center">
+          {/* Thin Check-Ins */}
           <div className="flex flex-row items-start justify-center gap-4">
-            <ThinCheckIn
-              day={1}
-              tp={10}
-              imageSrc="/day-1-fan.svg"
-              isClaimed={true}
-            />
-            <ThinCheckIn
-              day={2}
-              tp={15}
-              imageSrc="/day-2-mask.svg"
-              isClaimed={true}
-            />
-            <ThinCheckIn
-              day={3}
-              tp={20}
-              imageSrc="/day-3-flower.svg"
-              isClaimed={true}
-            />
-            <ThinCheckIn
-              day={4}
-              tp={30}
-              imageSrc="/day-4-shoes.svg"
-              isClaimed={false}
-            />
+            {rewards?.slice(0, 4).map((reward: DailyReward, index: number) => (
+              <ThinCheckIn
+                key={reward.day}
+                day={reward.day}
+                tp={reward.bonusAmount}
+                imageSrc={imageSources[index] ?? ''}
+                isClaimed={userReward?.currentDay >= reward.day}
+              />
+            ))}
           </div>
           {/* Large Check-Ins */}
+
           <div className="flex flex-row items-start justify-center gap-3 mt-10">
-            <LargeCheckIn
-              day={5}
-              tp={40}
-              imageSrc="/day-5-bag.svg"
-              isClaimed={false}
-            />
-            <LargeCheckIn
-              day={6}
-              tp={50}
-              imageSrc="/day-6-ship.svg"
-              isClaimed={false}
-            />
-            <LargeCheckIn
-              day={7}
-              tp={70}
-              imageSrc="/day-7-tiger.svg"
-              isClaimed={false}
-            />
+            {rewards?.slice(4, 7).map((reward: DailyReward, index: number) => (
+              <LargeCheckIn
+                key={reward.day}
+                day={reward.day}
+                tp={reward.bonusAmount}
+                imageSrc={imageSources[index + 4] ?? ''}
+                isClaimed={userReward?.currentDay >= reward.day}
+              />
+            ))}
           </div>
         </div>
         <div className="absolute top-[2%] left-[50%] translate-x-[-50%] text-[4vw] leading-[5vw] font-title bg-gradient-to-r from-[#fbd099] via-[#fcefdf] to-[#ffe299] bg-clip-text text-transparent">

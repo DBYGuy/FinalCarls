@@ -124,11 +124,11 @@ model UserMission {
 }
 
 model UserDailyReward {
-  userId String @id @map("user_id")
-  currentDay Int  @default(0)
-  user    User   @relation(fields: [userId], references: [id])
+  userId     String   @id @map("user_id")
+  currentDay Int      @default(0)
+  lastClaimed DateTime? 
+  user       User     @relation(fields: [userId], references: [id])
 }
-
 model UserProfile {
   userId            String @id @map("user_id")
   nickname          String?
@@ -156,5 +156,5 @@ model Session {
 // Leveling
 model Level {
   level  Int @id
-  points Int @unique
+  points Int
 }

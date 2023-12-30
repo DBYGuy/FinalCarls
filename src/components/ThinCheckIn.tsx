@@ -1,12 +1,13 @@
 import React from 'react';
 import CheckInButton from './CheckInButton';
+import { useMe } from '~/hooks/useMe';
+import { useGetUserReward } from '~/hooks/useGetUserRewards';
 
 type ThinCheckInProps = {
   day: number;
   tp: number;
   imageSrc: string;
   isClaimed: boolean;
-  claimedPoints?: number;
 };
 
 const ThinCheckIn: React.FC<ThinCheckInProps> = ({
@@ -15,6 +16,15 @@ const ThinCheckIn: React.FC<ThinCheckInProps> = ({
   imageSrc,
   isClaimed,
 }) => {
+  const user = useMe();
+  const {
+    data: userReward,
+    isLoading: isLoadingUserReward,
+    error: errorUserReward,
+  } = useGetUserReward(user?.id ?? '');
+
+  const dayToPass = (userReward?.currentDay ?? 0) + 1;
+  const lastClaimed = userReward?.lastClaimed ?? null;
   return (
     <div className="relative shadow-[5px_4px_4px_rgba(0,_0,_0,_0.25)] w-[200px] h-[265px] border-8 border-double border-yellow-100">
       <div className="absolute h-full w-full top-0 right-0 bottom-0 left-0 rounded bg-mediumorchid shadow-[0px_4px_4px_rgba(0,_0,_0,_0.25)_inset]" />
@@ -30,7 +40,13 @@ const ThinCheckIn: React.FC<ThinCheckInProps> = ({
         <b className="relative text-5xl tracking-[-0.01em] leading-[3px] flex font-outfit text-center items-center justify-center w-[106px] h-7 shrink-0">
           {tp} TP
         </b>
-        <CheckInButton currentDay={day} rewardDay={4} />
+        <CheckInButton
+          currentDay={day}
+          rewardDay={dayToPass}
+          tp={tp}
+          lastClaimedDate={lastClaimed}
+          rewardImg={imageSrc}
+        />
       </div>
       {isClaimed && (
         <div className="absolute top-[114.57px] left-[-38px] bg-gradient-to-r from-[#fbd099] via-[#fcefdf] to-[#ffe299] shadow-[4px_4px_4px_rgba(0,_0,_0,_0.25)] w-[140%] h-[38px] transform rotate-[-53.47deg]">

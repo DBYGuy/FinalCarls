@@ -6,6 +6,7 @@ import {
   configureChains,
   createConfig,
   WagmiConfig,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   mainnet,
   sepolia,
 } from 'wagmi';
@@ -28,10 +29,13 @@ import DesktopHeader from '~/components/DesktopHeader';
 import HomeScreen from '~/components/HomeScreen';
 import DailyCheckIn from '~/components/DailyCheckIn';
 import DesktopDirectory from '~/components/DesktopDirectory';
+import DesktopDropdown from '~/components/DesktopDropdown';
+import { PopupProvider } from '~/components/PopUp/popupContext';
+import { ConfirmationModalProvider } from '../context/ConfirmationModalContext';
 import localFont from '@next/font/local';
 import { trpc } from '../utils/trpc';
 import '~/styles/globals.css';
-import { Open_Sans, Varela_Round, Outfit, Poppins } from 'next/font/google';
+import { Open_Sans, Outfit, Poppins } from 'next/font/google';
 import { CHAIN } from '../constants';
 
 const projectId = process.env.NEXT_PUBLIC_RAINBOW_KEY ?? '';
@@ -47,25 +51,29 @@ const omegle = localFont({
 });
 
 const openSans = Open_Sans({
-  weight: '400',
+  weight: ['300', '400', '700'],
   subsets: ['latin'],
   variable: '--font-open-sans',
 });
-// For Open Sans with weight 700, you can define another variable if needed
+
 const openSansBold = Open_Sans({
-  weight: '700',
+  weight: ['300', '400', '700'],
   subsets: ['latin'],
   variable: '--font-open-sans-bold',
 });
 
-const sfProRounded = Varela_Round({
-  weight: '400',
-  subsets: ['latin'],
+const sfProRounded = localFont({
+  src: [
+    {
+      path: '../../public/fonts/SFProRounded/SF-Pro-Rounded-Regular.otf',
+      weight: '400',
+    },
+  ],
   variable: '--font-sf-pro-rounded',
 });
 
 const outfit = Outfit({
-  weight: ['300', '400', '700', '900'], // Assuming array can be used for multiple weights
+  weight: ['300', '400', '700', '900'],
   subsets: ['latin'],
   variable: '--font-outfit',
 });
@@ -131,25 +139,30 @@ const MyApp = (({
           >
             <RainbowKitProvider chains={chains}>
               <>
-                <main
-                  style={{
-                    ...outfit.style,
-                    ...sfProRounded.style,
-                    ...openSans.style,
-                    ...poppins.style,
-                    ...openSansBold.style,
-                  }}
-                  className={omegle.variable}
-                >
-                  <DesktopHeader />
-                  <HomeScreen />
-                  <DailyCheckIn />
+                <ConfirmationModalProvider>
+                  <PopupProvider>
+                    <main
+                      style={{
+                        ...outfit.style,
+                        ...sfProRounded.style,
+                        ...openSans.style,
+                        ...poppins.style,
+                        ...openSansBold.style,
+                      }}
+                      className={omegle.variable}
+                    >
+                      <DesktopHeader />
+                      <HomeScreen />
+                      <DailyCheckIn />
 
-                  <DesktopDirectory />
-                  {/* <div>
+                      <DesktopDirectory />
+                      <DesktopDropdown />
+                      {/* <div>
                     <DefaultLayout>{page}</DefaultLayout>
                   </div> */}
-                </main>
+                    </main>
+                  </PopupProvider>
+                </ConfirmationModalProvider>
               </>
             </RainbowKitProvider>
           </RainbowKitSiweNextAuthProvider>

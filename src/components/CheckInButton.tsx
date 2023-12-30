@@ -1,17 +1,29 @@
 import React, { useState, useEffect } from 'react';
+import { useClaimReward } from '~/hooks/useClaimReward';
+import { useMe } from '~/hooks/useMe';
+import { usePopup } from '~/components/PopUp/popupContext';
 
 type CheckInButtonProps = {
   currentDay: number;
   rewardDay: number;
+  tp: number; // Points to be claimed
+  lastClaimedDate: Date | null;
+  rewardImg: string; // Image to be displayed when the reward is claimed
 };
 
 const CheckInButton: React.FC<CheckInButtonProps> = ({
   currentDay,
   rewardDay,
+  tp,
+  lastClaimedDate,
+  rewardImg,
 }) => {
   const [currentTime, setCurrentTime] = useState(new Date());
+  const { claimReward } = useClaimReward();
+  const user = useMe();
+  const userId = user?.id ?? '';
+  const { showPopup } = usePopup();
 
-  const rewardTime = '23:23:23';
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentTime(new Date());
@@ -20,57 +32,93 @@ const CheckInButton: React.FC<CheckInButtonProps> = ({
     return () => clearInterval(timer);
   }, []);
 
-  const isTimeToClaim = () => {
-    const rewardDate = new Date();
-    rewardDate.setHours(parseInt(rewardTime.split(':')[0] ?? '23'));
-    rewardDate.setMinutes(parseInt(rewardTime.split(':')[1] ?? '23'));
-    rewardDate.setSeconds(parseInt(rewardTime.split(':')[2] ?? '23'));
+  // Calculate the time difference from the last claimed date
+  const timeSinceLastClaim = lastClaimedDate
+    ? currentTime.getTime() - new Date(lastClaimedDate).getTime()
+    : null;
 
-    return currentTime < rewardDate;
+  // Determine if it's time to claim based on the last claimed date
+  const isTimeToClaim = () => {
+    if (rewardDay === 1) return true; // Day 1 is always claimable
+    return (
+      timeSinceLastClaim &&
+      timeSinceLastClaim >= 24 * 60 * 60 * 1000 && // More than 24 hours
+      timeSinceLastClaim < 48 * 60 * 60 * 1000 // Less than 48 hours
+    );
   };
 
-  const formatTimeLeft = () => {
-    const rewardDate = new Date();
-    rewardDate.setHours(parseInt(rewardTime.split(':')[0] ?? '23'));
-    rewardDate.setMinutes(parseInt(rewardTime.split(':')[1] ?? '23'));
-    rewardDate.setSeconds(parseInt(rewardTime.split(':')[2] ?? '23'));
+  // Determine if the reward is expired
+  const isExpired = () => {
+    if (rewardDay === 1) return false; // Day 1 never expires
+    return (
+      timeSinceLastClaim && timeSinceLastClaim >= 48 * 60 * 60 * 1000 // More than 48 hours
+    );
+  };
 
-    const timeLeft = rewardDate.getTime() - currentTime.getTime();
-    const hours = Math.floor((timeLeft / (1000 * 60 * 60)) % 24);
-    const minutes = Math.floor((timeLeft / 1000 / 60) % 60);
-    const seconds = Math.floor((timeLeft / 1000) % 60);
+  // Handle claiming the reward
+  const handleClaimReward = async () => {
+    try {
+      await claimReward(userId, tp);
+      showPopup(
+        'Congratulations!',
+        `Successfully claimed ${tp} TP!`,
+        rewardImg,
+      );
+    } catch (error) {
+      console.error('Error claiming reward:', error);
+      alert('Failed to claim reward.'); // Replace with a more appropriate error handling
+    }
+  };
+
+  // Calculate the countdown time
+  const calculateCountdown = () => {
+    const countdownTime = 24 * 60 * 60 * 1000 - (timeSinceLastClaim ?? 0); // 24 hours minus the time since last claim
+    const hours = Math.floor((countdownTime / (1000 * 60 * 60)) % 24);
+    const minutes = Math.floor((countdownTime / 1000 / 60) % 60);
+    const seconds = Math.floor((countdownTime / 1000) % 60);
 
     return `${hours.toString().padStart(2, '0')}:${minutes
       .toString()
       .padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
   };
 
+  // Render the button based on the state
   if (currentDay < rewardDay) {
     return (
-      <div className="rounded-3xl [background:lightslategray] shadow-[0px_4px_12px_rgba(0,_0,_0,_0.1)] h-10 flex flex-row items-center justify-start py-2 px-4 box-border text-silver mt-2">
-        <b className="relative tracking-[0.6px] leading-[30px]">Claimed</b>
+      <div className="rounded-3xl bg-lightslategray shadow-[0px_4px_12px_rgba(0,_0,_0,_0.1)] h-10 flex items-center justify-center py-2 px-4 box-border text-silver mt-2">
+        <b className="tracking-[0.6px] leading-[30px]">Claimed</b>
       </div>
     );
   } else if (currentDay === rewardDay) {
-    if (isTimeToClaim()) {
+    if (isExpired()) {
       return (
-        <div className="rounded-3xl [background:linear-gradient(180deg,_#efd891,_#ede2b2)] shadow-[0px_4px_12px_rgba(0,_0,_0,_0.1)] h-10 flex flex-row items-center justify-start py-2 px-4 box-border text-black mt-2">
-          <b className="relative tracking-[0.6px] leading-[30px]">
-            {formatTimeLeft()}
-          </b>
+        <div className="rounded-3xl bg-lightslategray shadow-[0px_4px_12px_rgba(0,_0,_0,_0.1)] h-10 flex items-center justify-center py-2 px-4 box-border text-silver mt-2">
+          <b className="tracking-[0.6px] leading-[30px]">Expired</b>
         </div>
       );
-    } else {
+    } else if (isTimeToClaim()) {
       return (
-        <button className="rounded-3xl [background:linear-gradient(180deg,_#efd891,_#ede2b2)] shadow-[0px_4px_12px_rgba(0,_0,_0,_0.1)] h-10 flex flex-row items-center justify-start py-2 px-4 box-border text-black mt-2">
-          <b className="relative tracking-[0.6px] leading-[30px]">Claim</b>
+        <button
+          className="rounded-3xl bg-linear-gradient shadow-[0px_4px_12px_rgba(0,_0,_0,_0.1)] h-10 flex items-center justify-center py-2 px-4 box-border text-black mt-2"
+          onClick={handleClaimReward}
+        >
+          <b className="tracking-[0.6px] leading-[30px]">Claim {tp} TP</b>
         </button>
+      );
+    } else {
+      // Show countdown until claimable
+      return (
+        <div className="rounded-3xl bg-lightslategray shadow-[0px_4px_12px_rgba(0,_0,_0,_0.1)] h-10 flex items-center justify-center py-2 px-4 box-border text-silver mt-2">
+          <b className="tracking-[0.6px] leading-[30px]">
+            {calculateCountdown()}
+          </b>
+        </div>
       );
     }
   } else {
     return (
-      <div className="rounded-3xl [background:lightslategray] shadow-[0px_4px_12px_rgba(0,_0,_0,_0.1)] h-10 flex flex-row items-center justify-start py-2 px-4 box-border text-silver mt-2">
-        <b className="relative tracking-[0.6px] leading-[30px]">Wait...</b>
+      <div className="rounded-3xl bg-lightslategray shadow-[0px_4px_12px_rgba(0,_0,_0,_0.1)] h-10 flex items-center justify-center py-2 px-4 box-border text-silver mt-2">
+        <b className="tracking-[0.6px] leading-[30px]">Wait...</b>
       </div>
     );
   }

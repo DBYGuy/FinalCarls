@@ -88,11 +88,18 @@ export function getServerContext(
                       currentPoints: 0, // Initialize with 0 points
                     },
                   },
+                  userDailyReward: {
+                    create: {
+                      currentDay: 0, // Set the current day to 0
+                      lastClaimed: new Date(), // Set the last claimed date to now
+                    },
+                  },
                 },
                 update: {},
                 include: {
                   userPoints: true,
                   userProfile: true,
+                  userDailyReward: true,
                 },
               });
 

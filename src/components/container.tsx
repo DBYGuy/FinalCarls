@@ -3,6 +3,9 @@ import { useMemo, type CSSProperties } from 'react';
 import Logo from './logo';
 import NavMenu from './nav-menu';
 import ConnectMenu from './connect-menu';
+import { useMe } from '~/hooks/useMe';
+import { useCheckLevelEligibility } from '~/hooks/useCheckLevelEligibility';
+import LevelButton from '~/components/LevelButton';
 
 type ContainerType = {
   logoImageName?: string;
@@ -37,6 +40,10 @@ const Container: NextPage<ContainerType> = ({
     };
   }, [propTop]);
 
+  const user = useMe();
+  const userId = user?.id ?? '';
+  const { isEligible, toNextLevel } = useCheckLevelEligibility(userId);
+
   return (
     <div
       className="fixed z-10 top-0 left-0 right-0 mx-auto w-[97%] h-10 flex flex-row items-center justify-between py-2 px-8 bg-black bg-opacity-70"
@@ -44,6 +51,8 @@ const Container: NextPage<ContainerType> = ({
     >
       <Logo iTSCLogo1="/itsclogo-11.svg" />
       <NavMenu />
+      {/* Conditionally render the LevelButton if the user is eligible */}
+      {isEligible && <LevelButton />}
       <ConnectMenu
         avatar="/avatar1@2x.png"
         icon="/icon1.svg"
