@@ -11,7 +11,7 @@ const LevelButton: NextPage = () => {
   const { showConfirmation } = useConfirmationModal();
   const userId = user?.id ?? '';
   const { points = 0 } = useGetPoints(); // Assuming this returns the user's current points
-  const { isEligible, toNextLevel = 0 } = useCheckLevelEligibility(userId); // Assuming this returns eligibility and points to next level
+  const { toNextLevel = 0 } = useCheckLevelEligibility(userId); // Assuming this returns eligibility and points to next level
 
   const handleLevelUp = async () => {
     // Define the confirmation action
@@ -38,9 +38,13 @@ const LevelButton: NextPage = () => {
   };
 
   return (
-    <div className="relative rounded-[34px] [background:linear-gradient(180deg,_#efd891,_#ede2b2)] shadow-[0px_4px_12px_rgba(0,_0,_0,_0.1)] w-full h-10 flex flex-row items-center justify-start py-2 px-4 box-border left-[200px] text-left text-base text-black font-bold width-[111.1px]">
+    <div className="relative rounded-lg overflow-hidden shadow-md w-auto h-10 flex items-center justify-center">
       <button
-        className="relative tracking-[0.6px] leading-[20px]"
+        style={{
+          background:
+            'radial-gradient(conic top right, rgb(180, 83, 9), rgb(253, 186, 116), rgb(159, 18, 57))',
+        }}
+        className="animate-gradient-xy text-black font-semibold py-2 px-4 w-full h-full text-sm leading-none tracking-wide uppercase focus:outline-none focus:ring-0 transition duration-150 ease-in-out"
         onClick={handleLevelUp}
       >
         Level Up!

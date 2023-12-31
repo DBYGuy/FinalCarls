@@ -1,28 +1,44 @@
 import type { NextPage } from 'next';
+import { useMe } from '~/hooks/useMe';
+import { useGetPoints } from '~/hooks/useGetPoints';
+import { useGetLevel } from '~/hooks/useGetLevel';
+import { getTruncatedWalletAddress } from '~/utils/wallet';
+import { useCheckLevelEligibility } from '~/hooks/useCheckLevelEligibility';
 
 const TigerProfile: NextPage = () => {
+  const user = useMe();
+  const truncatedWalletAddress = getTruncatedWalletAddress(
+    user?.walletAddress ?? '',
+  );
+  const userId = user?.id ?? '';
+  const { points } = useGetPoints();
+  const { level } = useGetLevel();
+  const { toNextLevel } = useCheckLevelEligibility(userId);
+  const profileAddress = user?.walletAddress ?? '';
+  const profileENS = user?.ENSName ?? '';
+
   return (
     <div className="relative bg-itsc-black w-full flex flex-row items-start justify-start gap-[164px] text-left text-45xl text-white-gold-itsc font-outfit">
       <div className="shrink-0 flex flex-col items-start justify-start gap-[32px]">
         <div className="self-stretch shrink-0 flex flex-row items-center justify-between font-title">
           <div className="relative tracking-[3.4px] leading-[64px] text-transparent !bg-clip-text [background:linear-gradient(90deg,_#fbd099,_#fcefdf_59.9%,_#ffe299)] [-webkit-background-clip:text] [-webkit-text-fill-color:transparent] overflow-hidden text-ellipsis whitespace-nowrap">
-            0xtiger.eth
+            {user?.ENSName ?? truncatedWalletAddress}
           </div>
-          <div className="shrink-0 flex flex-row items-center justify-start gap-[16px] text-center text-xs font-outfit">
+          <div className="shrink-0 flex flex-row items-center justify-start gap-[16px] text-center text-xs">
             <div className="rounded-10xs box-border h-[54px] shrink-0 flex flex-col items-center justify-start p-2 gap-[8px] border-[2px] border-solid border-navajowhite">
-              <div className="relative tracking-[1px] leading-[22px] text-transparent !bg-clip-text [background:linear-gradient(90deg,_#fbd099,_#fcefdf_59.9%,_#ffe299)] [-webkit-background-clip:text] [-webkit-text-fill-color:transparent] flex items-center justify-center w-[99px] h-[11px] shrink-0">
+              <div className="relative tracking-[1px] leading-[22px] text-transparent  font-outfit !bg-clip-text [background:linear-gradient(90deg,_#fbd099,_#fcefdf_59.9%,_#ffe299)] [-webkit-background-clip:text] [-webkit-text-fill-color:transparent] flex items-center justify-center w-[99px] h-[11px] shrink-0">
                 TIGER POINTS
               </div>
-              <div className="relative text-13xl tracking-[0.01em] leading-[72px] font-title text-transparent !bg-clip-text [background:linear-gradient(90deg,_#fbd099,_#fcefdf_59.9%,_#ffe299)] [-webkit-background-clip:text] [-webkit-text-fill-color:transparent] flex items-center justify-center w-[109px] h-5 shrink-0">
-                69420
+              <div className="relative text-[22px] tracking-[0.01em] leading-[72px] font-title text-transparent !bg-clip-text [background:linear-gradient(90deg,_#fbd099,_#fcefdf_59.9%,_#ffe299)] [-webkit-background-clip:text] [-webkit-text-fill-color:transparent] flex items-center justify-center w-[109px] h-5 shrink-0">
+                {points}
               </div>
             </div>
             <div className="rounded-10xs box-border h-[54px] shrink-0 flex flex-col items-center justify-start p-2 gap-[8px] border-[2px] border-solid border-navajowhite">
               <div className="relative tracking-[1px] leading-[22px] text-transparent !bg-clip-text [background:linear-gradient(90deg,_#fbd099,_#fcefdf_59.9%,_#ffe299)] [-webkit-background-clip:text] [-webkit-text-fill-color:transparent] flex items-center justify-center w-[68px] h-[11px] shrink-0">
                 TP LEVEL
               </div>
-              <div className="relative text-13xl tracking-[1px] leading-[72px] font-title text-transparent !bg-clip-text [background:linear-gradient(90deg,_#fbd099,_#fcefdf_59.9%,_#ffe299)] [-webkit-background-clip:text] [-webkit-text-fill-color:transparent] flex items-center justify-center w-[63px] h-5 shrink-0">
-                70
+              <div className="relative text-[22px] tracking-[1px] leading-[72px] font-title text-transparent !bg-clip-text [background:linear-gradient(90deg,_#fbd099,_#fcefdf_59.9%,_#ffe299)] [-webkit-background-clip:text] [-webkit-text-fill-color:transparent] flex items-center justify-center w-[63px] h-5 shrink-0">
+                {level}
               </div>
             </div>
           </div>
@@ -30,7 +46,7 @@ const TigerProfile: NextPage = () => {
         <div className="self-stretch shrink-0 flex flex-row items-center justify-between text-[10.67px]">
           <div className="relative w-80 h-[25px]">
             <div className="absolute top-[0px] left-[0px] tracking-[0.33px] leading-[12px] font-light flex items-center w-[211.33px] h-2">
-              523 Tiger points to next level!
+              {toNextLevel} Tiger points to next level!
             </div>
             <div className="absolute top-[13px] left-[0px] rounded-[20px] w-80 h-3 overflow-hidden">
               <div className="absolute w-full top-[calc(50%_-_6px)] right-[0%] left-[0%] rounded-6xs bg-white-gold-itsc h-3" />
@@ -219,7 +235,7 @@ const TigerProfile: NextPage = () => {
                   </span>
                   <span className="text-white">
                     <span className="font-light">{` `}</span>
-                    <b>0xtiger.eth</b>
+                    <b>{profileENS}</b>
                   </span>
                 </span>
               </div>
@@ -240,10 +256,7 @@ const TigerProfile: NextPage = () => {
               <div className="absolute top-[52px] left-[0px] tracking-[0.5px] leading-[18px] flex items-center w-[351px]">
                 <span className="w-full">
                   <span className="font-light">Ethereum Wallet</span>
-                  <b className="text-white">
-                    {' '}
-                    0x....................................
-                  </b>
+                  <b className="text-white"> {profileAddress}</b>
                 </span>
               </div>
             </div>

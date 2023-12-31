@@ -17,7 +17,7 @@ const DesktopDropdown: NextPage = () => {
   const { isEligible, toNextLevel } = useCheckLevelEligibility(userId);
 
   return (
-    <div className="relative rounded-[5px] z-8 box-border w-full h-[964px] overflow-hidden text-left text-[25.51px] text-white-gold-itsc font-rainbow-buttons-1">
+    <div className="relative rounded-[5px] z-8 box-border w-full h-[964px] overflow-hidden text-left text-[25.51px] text-white-gold-itsc font-sfpro">
       <div className="absolute top-[16px] left-[16px] w-[351px] h-[932px]">
         <div className="absolute top-[0px] left-[0px] rounded-lg bg-itsc-black box-border w-[357px] h-[932px] border-t-[3px] border-solid border-linear border-b-[3px] border-l-[3px]" />
         <div className="absolute top-[223px] left-[32px] flex flex-col items-start justify-start gap-[24px]">

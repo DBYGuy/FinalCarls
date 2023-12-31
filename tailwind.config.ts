@@ -25,6 +25,44 @@ const config: Config = {
         mediumorchid: 'rgba(208, 58, 184, 0.19)',
         linear: '#fbd099',
       },
+
+      animation: {
+        'gradient-x': 'gradient-x 15s ease infinite',
+        'gradient-y': 'gradient-y 15s ease infinite',
+        'gradient-xy': 'gradient-xy 3s ease-in-out infinite',
+      },
+      keyframes: {
+        'gradient-y': {
+          '0%, 100%': {
+            'background-size': '400% 400%',
+            'background-position': 'center top',
+          },
+          '50%': {
+            'background-size': '200% 200%',
+            'background-position': 'center center',
+          },
+        },
+        'gradient-x': {
+          '0%, 100%': {
+            'background-size': '200% 200%',
+            'background-position': 'left center',
+          },
+          '50%': {
+            'background-size': '200% 200%',
+            'background-position': 'right center',
+          },
+        },
+        'gradient-xy': {
+          '0%, 100%': {
+            'background-size': '400% 400%',
+            'background-position': 'left center',
+          },
+          '50%': {
+            'background-size': '100% 100%',
+            'background-position': 'right center',
+          },
+        },
+      },
       spacing: {},
       fontFamily: {
         bold: 'var(--font-open-sans-bold)',
@@ -34,6 +72,7 @@ const config: Config = {
         'open-sans': 'var(--font-open-sans)',
         title: 'var(--font-omegle)',
         'rainbow-buttons-1': 'var(--font-sf-pro-rounded)',
+        sfpro: 'var(--font-sf-pro-rounded)',
         inherit: 'inherit',
         light: 'var(--font-outfit)',
       },

@@ -42,7 +42,7 @@ const Container: NextPage<ContainerType> = ({
 
   const user = useMe();
   const userId = user?.id ?? '';
-  const { isEligible, toNextLevel } = useCheckLevelEligibility(userId);
+  const { isEligible } = useCheckLevelEligibility(userId);
 
   return (
     <div

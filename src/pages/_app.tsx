@@ -68,8 +68,8 @@ const openSansBold = Open_Sans({
 const sfProRounded = localFont({
   src: [
     {
-      path: '../../public/fonts/SFProRounded/SF-Pro-Rounded-Regular.otf',
-      weight: '400',
+      path: '../../public/fonts/SFProRounded/SF-Pro-Rounded-Regular.ttf',
+      weight: '300',
     },
   ],
   variable: '--font-sf-pro-rounded',
