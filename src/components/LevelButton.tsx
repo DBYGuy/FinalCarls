@@ -38,7 +38,7 @@ const LevelButton: NextPage = () => {
   };
 
   return (
-    <div className="relative rounded-[34px] [background:linear-gradient(180deg,_#efd891,_#ede2b2)] shadow-[0px_4px_12px_rgba(0,_0,_0,_0.1)] w-full h-10 flex flex-row items-center justify-start py-2 px-4 box-border left-[200px] text-left text-base text-black font-bold w-[111.1px]">
+    <div className="relative rounded-[34px] [background:linear-gradient(180deg,_#efd891,_#ede2b2)] shadow-[0px_4px_12px_rgba(0,_0,_0,_0.1)] w-full h-10 flex flex-row items-center justify-start py-2 px-4 box-border left-[200px] text-left text-base text-black font-bold width-[111.1px]">
       <button
         className="relative tracking-[0.6px] leading-[20px]"
         onClick={handleLevelUp}

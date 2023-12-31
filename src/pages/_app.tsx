@@ -30,6 +30,9 @@ import HomeScreen from '~/components/HomeScreen';
 import DailyCheckIn from '~/components/DailyCheckIn';
 import DesktopDirectory from '~/components/DesktopDirectory';
 import DesktopDropdown from '~/components/DesktopDropdown';
+import TigerProfile from '~/components/TigerProfile';
+import Leaderboard from '~/components/Leaderboard';
+import HoldingsGallery from '~/components/HoldingsGallery';
 import { PopupProvider } from '~/components/PopUp/popupContext';
 import { ConfirmationModalProvider } from '../context/ConfirmationModalContext';
 import localFont from '@next/font/local';
@@ -157,6 +160,9 @@ const MyApp = (({
 
                       <DesktopDirectory />
                       <DesktopDropdown />
+                      <TigerProfile />
+                      <HoldingsGallery />
+                      <Leaderboard />
                       {/* <div>
                     <DefaultLayout>{page}</DefaultLayout>
                   </div> */}
