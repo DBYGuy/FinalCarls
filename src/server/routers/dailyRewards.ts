@@ -3,6 +3,7 @@ import { z } from 'zod';
 import { procedure, protectedProcedure, router } from '../trpc';
 import { PrismaClient } from '@prisma/client';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const prisma = new PrismaClient();
 
 export const dailyRewardRouter = router({

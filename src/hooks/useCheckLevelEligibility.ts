@@ -9,6 +9,7 @@ export const useCheckLevelEligibility = (userId: string) => {
   return {
     isEligible: data?.isEligible,
     toNextLevel: data?.toNextLevel,
+    nextLevelPoints: data?.nextLevelPoints,
     isLoading,
     error,
   };

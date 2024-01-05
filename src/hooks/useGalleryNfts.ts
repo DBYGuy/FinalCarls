@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { NftProps, Attribute, TokenMetadata } from './useTigerNfts'; // Adjust paths as necessary
+import { NftProps, TokenMetadata } from './useTigerNfts'; // Adjust paths as necessary
 
 // Helper function to generate an array of random numbers
 const generateRandomIds = (count: number, max: number): number[] => {
@@ -33,12 +33,11 @@ export const useGalleryNfts = () => {
       }
     }
 
-    return tokenMetadatas.map(({ name, description, image, attributes }) => ({
+    return tokenMetadatas.map(({ name, description, image }) => ({
       name,
       src: image,
       description,
       href: `https://example.com/path/to/nft/${name}`, // Adjust URL accordingly
-      attributes,
     }));
   };
 

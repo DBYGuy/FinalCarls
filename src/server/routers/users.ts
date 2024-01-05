@@ -93,8 +93,8 @@ export const usersRouter = router({
       z.object({
         userId: z.string(),
         username: z.string().min(3).max(20).nullish(),
-        displayName: z.string().min(3).max(20).nullish(),
-        isNew: z.boolean().optional(),
+        Xhandle: z.string().min(3).max(20).nullish(),
+        discordID: z.string().min(3).max(20).nullish(),
       }),
     )
     .mutation(async ({ input: { userId: id, ...data }, ctx }) => {

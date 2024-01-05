@@ -8,18 +8,18 @@ export const levelRouter = router({
     .input(z.string()) // Expecting a user ID as input
     .query(async ({ input: userId, ctx }) => {
       // Fetching user level from the database
-      const userProfile = await ctx.prisma.userProfile.findUnique({
+      const userPoints = await ctx.prisma.userPoints.findUnique({
         where: { userId },
       });
 
-      if (!userProfile) {
+      if (!userPoints) {
         throw new TRPCError({
           code: 'NOT_FOUND',
           message: 'User profile not found.',
         });
       }
 
-      return userProfile.level;
+      return userPoints.level;
     }),
   checkLevelEligibility: procedure
     .input(z.string()) // Expecting a user ID as input
@@ -39,7 +39,7 @@ export const levelRouter = router({
       }
 
       const nextLevel = await ctx.prisma.level.findUnique({
-        where: { level: userProfile.level + 1 },
+        where: { level: userPoints.level + 1 },
       });
 
       if (!nextLevel) {
@@ -47,13 +47,12 @@ export const levelRouter = router({
         return { isEligible: false, toNextLevel: 0 };
       }
 
-      const isEligible = userPoints.totalPoints >= nextLevel.points;
-      const toNextLevel = Math.max(
-        0,
-        nextLevel.points - userPoints.totalPoints,
-      );
+      const nextLevelPoints = nextLevel.points;
 
-      return { isEligible, toNextLevel };
+      const isEligible = userPoints.totalPoints >= nextLevelPoints;
+      const toNextLevel = Math.max(0, nextLevelPoints - userPoints.totalPoints);
+
+      return { isEligible, toNextLevel, nextLevelPoints };
     }),
   // Procedure to level up the user
   levelUp: procedure
@@ -74,7 +73,7 @@ export const levelRouter = router({
       }
 
       const nextLevel = await ctx.prisma.level.findUnique({
-        where: { level: userProfile.level + 1 },
+        where: { level: userPoints.level + 1 },
       });
 
       if (!nextLevel) {
@@ -99,12 +98,12 @@ export const levelRouter = router({
         },
       });
 
-      await ctx.prisma.userProfile.update({
+      await ctx.prisma.userPoints.update({
         where: { userId },
-        data: { level: userProfile.level + 1 },
+        data: { level: userPoints.level + 1 },
       });
 
-      return { success: true, newLevel: userProfile.level + 1 };
+      return { success: true, newLevel: userPoints.level + 1 };
     }),
 });
 

@@ -27,6 +27,8 @@ module.exports = getConfig({
     NODE_ENV: env.NODE_ENV,
   },
   reactStrictMode: true,
+  optimizeCss: false, // We use Tailwind CSS, which is already optimized
+  enableBabelRuntime: true,
   swcMinify: true,
   i18n: {
     locales: ['en'],

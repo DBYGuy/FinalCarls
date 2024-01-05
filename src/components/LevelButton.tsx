@@ -10,29 +10,21 @@ const LevelButton: NextPage = () => {
   const { levelUp } = useLevelUp();
   const { showConfirmation } = useConfirmationModal();
   const userId = user?.id ?? '';
-  const { points = 0 } = useGetPoints(); // Assuming this returns the user's current points
-  const { toNextLevel = 0 } = useCheckLevelEligibility(userId); // Assuming this returns eligibility and points to next level
+  const { nextLevelPoints } = useCheckLevelEligibility(userId);
 
   const handleLevelUp = async () => {
-    // Define the confirmation action
     const confirmLevelUp = async () => {
       if (user?.id) {
         try {
-          await levelUp(userId); // Call the level up function with the user's ID
-          // Handle success, e.g., close modal, show a success message, or update UI
+          await levelUp(userId);
         } catch (error) {
           console.error('Failed to level up:', error);
-          // Handle error, e.g., close modal, show an error message
         }
       }
     };
 
-    // Calculate points required for next level
-    const pointsRequiredForNextLevel = Math.max(toNextLevel + points);
-
-    // Show the confirmation modal
     showConfirmation(
-      `Are you sure you want to spend ${pointsRequiredForNextLevel} points on the next level?`,
+      `Are you sure you want to spend ${nextLevelPoints} points on the next level?`,
       confirmLevelUp,
     );
   };
@@ -40,11 +32,7 @@ const LevelButton: NextPage = () => {
   return (
     <div className="relative rounded-lg overflow-hidden shadow-md w-auto h-10 flex items-center justify-center">
       <button
-        style={{
-          background:
-            'radial-gradient(conic top right, rgb(180, 83, 9), rgb(253, 186, 116), rgb(159, 18, 57))',
-        }}
-        className="animate-gradient-xy text-black font-semibold py-2 px-4 w-full h-full text-sm leading-none tracking-wide uppercase focus:outline-none focus:ring-0 transition duration-150 ease-in-out"
+        className="text-black bg-gradient from-rgb(180 83 9 / 0) via-rgb(253 186 116 / 0), to-rgb(159 18 57 / 0) font-semibold py-2 px-4 w-full h-full text-sm leading-none tracking-wide uppercase focus:outline-none focus:ring-0 transition duration-150 ease-in-out"
         onClick={handleLevelUp}
       >
         Level Up!

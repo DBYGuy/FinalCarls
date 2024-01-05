@@ -1,10 +1,8 @@
-import type { Config } from 'tailwindcss';
+// import type { Config } from 'tailwindcss';
+/** @type {import('tailwindcss').Config} */
 
-const config: Config = {
-  content: [
-    './src/pages/**/*.{js,ts,jsx,tsx}',
-    './src/components/**/*.{js,ts,jsx,tsx}',
-  ],
+module.exports = {
+  content: ['./src/**/*.{js,ts,jsx,tsx,mdx}'],
   theme: {
     extend: {
       colors: {
@@ -107,4 +105,3 @@ const config: Config = {
     preflight: false,
   },
 };
-export default config;

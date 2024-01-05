@@ -111,6 +111,7 @@ model UserPoints {
   userId      String @id @map("user_id")
   lastUpdated DateTime
   totalPoints Int
+  level       Int    @default(0)
   user        User   @relation(fields: [userId], references: [id])
 }
 
@@ -135,9 +136,7 @@ model UserProfile {
   bio               String?
   walletAddress     String @unique
   location          String?
-  level             Int
   joinedDate        DateTime
-  currentPoints     Int
   profile_image_url_https String?
   user              User   @relation(fields: [userId], references: [id])
 }

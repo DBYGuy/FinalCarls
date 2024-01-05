@@ -4,6 +4,8 @@ import { useGetPoints } from '~/hooks/useGetPoints';
 import { useGetLevel } from '~/hooks/useGetLevel';
 import { getTruncatedWalletAddress } from '~/utils/wallet';
 import { useCheckLevelEligibility } from '~/hooks/useCheckLevelEligibility';
+import { useGetProfile } from '~/hooks/useGetProfile';
+import { useEditProfileModal } from '~/context/EditProfileModalContext';
 
 const TigerProfile: NextPage = () => {
   const user = useMe();
@@ -14,15 +16,15 @@ const TigerProfile: NextPage = () => {
   const { points } = useGetPoints();
   const { level } = useGetLevel();
   const { toNextLevel } = useCheckLevelEligibility(userId);
-  const profileAddress = user?.walletAddress ?? '';
-  const profileENS = user?.ENSName ?? '';
+  const { profile } = useGetProfile(userId);
+  const { openModal } = useEditProfileModal();
 
   return (
     <div className="relative bg-itsc-black w-full flex flex-row items-start justify-start gap-[164px] text-left text-45xl text-white-gold-itsc font-outfit">
       <div className="shrink-0 flex flex-col items-start justify-start gap-[32px]">
         <div className="self-stretch shrink-0 flex flex-row items-center justify-between font-title">
           <div className="relative tracking-[3.4px] leading-[64px] text-transparent !bg-clip-text [background:linear-gradient(90deg,_#fbd099,_#fcefdf_59.9%,_#ffe299)] [-webkit-background-clip:text] [-webkit-text-fill-color:transparent] overflow-hidden text-ellipsis whitespace-nowrap">
-            {user?.ENSName ?? truncatedWalletAddress}
+            {profile?.username ?? profile?.ENSName ?? truncatedWalletAddress}
           </div>
           <div className="shrink-0 flex flex-row items-center justify-start gap-[16px] text-center text-xs">
             <div className="rounded-10xs box-border h-[54px] shrink-0 flex flex-col items-center justify-start p-2 gap-[8px] border-[2px] border-solid border-navajowhite">
@@ -191,27 +193,30 @@ const TigerProfile: NextPage = () => {
             </div>
             <div className="shadow-[0px_1.9565668106079102px_1.96px_rgba(0,_0,_0,_0.25)] shrink-0 flex flex-row items-start justify-start">
               <div className="rounded-[11.64px] [background:linear-gradient(180deg,_rgba(0,_0,_0,_0.17),_rgba(0,_0,_0,_0)_57.81%,_rgba(0,_0,_0,_0.2)),_#d15454] shadow-[0px_3.3261637687683105px_9.98px_rgba(0,_0,_0,_0.1)] h-[33.26px] flex flex-row items-center justify-start py-[6.652327537536621px] px-[13.304655075073242px] box-border">
-                <b className="relative tracking-[0.6px] leading-[20px]">
+                <button
+                  className="relative tracking-[0.6px] leading-[20px] font-outfit text-itsc-black"
+                  onClick={openModal}
+                >
                   Edit Profile
-                </b>
+                </button>
               </div>
             </div>
           </div>
         </div>
         <div className="[filter:drop-shadow(0px_4px_4px_rgba(0,_0,_0,_0.25)_inset)] shrink-0 flex flex-col items-start justify-start gap-[33px] text-[18.93px]">
           <b className="relative tracking-[2px] leading-[21.3px] flex text-transparent !bg-clip-text [background:linear-gradient(90deg,_#fbd099,_#fcefdf_59.9%,_#ffe299)] [-webkit-background-clip:text] [-webkit-text-fill-color:transparent] items-center w-[351px]">
-            Impatiently Yours
+            {profile?.username ?? user?.ENSName ?? user?.walletAddress ?? ''}
           </b>
           <div className="shrink-0 flex flex-row items-start justify-start gap-[8px] text-base">
             <div className="relative w-[351px] h-[70px]">
               <div className="absolute top-[0px] left-[0px] tracking-[0.5px] leading-[18px] flex items-center w-[351px]">
                 <span className="w-full">
                   <span>
-                    <span className="font-light">Location:</span>
+                    <span className="font-light">Location</span>
                   </span>
                   <b className="text-white">
                     <span>{` `}</span>
-                    <span>Seoul, South Korea</span>
+                    <span>{profile?.location ?? ''}</span>
                   </b>
                 </span>
               </div>
@@ -219,12 +224,12 @@ const TigerProfile: NextPage = () => {
                 <span className="w-full">
                   <span className="font-light">
                     <span className="text-white-gold-itsc">
-                      ITSC Member Since
+                      Site Member Since
                     </span>
                     <span>{` `}</span>
                   </span>
                   <span>
-                    <b>November 1st 2023</b>
+                    <b>{profile?.joinedDate?.toDateString() ?? ''}</b>
                   </span>
                 </span>
               </div>
@@ -235,7 +240,7 @@ const TigerProfile: NextPage = () => {
                   </span>
                   <span className="text-white">
                     <span className="font-light">{` `}</span>
-                    <b>{profileENS}</b>
+                    <b>{profile?.ENSName ?? ''}</b>
                   </span>
                 </span>
               </div>
@@ -244,38 +249,26 @@ const TigerProfile: NextPage = () => {
               <div className="absolute top-[0px] left-[0px] tracking-[0.5px] leading-[18px] flex items-center w-[351px]">
                 <span className="w-full">
                   <span className="font-light">{`X Handle `}</span>
-                  <b className="text-white">@impatiently_yours</b>
+                  <b className="text-white">{profile?.xhandle ?? 'None'}</b>
                 </span>
               </div>
               <div className="absolute top-[26px] left-[0px] tracking-[0.5px] leading-[18px] flex items-center w-[351px]">
                 <span className="w-full">
                   <span className="font-light">Discord Handle</span>
-                  <b className="text-white"> @impatiently_yours</b>
+                  <b className="text-white"> {profile?.discordid ?? 'None'}</b>
                 </span>
               </div>
               <div className="absolute top-[52px] left-[0px] tracking-[0.5px] leading-[18px] flex items-center w-[351px]">
                 <span className="w-full">
                   <span className="font-light">Ethereum Wallet</span>
-                  <b className="text-white"> {profileAddress}</b>
+                  <b className="text-white"> {profile?.walletAddress ?? ''}</b>
                 </span>
               </div>
             </div>
           </div>
           <div className="relative text-[20px] leading-[20px] font-light text-white [display:-webkit-inline-box] overflow-hidden text-ellipsis [-webkit-line-clamp:10] [-webkit-box-orient:vertical] w-[700px]">
             <p className="[margin-block-start:0] [margin-block-end:15px]">
-              Bio Intro Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-              sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-              Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-              reprehenderit in voluptate velit esse cillum dolore eu fugiat
-              nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-              sunt in culpa qui officia deserunt mollit anim id est laborum.
-            </p>
-            <p className="m-0">
-              Duis aute irure dolor in reprehenderit in voluptate velit esse
-              cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-              cupidatat non proident, sunt in culpa qui officia deserunt mollit
-              anim id est laborum.
+              {profile?.bio ?? ''}
             </p>
           </div>
         </div>

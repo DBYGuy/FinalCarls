@@ -1,6 +1,6 @@
 import { ContractConfig } from '@wagmi/cli';
 
-export const TIGER_ADDRESS = '0xa2ca2f4b7f29b6fe74ecb3d379b6d74778b3a55b';
+export const TIGER_ADDRESS = '0xA2Ca2f4b7f29B6fE74ECb3d379B6d74778B3A55b';
 
 export const itscTigerContract: ContractConfig = {
   name: 'itsc-tiger',

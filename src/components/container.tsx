@@ -8,32 +8,11 @@ import { useCheckLevelEligibility } from '~/hooks/useCheckLevelEligibility';
 import LevelButton from '~/components/LevelButton';
 
 type ContainerType = {
-  logoImageName?: string;
-  avatarImageName?: string;
-  iconImageName?: string;
-  burgerIconName?: string;
-  button?: boolean;
-  showAccountButton?: boolean;
-  showButton?: boolean;
-  showAccountButton1?: boolean;
-  showIconsBurgerLine?: boolean;
-
   /** Style props */
   propTop?: CSSProperties['top'];
 };
 
-const Container: NextPage<ContainerType> = ({
-  logoImageName,
-  avatarImageName,
-  iconImageName,
-  burgerIconName,
-  button,
-  showAccountButton,
-  propTop,
-  showButton,
-  showAccountButton1,
-  showIconsBurgerLine,
-}) => {
+const Container: NextPage<ContainerType> = ({ propTop }) => {
   const property1Variant2Style: CSSProperties = useMemo(() => {
     return {
       top: propTop,

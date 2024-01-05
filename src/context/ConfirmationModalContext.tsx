@@ -6,7 +6,7 @@ import React, {
   ReactNode,
   useCallback,
 } from 'react';
-import ConfirmationModal from '../components/ConfirmationModal';
+import ConfirmationModal from '~/components/ConfirmationModal';
 
 type ConfirmationModalContextType = {
   showConfirmation: (text: string, onConfirm: () => void) => void;

@@ -8,11 +8,10 @@ import {
   WagmiConfig,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   mainnet,
-  sepolia,
 } from 'wagmi';
-import { publicProvider } from 'wagmi/providers/public';
+import { infuraProvider } from 'wagmi/providers/infura';
 import { createPublicClient, http } from 'viem';
-import { getDefaultWallets, RainbowKitProvider } from '@rainbow-me/rainbowkit';
+import { RainbowKitProvider } from '@rainbow-me/rainbowkit';
 import {
   GetSiweMessageOptions,
   RainbowKitSiweNextAuthProvider,
@@ -33,8 +32,10 @@ import DesktopDropdown from '~/components/DesktopDropdown';
 import TigerProfile from '~/components/TigerProfile';
 import Leaderboard from '~/components/Leaderboard';
 import HoldingsGallery from '~/components/HoldingsGallery';
+import Footer from '~/components/Footer';
 import { PopupProvider } from '~/components/PopUp/popupContext';
 import { ConfirmationModalProvider } from '../context/ConfirmationModalContext';
+import { EditProfileModalProvider } from '../context/EditProfileModalContext';
 import localFont from '@next/font/local';
 import { trpc } from '../utils/trpc';
 import '~/styles/globals.css';
@@ -87,9 +88,9 @@ const poppins = Poppins({
   variable: '--font-poppins',
 });
 
-const { chains, publicClient, webSocketPublicClient } = configureChains(
+const { chains } = configureChains(
   [CHAIN],
-  [publicProvider()],
+  [infuraProvider({ apiKey: process.env.INFURA_API_KEY! })],
 );
 
 const connectors = connectorsForWallets([
@@ -142,33 +143,36 @@ const MyApp = (({
           >
             <RainbowKitProvider chains={chains}>
               <>
-                <ConfirmationModalProvider>
-                  <PopupProvider>
-                    <main
-                      style={{
-                        ...outfit.style,
-                        ...sfProRounded.style,
-                        ...openSans.style,
-                        ...poppins.style,
-                        ...openSansBold.style,
-                      }}
-                      className={omegle.variable}
-                    >
-                      <DesktopHeader />
-                      <HomeScreen />
-                      <DailyCheckIn />
+                <EditProfileModalProvider>
+                  <ConfirmationModalProvider>
+                    <PopupProvider>
+                      <main
+                        style={{
+                          ...outfit.style,
+                          ...sfProRounded.style,
+                          ...openSans.style,
+                          ...poppins.style,
+                          ...openSansBold.style,
+                        }}
+                        className={omegle.variable}
+                      >
+                        <DesktopHeader />
+                        <HomeScreen />
+                        <DailyCheckIn />
 
-                      <DesktopDirectory />
-                      <DesktopDropdown />
-                      <TigerProfile />
-                      <HoldingsGallery />
-                      <Leaderboard />
-                      {/* <div>
+                        <DesktopDirectory />
+                        <DesktopDropdown />
+                        <TigerProfile />
+                        <HoldingsGallery />
+                        <Leaderboard />
+                        <Footer />
+                        {/* <div>
                     <DefaultLayout>{page}</DefaultLayout>
                   </div> */}
-                    </main>
-                  </PopupProvider>
-                </ConfirmationModalProvider>
+                      </main>
+                    </PopupProvider>
+                  </ConfirmationModalProvider>
+                </EditProfileModalProvider>
               </>
             </RainbowKitProvider>
           </RainbowKitSiweNextAuthProvider>

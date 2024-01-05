@@ -11,11 +11,6 @@ type DailyReward = {
   bonusAmount: number;
 };
 
-type UserReward = {
-  currentDay: number;
-  lastClaimed: Date | null;
-};
-
 const DailyCheckIn: NextPage = () => {
   const user = useMe();
 

@@ -77,15 +77,14 @@ export function getServerContext(
                   userPoints: {
                     create: {
                       totalPoints: 0,
+                      level: 0,
                       lastUpdated: new Date(),
                     },
                   },
                   userProfile: {
                     create: {
-                      level: 0,
                       walletAddress: siwe.address,
                       joinedDate: new Date(),
-                      currentPoints: 0, // Initialize with 0 points
                     },
                   },
                   userDailyReward: {

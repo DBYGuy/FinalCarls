@@ -1,8 +1,8 @@
-import { itscTigerContract } from '~/contracts/tiger';
 import { useEffect, useState } from 'react';
-import { useItscTigerTokensOfOwner } from '../generated';
-import { useUser } from './useUser';
 import axios from 'axios';
+import { useMe } from './useMe';
+import { useItscTigerTokensOfOwner } from '../generated';
+import { itscTigerContract } from '~/contracts/tiger';
 import { getOpenSeaTokenBaseAddress } from '~/utils/wallet';
 
 export interface Attribute {
@@ -14,7 +14,6 @@ export interface TokenMetadata {
   readonly name: string;
   readonly description: string;
   readonly image: string;
-  readonly attributes: Attribute[];
 }
 
 export interface NftProps {
@@ -22,49 +21,49 @@ export interface NftProps {
   readonly src: string;
   readonly description: string;
   readonly href: string;
-  readonly attributes: Attribute[];
 }
 
 export const useTigerNfts = () => {
   const [nfts, setNfts] = useState<NftProps[] | undefined>();
-  const user = useUser();
-  const { data: tokenIds } = useItscTigerTokensOfOwner({
+  const user = useMe();
+  const {
+    data: tokenIds,
+    isError,
+    isLoading,
+  } = useItscTigerTokensOfOwner({
     enabled: !!user,
     args: [user?.walletAddress as `0x${string}`],
   });
+
+  console.log(tokenIds);
+  console.log(isError);
+
   useEffect(() => {
     const fetchTigerNfts = async () => {
-      // Early exit if unable to fetch token ids for user
       if (!tokenIds) {
-        return undefined;
+        return;
       }
-
-      // Fetch all token ids for user
       const tokenMetadatas: TokenMetadata[] = [];
       for (const tokenId of tokenIds) {
         try {
-          const tokenMetadata = (
-            await axios.get<TokenMetadata>(
-              `https://cdn.nftmania.io/pfp/itscrv/json/${tokenId}.json`,
-            )
-          ).data;
-          console.log(tokenMetadata);
-          tokenMetadatas.push(tokenMetadata);
+          const response = await axios.get(`/api/nft?tokenId=${tokenId}`);
+          tokenMetadatas.push(response.data);
         } catch (err) {
-          console.error(`Failed to fetch token metadata for token ${tokenId}`);
-          console.error(err);
+          console.error(
+            `Failed to fetch token metadata for token ${tokenId}:`,
+            err,
+          );
         }
       }
 
       const tigerNfts: NftProps[] = tokenMetadatas.map(
-        ({ name, description, image, attributes }) => ({
+        ({ name, description, image }) => ({
           name,
           src: image,
           description,
           href: `${getOpenSeaTokenBaseAddress()}/${
             itscTigerContract.address as `0x${string}`
-          }/${Number(name.split('#')[1]) - 1}`,
-          attributes,
+          }/${Number(name.split('#')[1]?.match(/\d+/)?.[0] ?? '')}`,
         }),
       );
 
@@ -72,7 +71,7 @@ export const useTigerNfts = () => {
     };
 
     fetchTigerNfts();
-  }, [tokenIds]);
+  }, [tokenIds, isError, isLoading]);
 
   return nfts;
 };
