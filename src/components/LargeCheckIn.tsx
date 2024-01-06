@@ -1,6 +1,5 @@
 import React from 'react';
 import CheckInButton from './CheckInButton';
-import { useMe } from '~/hooks/useMe';
 import { useGetUserReward } from '~/hooks/useGetUserRewards';
 
 type LargeCheckInProps = {
@@ -16,12 +15,11 @@ const LargeCheckIn: React.FC<LargeCheckInProps> = ({
   imageSrc,
   isClaimed,
 }) => {
-  const user = useMe();
   const {
     data: userReward,
     isLoading: isLoadingUserReward,
     error: errorUserReward,
-  } = useGetUserReward(user?.id ?? '');
+  } = useGetUserReward();
 
   const dayToPass = (userReward?.currentDay ?? 0) + 1;
   const lastClaimed = userReward?.lastClaimed ?? null;

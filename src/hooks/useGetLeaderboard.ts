@@ -7,6 +7,7 @@ export const useGetLeaderboard = (page: number) => {
     {
       enabled: page > 0,
       refetchOnWindowFocus: false,
+      refetchOnMount: true,
     },
   );
 

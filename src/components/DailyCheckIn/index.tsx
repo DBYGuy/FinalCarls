@@ -4,7 +4,6 @@ import LargeCheckIn from '../LargeCheckIn';
 import ThinCheckIn from '../ThinCheckIn';
 import { useGetAllDailyRewards } from '~/hooks/useGetAllDailyRewards'; // Adjust the import path based on your project structure
 import { useGetUserReward } from '~/hooks/useGetUserRewards';
-import { useMe } from '~/hooks/useMe';
 
 type DailyReward = {
   day: number;
@@ -12,8 +11,6 @@ type DailyReward = {
 };
 
 const DailyCheckIn: NextPage = () => {
-  const user = useMe();
-
   const {
     data: rewards,
     isLoading: isLoadingRewards,
@@ -23,7 +20,7 @@ const DailyCheckIn: NextPage = () => {
     data: userReward,
     isLoading: isLoadingUserReward,
     error: errorUserReward,
-  } = useGetUserReward(user?.id ?? '');
+  } = useGetUserReward();
   if (isLoadingRewards || isLoadingUserReward) return <div>Loading...</div>;
   if (errorRewards ?? errorUserReward) return <div>Error loading rewards</div>;
 
