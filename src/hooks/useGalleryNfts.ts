@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { NftProps, TokenMetadata } from './useTigerNfts'; // Adjust paths as necessary
+import { NftProps, TokenMetadata } from './useTigerNfts';
+import { getOpenSeaTokenBaseAddress } from '~/utils/wallet';
+import { itscTigerContract } from '~/contracts/tiger';
 
 // Helper function to generate an array of random numbers
 const generateRandomIds = (count: number, max: number): number[] => {
@@ -22,9 +24,7 @@ export const useGalleryNfts = () => {
     for (const tokenId of ids) {
       try {
         const tokenMetadata = (
-          await axios.get<TokenMetadata>(
-            `https://example.com/path/to/metadata/${tokenId}.json`, // Adjust URL accordingly
-          )
+          await axios.get<TokenMetadata>(`/api/nft?tokenId=${tokenId}`)
         ).data;
         tokenMetadatas.push(tokenMetadata);
       } catch (err) {
@@ -37,7 +37,9 @@ export const useGalleryNfts = () => {
       name,
       src: image,
       description,
-      href: `https://example.com/path/to/nft/${name}`, // Adjust URL accordingly
+      href: `${getOpenSeaTokenBaseAddress()}/${
+        itscTigerContract.address as `0x${string}`
+      }/${Number(name.split('#')[1]?.match(/\d+/)?.[0] ?? '')}`,
     }));
   };
 
@@ -45,7 +47,7 @@ export const useGalleryNfts = () => {
   useEffect(() => {
     const loadInitialNfts = async () => {
       setLoading(true);
-      const randomIds = generateRandomIds(12, 10000); // Get 12 random IDs from 1-10000
+      const randomIds = generateRandomIds(12, 1305); // Get 12 random IDs from 1-10000
       const galleryNfts = await fetchNftsByIds(randomIds);
       setNfts(galleryNfts);
       setLoading(false);
@@ -57,7 +59,7 @@ export const useGalleryNfts = () => {
   // Function to load more NFTs
   const loadMoreNfts = async () => {
     setLoading(true);
-    const moreIds = generateRandomIds(12, 10000); // Generate more random IDs
+    const moreIds = generateRandomIds(12, 1305); // Generate more random IDs
     const moreNfts = await fetchNftsByIds(moreIds);
     setNfts((prevNfts) => [...prevNfts, ...moreNfts]); // Append new NFTs
     setLoading(false);

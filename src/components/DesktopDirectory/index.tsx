@@ -1,14 +1,6 @@
-import type { NextPage } from 'next';
+import { NextPage } from 'next';
 import ProfileCard from '../ProfileCard';
-
-const rectangleCardData = Array.from({ length: 12 }, (_, index) => ({
-  imageUrl: `/group-10252@2x.png`, // Assuming you have images named image-1@2x, image-2@2x, etc.
-  itscNumber: `ITSC # ${1000 + Math.floor(Math.random() * 1000)}`, // Random ITSC number
-  holderName: 'Holder Name',
-  tagDetails1: index % 2 === 0 ? 'Tag/Detail A' : 'Tag/Detail B',
-  tagDetails2: index % 2 === 0 ? 'More Details A' : 'More Details B',
-  buttonText: index % 3 === 0 ? 'Claim' : 'See More',
-}));
+import { useGalleryNfts } from '~/hooks/useGalleryNfts'; // Update the path accordingly
 
 const textStyle = {
   background: 'linear-gradient(90deg, #fbd099, #fcefdf 59.9%, #ffe299)',
@@ -19,6 +11,8 @@ const textStyle = {
 };
 
 const DesktopDirectory: NextPage = () => {
+  const { nfts, loading, loadMoreNfts } = useGalleryNfts();
+
   return (
     <div className="relative bg-gray-100 w-full h-[1930px] overflow-hidden text-left text-5xl text-white font-outfit">
       <img
@@ -30,15 +24,20 @@ const DesktopDirectory: NextPage = () => {
         <div className="relative shadow-[5px_4px_4px_rgba(0,_0,_0,_0.25)] w-[1092px] h-[400px]">
           <div className="absolute h-full w-full top-[0%] right-[0%] bottom-[0%] left-[0%] rounded bg-gray-100 shadow-[0px_4px_4px_rgba(0,_0,_0,_0.25)_inset]" />
           <div className="absolute top-[0px] left-[calc(50%_-_724px)] grid grid-cols-4 gap-35">
-            {rectangleCardData.map((card, index) => (
-              <ProfileCard key={index} {...card} />
+            {nfts.map((nft, index) => (
+              <ProfileCard key={index} {...nft} />
             ))}
           </div>
         </div>
       </div>
       <div className="absolute top-[1830px] left-[calc(50%_-_96.5px)] shadow-[0px_3.999999761581421px_4px_rgba(0,_0,_0,_0.25)] flex flex-row items-start justify-start text-base text-gray-100 font-bold">
         <div className="rounded-[23.8px] [background:linear-gradient(180deg,_rgba(0,_0,_0,_0.17),_rgba(0,_0,_0,_0)_57.81%,_rgba(0,_0,_0,_0.2)),_#d15454] shadow-[0px_6.800000190734863px_20.4px_rgba(0,_0,_0,_0.1)] h-[68px] flex flex-row items-center justify-start py-[13.600000381469727px] px-[27.200000762939453px] box-border">
-          <b className="relative tracking-[0.6px] leading-[20px]">Load More</b>
+          <button
+            className="relative tracking-[0.6px] leading-[20px]"
+            onClick={loadMoreNfts}
+          >
+            Load More
+          </button>
         </div>
       </div>
       <img
@@ -71,15 +70,15 @@ const DesktopDirectory: NextPage = () => {
         <img className="relative w-11 h-10" alt="" src="/buttons.svg" />
       </div>
       <div
-        className="absolute top-[287px] left-[367px] text-inherit tracking-[1.02px] leading-[26px] font-inherit flex items-center w-[375px]"
+        className="absolute top-[276px] left-[367px] text-inherit tracking-[1.02px] leading-[26px] font-inherit flex items-center w-[475px]"
         style={textStyle}
       >
         <span className="[line-break:anywhere] w-full">
-          <p className="m-0">{`Lorem ipsum dolor sit amet, consectetur `}</p>
+          <p className="m-0">{`Welcome to the Tiger Directory!`}</p>
           <ul className="m-0 pl-8">
-            <li className="mb-0">{`adipiscing elit, sed do `}</li>
-            <li className="mb-0">{`eiusmod tempor `}</li>
-            <li>{`incididunt ut labore et do `}</li>
+            <li className="mb-0">{`Find your friends`}</li>
+            <li className="mb-0">{`Have fun`}</li>
+            <li>{`Learn about other tigers`}</li>
           </ul>
         </span>
       </div>
