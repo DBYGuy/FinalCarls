@@ -36,6 +36,7 @@ import Footer from '~/components/Footer';
 import { PopupProvider } from '~/components/PopUp/popupContext';
 import { ConfirmationModalProvider } from '../context/ConfirmationModalContext';
 import { EditProfileModalProvider } from '../context/EditProfileModalContext';
+import { AvatarModalProvider } from '../context/AvatarModalContext';
 import localFont from '@next/font/local';
 import { trpc } from '../utils/trpc';
 import '~/styles/globals.css';
@@ -143,36 +144,37 @@ const MyApp = (({
           >
             <RainbowKitProvider chains={chains}>
               <>
-                <EditProfileModalProvider>
+                <main
+                  style={{
+                    ...outfit.style,
+                    ...sfProRounded.style,
+                    ...openSans.style,
+                    ...poppins.style,
+                    ...openSansBold.style,
+                  }}
+                  className={omegle.variable}
+                >
                   <ConfirmationModalProvider>
-                    <PopupProvider>
-                      <main
-                        style={{
-                          ...outfit.style,
-                          ...sfProRounded.style,
-                          ...openSans.style,
-                          ...poppins.style,
-                          ...openSansBold.style,
-                        }}
-                        className={omegle.variable}
-                      >
-                        <DesktopHeader />
-                        <HomeScreen />
-                        <DailyCheckIn />
-
-                        <DesktopDirectory />
-                        <DesktopDropdown />
-                        <TigerProfile />
-                        <HoldingsGallery />
-                        <Leaderboard />
-                        <Footer />
-                        {/* <div>
+                    <AvatarModalProvider>
+                      <EditProfileModalProvider>
+                        <PopupProvider>
+                          <DesktopHeader />
+                          <HomeScreen />
+                          <DailyCheckIn />
+                          <DesktopDirectory />
+                          <DesktopDropdown />
+                          <TigerProfile />
+                          <HoldingsGallery />
+                          <Leaderboard />
+                          <Footer />
+                        </PopupProvider>
+                      </EditProfileModalProvider>
+                    </AvatarModalProvider>
+                  </ConfirmationModalProvider>
+                  {/* <div>
                     <DefaultLayout>{page}</DefaultLayout>
                   </div> */}
-                      </main>
-                    </PopupProvider>
-                  </ConfirmationModalProvider>
-                </EditProfileModalProvider>
+                </main>
               </>
             </RainbowKitProvider>
           </RainbowKitSiweNextAuthProvider>

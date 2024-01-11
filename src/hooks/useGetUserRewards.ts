@@ -5,9 +5,9 @@ export const useGetUserReward = () => {
   const user = useMe();
   const userId = user?.id ?? '';
   const query = trpc.rewards.getUserReward.useQuery(userId, {
-    enabled: !!user,
+    enabled: !!user?.id,
     refetchOnWindowFocus: true,
-    refetchOnMount: true,
+    refetchOnMount: false,
   });
 
   return query;

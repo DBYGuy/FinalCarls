@@ -41,6 +41,37 @@ export const usersRouter = router({
 
       return user;
     }),
+  updateAvatar: protectedProcedure
+    .input(
+      z.object({
+        avatarUrl: z.string(),
+      }),
+    )
+    .mutation(async ({ input, ctx }) => {
+      // Ensure the user is authenticated
+      if (!ctx.session?.user.id) {
+        throw new TRPCError({
+          code: 'UNAUTHORIZED',
+          message: 'You must be logged in to update your avatar',
+        });
+      }
+
+      try {
+        const updatedUser = await ctx.prisma.user.update({
+          where: { id: ctx.session.user.id },
+          data: { avatar: input.avatarUrl },
+        });
+
+        return updatedUser;
+      } catch (error) {
+        // Handle potential errors, such as database errors
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'Failed to update avatar',
+        });
+      }
+    }),
+
   createFromEns: protectedProcedure
     .input(z.string())
     .mutation(async ({ input: walletAddress, ctx }) => {

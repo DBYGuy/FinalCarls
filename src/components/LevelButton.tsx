@@ -3,20 +3,29 @@ import { useMe } from '~/hooks/useMe';
 import { useLevelUp } from '~/hooks/useLevelUp';
 import { useConfirmationModal } from '~/context/ConfirmationModalContext';
 import { useCheckLevelEligibility } from '~/hooks/useCheckLevelEligibility';
-import { useGetPoints } from '~/hooks/useGetPoints';
+import { usePopup } from '~/components/PopUp/popupContext'; // Import usePopup hook
+import { useGetLevel } from '~/hooks/useGetLevel'; // Import useGetLevel hook
 
 const LevelButton: NextPage = () => {
   const user = useMe();
   const { levelUp } = useLevelUp();
   const { showConfirmation } = useConfirmationModal();
+  const { showPopup } = usePopup(); // Use the usePopup hook
+  const { level } = useGetLevel(); // Get the current level
   const userId = user?.id ?? '';
   const { nextLevelPoints } = useCheckLevelEligibility(userId);
 
   const handleLevelUp = async () => {
     const confirmLevelUp = async () => {
-      if (user?.id) {
+      if (user?.id && level) {
         try {
           await levelUp(userId);
+          // Show popup on successful level up
+          showPopup(
+            'Congratulations!',
+            `You've reached level ${level + 1}!`, // Assuming level is the current level
+            level + 1,
+          );
         } catch (error) {
           console.error('Failed to level up:', error);
         }

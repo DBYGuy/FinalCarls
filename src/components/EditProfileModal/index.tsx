@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { trpc } from '~/utils/trpc';
 import { useMe } from '~/hooks/useMe';
 import { useEditProfileModal } from '~/context/EditProfileModalContext';
+import { useAvatarModal } from '~/context/AvatarModalContext';
 import { usePopup } from '../PopUp/popupContext';
+import NftModal from '../NftModal';
+import { useTigerNfts } from '~/hooks/useTigerNfts';
+import { NftProps } from '~/hooks/useTigerNfts';
 
 // Define the types for the form fields
 type EditProfileFormData = {
@@ -13,6 +17,7 @@ type EditProfileFormData = {
   bio?: string;
   Xhandle?: string;
   discordID?: string;
+  avatar?: string;
 };
 
 export const EditProfileModal: React.FC = () => {
@@ -20,12 +25,14 @@ export const EditProfileModal: React.FC = () => {
   const {
     register,
     handleSubmit,
+    setValue, // Add this
     formState: { errors },
   } = useForm<EditProfileFormData>();
   const user = useMe();
   const utils = trpc.useContext();
   const { showPopup } = usePopup();
   const { closeModal } = useEditProfileModal();
+  const { showAvatarModal } = useAvatarModal();
 
   // Setup tRPC mutation for updating user and profile
   const { mutate: updateUser, isLoading: isUpdatingUser } =
@@ -63,6 +70,51 @@ export const EditProfileModal: React.FC = () => {
     closeModal();
   };
 
+  const handleGeolocation = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        async (position) => {
+          const { latitude, longitude } = position.coords;
+          const location = await reverseGeocode(latitude, longitude);
+          setValue(
+            'location',
+            location || `Lat: ${latitude}, Long: ${longitude}`,
+          );
+        },
+        (error) => {
+          console.error('Error getting location:', error);
+          alert('Unable to retrieve your location.');
+        },
+      );
+    } else {
+      console.error('Geolocation is not supported by this browser.');
+      alert('Geolocation is not supported by your browser.');
+    }
+  };
+
+  const reverseGeocode = async (latitude: number, longitude: number) => {
+    try {
+      const response = await fetch(
+        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`,
+      );
+      const data = await response.json();
+      return `${data.address.state}, ${data.address.country}`;
+    } catch (error) {
+      console.error('Error during reverse geocoding:', error);
+      return '';
+    }
+  };
+
+  const nfts = useTigerNfts(); // Fetch NFTs
+  const [selectedNft, setSelectedNft] = useState<NftProps | null>(null);
+  const [isNftModalOpen, setIsNftModalOpen] = useState(false);
+
+  const handleNftSelect = (nft: NftProps) => {
+    setSelectedNft(nft);
+    setValue('avatar', nft.src); // Assuming you have an avatar field in your form
+    setIsNftModalOpen(false); // Close the modal after selection
+  };
+
   return (
     // The outer container should be fixed to cover the entire screen
     <div className="fixed inset-0 z-50 flex items-center justify-center">
@@ -89,6 +141,13 @@ export const EditProfileModal: React.FC = () => {
             placeholder="Region or Country"
             {...register('location')}
           />
+          <button
+            type="button"
+            className="rounded bg-blue-500 text-white py-2 px-4"
+            onClick={handleGeolocation}
+          >
+            Use Current Location
+          </button>
           <input
             className="rounded bg-white p-2 border border-gray-200 w-full"
             placeholder="Discord Handle"
@@ -112,7 +171,21 @@ export const EditProfileModal: React.FC = () => {
           >
             Save Profile
           </button>
+          <button
+            type="button"
+            className="rounded bg-blue-500 text-white py-2 px-4"
+            onClick={showAvatarModal} // Show Avatar Modal on click
+          >
+            Select Avatar from NFTs
+          </button>
         </form>
+        <NftModal
+          isOpen={isNftModalOpen}
+          onClose={() => setIsNftModalOpen(false)}
+          onSelect={handleNftSelect}
+          nfts={nfts ?? []}
+          selectedNft={selectedNft}
+        />
         <div className="absolute top-[21px] left-[21px] w-[271px] h-[50px] text-[40px] font-omegle">
           <div className="absolute top-[0px] left-[13px] tracking-[2.87px] leading-[40px] text-transparent !bg-clip-text [background:linear-gradient(90deg,_#fbd099,_#fcefdf_59.9%,_#ffe299)] [-webkit-background-clip:text] [-webkit-text-fill-color:transparent]">
             Edit Profile
