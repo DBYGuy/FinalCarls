@@ -1,4 +1,3 @@
-// useGetLeaderboard.ts
 import { trpc } from '../utils/trpc';
 
 export const useGetLeaderboard = (page: number) => {

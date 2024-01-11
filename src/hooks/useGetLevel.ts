@@ -12,7 +12,7 @@ export function useGetLevel() {
     isError,
     error,
   } = trpc.level.getUserLevel.useQuery(userId, {
-    enabled: !!user,
+    enabled: !!user?.id,
   });
 
   return {
