@@ -18,10 +18,7 @@ async function fetchTokenMetadata(tokenId: number): Promise<any> {
     const response = await axios.get(url);
     return response.data;
   } catch (error) {
-    console.error(
-      `Failed to fetch token metadata for token ${tokenId} from ${url}:`,
-      error,
-    );
+    console.error(`Failed to fetch token metadata for token ${tokenId}`, error);
     throw error;
   }
 }
