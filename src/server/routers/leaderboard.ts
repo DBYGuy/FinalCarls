@@ -20,13 +20,14 @@ export const leaderboardRouter = router({
           take: pageSize,
           skip: skip,
           orderBy: {
-            totalPoints: 'asc', // Ordering by points in descending order
+            totalPoints: 'desc', // Ordering by points in descending order
           },
           select: {
             user: {
               select: {
                 id: true,
-                walletAddress: true, // or displayName or any other user field you want to show
+                walletAddress: true,
+                avatar: true,
               },
             },
             totalPoints: true,
@@ -41,6 +42,7 @@ export const leaderboardRouter = router({
           username: entry.user.walletAddress,
           points: entry.totalPoints,
           level: entry.level,
+          avatar: entry.user.avatar,
         }));
       } catch (error) {
         // Handling potential errors

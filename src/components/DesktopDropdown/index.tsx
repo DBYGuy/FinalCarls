@@ -2,6 +2,7 @@ import type { NextPage } from 'next';
 import { useGetPoints } from '~/hooks/useGetPoints';
 import { useGetLevel } from '~/hooks/useGetLevel';
 import { useMe } from '~/hooks/useMe';
+import { useGetAvatar } from '~/hooks/useGetAvatar';
 import { getTruncatedWalletAddress } from '~/utils/wallet';
 import { useCheckLevelEligibility } from '~/hooks/useCheckLevelEligibility';
 import LevelButton from '~/components/LevelButton';
@@ -10,6 +11,7 @@ const DesktopDropdown: NextPage = () => {
   const user = useMe();
   const { points } = useGetPoints();
   const { level } = useGetLevel();
+  const { avatarUrl } = useGetAvatar();
   const truncatedWalletAddress = getTruncatedWalletAddress(
     user?.walletAddress ?? '',
   );
@@ -41,7 +43,7 @@ const DesktopDropdown: NextPage = () => {
           <img
             className="absolute h-full w-full top-[0%] right-[0%] bottom-[0%] left-[0%] rounded-[73.33px] max-w-full overflow-hidden max-h-full object-cover"
             alt=""
-            src="/avatar@2x.png"
+            src={avatarUrl ?? '/-privateavatarbase@2x.png'}
           />
         </div>
         <div className="absolute top-[22px] left-[31px] flex flex-col items-start justify-start gap-[8px] text-17xl font-outfit">

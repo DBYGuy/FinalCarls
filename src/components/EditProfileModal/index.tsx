@@ -111,12 +111,11 @@ export const EditProfileModal: React.FC = () => {
 
   const handleNftSelect = (nft: NftProps) => {
     setSelectedNft(nft);
-    setValue('avatar', nft.src); // Assuming you have an avatar field in your form
-    setIsNftModalOpen(false); // Close the modal after selection
+    setValue('avatar', nft.src);
+    setIsNftModalOpen(false);
   };
 
   return (
-    // The outer container should be fixed to cover the entire screen
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       {/* Overlay: semi-transparent backdrop */}
       <div

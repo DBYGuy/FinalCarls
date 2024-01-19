@@ -15,6 +15,9 @@ export const serverSchema = z.object({
   ETHERSCAN_API_KEY: z.string(),
   ALCHEMY_API_KEY: z.string(),
   INFURA_API_KEY: z.string(),
+  AWS_ACCESS_KEY_ID: z.string(),
+  AWS_SECRET_ACCESS_KEY: z.string(),
+  AWS_REGION: z.string(),
   // NEXTAUTH_URL: z.preprocess(
   //   // This makes Vercel deployments not fail if you don't set NEXTAUTH_URL
   //   // Since NextAuth.js automatically uses the VERCEL_URL if present.
@@ -37,6 +40,9 @@ export const serverEnv = {
   ETHERSCAN_API_KEY: process.env.ETHERSCAN_API_KEY,
   ALCHEMY_API_KEY: process.env.ALCHEMY_API_KEY,
   INFURA_API_KEY: process.env.INFURA_API_KEY,
+  AWS_ACCESS_KEY_ID: process.env.AWS_ACCESS_KEY_ID,
+  AWS_SECRET_ACCESS_KEY: process.env.AWS_SECRET_ACCESS_KEY,
+  AWS_REGION: process.env.AWS_REGION,
 };
 
 /**

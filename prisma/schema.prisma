@@ -98,13 +98,23 @@ model Referral {
 }
 
 model Token {
-  tokenID         Int       @id
-  traits          String[]
-  image           String
-  name            String
-  ownerID         String    @map("owner_id")
-  lastTransaction DateTime
-  owner           User      @relation(fields: [ownerID], references: [id])
+  tokenID     Int          @id
+  image       String
+  name        String
+  lastUpdated DateTime?
+  s3ImageUrl String?
+  ownerAddress String?
+  ownerID     String?      @map("owner_id")
+  owner       User?        @relation(fields: [ownerID], references: [id])
+  tokenTraits TokenTrait[]
+}
+
+model TokenTrait {
+  id       Int    @id @default(autoincrement())
+  tokenID  Int
+  traitType String
+  value    String
+  token    Token  @relation(fields: [tokenID], references: [tokenID])
 }
 
 model UserPoints {

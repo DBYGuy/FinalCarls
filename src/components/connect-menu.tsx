@@ -11,6 +11,7 @@ import { getTruncatedWalletAddress } from '~/utils/wallet';
 import { useGetPoints } from '~/hooks/useGetPoints';
 import { useMe } from '~/hooks/useMe';
 import { useGetLevel } from '~/hooks/useGetLevel';
+import { useGetAvatar } from '~/hooks/useGetAvatar';
 
 type ConnectMenuType = {
   avatar?: string;
@@ -23,7 +24,6 @@ type ConnectMenuType = {
 };
 
 const ConnectMenu: NextPage<ConnectMenuType> = ({
-  avatar,
   icon,
   iconsBurgerLine,
   showButton,
@@ -51,6 +51,7 @@ const ConnectMenu: NextPage<ConnectMenuType> = ({
   const user = useMe();
   const { points } = useGetPoints();
   const { level } = useGetLevel();
+  const { avatarUrl } = useGetAvatar();
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -105,9 +106,9 @@ const ConnectMenu: NextPage<ConnectMenuType> = ({
               <div className="rounded-smi bg-dark-actionbuttonsecondarybackground h-9 flex flex-row items-center justify-start p-2 box-border gap-[8px]">
                 <div className="relative w-6 h-6">
                   <img
-                    className="absolute h-full w-full top-[0%] right-[0%] bottom-[0%] left-[0%] rounded-xl max-w-full overflow-hidden max-h-full object-cover"
+                    className="absolute h-full w-full top-[0%] right-[0%] bottom-[0%] left-[0%] rounded-[50px] max-w-full overflow-hidden max-h-full object-cover"
                     alt=""
-                    src={avatar}
+                    src={avatarUrl ?? '/-privateavatarbase@2x.png'}
                   />
                 </div>
                 <div className="flex flex-row items-center justify-start gap-[2px]">

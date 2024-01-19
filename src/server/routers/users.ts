@@ -158,6 +158,20 @@ export const usersRouter = router({
 
       return user;
     }),
+  getAvatar: procedure
+    .input(z.object({ userId: z.string() }))
+    .query(async ({ input, ctx }) => {
+      const user = await ctx.prisma.user.findUnique({
+        where: { id: input.userId },
+        select: { avatar: true },
+      });
+
+      if (!user) {
+        throw new Error('User not found');
+      }
+
+      return user.avatar;
+    }),
 });
 
 export type UserRouter = typeof usersRouter;

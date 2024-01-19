@@ -1,11 +1,5 @@
 import React from 'react';
-
-export interface NftProps {
-  readonly name: string;
-  readonly src: string;
-  readonly description: string;
-  readonly href: string;
-}
+import { NftProps } from '~/hooks/useTigerNfts';
 
 interface NftSelectorProps {
   nfts: NftProps[];
@@ -19,7 +13,7 @@ const NftSelector: React.FC<NftSelectorProps> = ({
   selectedNft,
 }) => {
   return (
-    <div className="nft-selector">
+    <div className="text-black font-omegle">
       {nfts.map((nft, index) => (
         <div
           key={index}
@@ -28,7 +22,7 @@ const NftSelector: React.FC<NftSelectorProps> = ({
           }`}
           onClick={() => onSelect(nft)}
         >
-          <img src={nft.src} alt={nft.name} className="nft-image" />
+          <img src={nft.s3ImageUrl} alt={nft.name} className="nft-image" />
           <p className="nft-name">{nft.name}</p>
         </div>
       ))}

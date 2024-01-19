@@ -57,6 +57,7 @@
     "@trpc/react-query": "^10.44.1",
     "@trpc/server": "^10.44.1",
     "@wagmi/cli": "^1.5.2",
+    "aws-sdk": "^2.1536.0",
     "axios": "^1.6.2",
     "clsx": "^2.0.0",
     "cookies": "^0.8.0",

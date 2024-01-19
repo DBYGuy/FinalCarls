@@ -17,7 +17,7 @@ const AvatarSelectionModal: React.FC<AvatarSelectionModalProps> = ({
   const handleAvatarSelection = (nft: NftProps) => {
     showConfirmation(
       `Are you sure you want to set this image as your avatar?`,
-      () => handleAvatarUpdate(nft.src), // Pass the avatar URL to the update function
+      () => handleAvatarUpdate(nft?.s3ImageUrl ?? ''), // Pass the avatar URL to the update function
     );
   };
 

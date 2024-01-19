@@ -22,7 +22,7 @@ export const websiteUrl =
     ? `https://itsc.vercel.app`
     : process.env.NEXT_PUBLIC_APP_ENV === 'development'
     ? `http://${DOMAIN}:3000`
-    : `https://${DOMAIN}`;
+    : `https://${DOMAIN}:3000`;
 export const websiteDescription =
   'DBY Club is a solution for creators, fans, collectives, accelerators, web3 companies, distributors, other DAOs, and media outlets to pitch, select, and collaborate on creative DAO projects.';
 export const websiteLogoUrl = `${websiteUrl}/banner.png`;

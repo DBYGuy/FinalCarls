@@ -6,9 +6,9 @@ import { usersRouter } from './users';
 import { userPointsRouter } from './points';
 import { dailyRewardRouter } from './dailyRewards';
 import { levelRouter } from './level';
-import { tokensRouter } from './tokens';
 import { leaderboardRouter } from './leaderboard';
 import { userProfileRouter } from './userProfile';
+import { tokenRouter } from './tokens';
 
 export const appRouter = router({
   healthcheck: procedure.query(() => 'yay!'),
@@ -18,9 +18,9 @@ export const appRouter = router({
   points: userPointsRouter,
   level: levelRouter,
   rewards: dailyRewardRouter,
-  tokens: tokensRouter,
   leaderboard: leaderboardRouter,
   profile: userProfileRouter,
+  token: tokenRouter,
 });
 
 export type AppRouter = typeof appRouter;

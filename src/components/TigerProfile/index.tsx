@@ -6,6 +6,7 @@ import { getTruncatedWalletAddress } from '~/utils/wallet';
 import { useCheckLevelEligibility } from '~/hooks/useCheckLevelEligibility';
 import { useGetProfile } from '~/hooks/useGetProfile';
 import { useEditProfileModal } from '~/context/EditProfileModalContext';
+import { useGetAvatar } from '~/hooks/useGetAvatar';
 
 const TigerProfile: NextPage = () => {
   const user = useMe();
@@ -18,6 +19,7 @@ const TigerProfile: NextPage = () => {
   const { toNextLevel } = useCheckLevelEligibility(userId);
   const { profile } = useGetProfile(userId);
   const { openModal } = useEditProfileModal();
+  const { avatarUrl } = useGetAvatar();
 
   return (
     <div className="relative bg-itsc-black w-full flex flex-row items-start justify-start gap-[164px] text-left text-45xl text-white-gold-itsc font-outfit">
@@ -276,7 +278,7 @@ const TigerProfile: NextPage = () => {
       <img
         className="relative w-[395px] h-[680.6px] object-cover"
         alt=""
-        src="/scroll@2x.png"
+        src={avatarUrl ?? '/-privateavatarbase@2x.png'}
       />
     </div>
   );

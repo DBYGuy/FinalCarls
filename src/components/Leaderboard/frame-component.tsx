@@ -39,7 +39,7 @@ const FrameComponent: NextPage<FrameComponentType> = ({
       </div>
       {/* Avatar */}
       <img
-        className="absolute top-[0px] left-[134px] w-[72px] h-[72px] object-cover"
+        className="absolute top-[0px] left-[134px] w-[72px] h-[72px] object-cover rounded-[77px]"
         alt=""
         src={privateAvatarBase}
       />

@@ -48,7 +48,7 @@ const Leaderboard: NextPage = () => {
               username={entry.username}
               level={entry.level}
               points={entry.points}
-              avatarBaseImageUrl="/-privateavatarbase@2x.png" // or dynamic if available
+              avatarBaseImageUrl={entry?.avatar ?? '/-privateavatarbase@2x.png'} // or dynamic if available
             />
           ))}
         </div>

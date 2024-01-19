@@ -2,16 +2,16 @@ import React from 'react';
 
 interface ProfileCardProps {
   name: string;
-  src: string;
-  description: string;
-  href: string;
+  src: string; // Image URL
+  trait1: string; // First trait
+  trait2: string; // Second trait
 }
 
 const ProfileCard: React.FC<ProfileCardProps> = ({
   name,
   src,
-  description,
-  href,
+  trait1,
+  trait2,
 }) => {
   return (
     <div className="relative shadow-[5px_4px_4px_rgba(0,_0,_0,_0.25)] w-[300px] h-[400px] border-8 border-double border-yellow-100">
@@ -27,10 +27,10 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
             {name}
           </b>
           <div className="relative text-base tracking-[-0.01em] font-light flex items-center w-[106px] h-7 shrink-0 mt-[-6px]">
-            Detail 1
+            {trait1}
           </div>
           <div className="relative text-base tracking-[-0.01em] font-light flex items-center w-[106px] h-7 shrink-0 mt-[-6px]">
-            detail 2
+            {trait2}
           </div>
         </div>
         <div className="rounded-sm bg-lightslategray shadow-[0px_4px_12px_rgba(0,_0,_0,_0.1)] h-10 hidden flex-row items-center justify-start py-2 px-4 box-border text-base text-silver font-bold">
