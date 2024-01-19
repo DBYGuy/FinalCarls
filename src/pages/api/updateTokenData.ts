@@ -7,7 +7,7 @@ import { itscTigerContract } from '~/contracts/tiger';
 async function fetchTokenMetadata(tokenId: number): Promise<any> {
   try {
     // Use full URL for server-side requests
-    const baseUrl = process.env.NEXTAUTH_URL ?? 'http://localhost:3000';
+    const baseUrl = process.env.NEXTAUTH_URL;
     const response = await axios.get(`${baseUrl}/api/nft?tokenId=${tokenId}`);
     return response.data;
   } catch (error) {
