@@ -6,9 +6,35 @@ export default async function updateTokenImagesHandler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
+  // Security check for production environment
+  const authHeader = Array.isArray(req.headers.authorization)
+    ? req.headers.authorization[0]
+    : req.headers.authorization;
+
+  if (
+    process.env.NEXT_PUBLIC_APP_ENV === 'production' &&
+    authHeader !== `Bearer ${process.env.CRON_SECRET}`
+  ) {
+    return res.status(401).end('Unauthorized');
+  }
+
   try {
-    // Fetch all tokens from the database
-    const tokens = await prisma.token.findMany();
+    // Fetch the last processed image token ID
+    const cronState = await prisma.cronJobState.findFirst();
+    let lastImageTokenId = cronState?.lastImageTokenId || 0;
+
+    // Fetch next 5 tokens starting from the last processed token
+    const tokens = await prisma.token.findMany({
+      where: {
+        tokenID: {
+          gt: lastImageTokenId,
+        },
+      },
+      take: 5,
+      orderBy: {
+        tokenID: 'asc',
+      },
+    });
 
     for (const token of tokens) {
       if (token.image) {
@@ -24,10 +50,19 @@ export default async function updateTokenImagesHandler(
           where: { tokenID: token.tokenID },
           data: { s3ImageUrl: s3ImageUrl },
         });
+
+        // Update the last processed image token ID
+        lastImageTokenId = token.tokenID;
       } else {
         console.warn(`Token ${token.tokenID} does not have an image URL.`);
       }
     }
+
+    // Update the cron job state with the new last processed image token ID
+    await prisma.cronJobState.update({
+      where: { id: cronState?.id },
+      data: { lastImageTokenId },
+    });
 
     res.status(200).json({ message: 'Token images updated successfully' });
   } catch (error) {

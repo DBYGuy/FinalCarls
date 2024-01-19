@@ -46,7 +46,24 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
+  // Ensure the Authorization header is a string or undefined
+  const authHeader = Array.isArray(req.headers.authorization)
+    ? req.headers.authorization[0]
+    : req.headers.authorization;
+
+  if (
+    process.env.NEXT_PUBLIC_APP_ENV === 'production' &&
+    authHeader !== `Bearer ${process.env.CRON_SECRET}`
+  ) {
+    return res.status(401).end('Unauthorized');
+  }
   try {
+    // Fetch the last processed token ID
+    const cronState = (await prisma.cronJobState.findFirst()) || {
+      lastTokenId: 0,
+    };
+    let lastTokenId = cronState.lastTokenId;
+
     const totalSupply = await getTotalSupply();
     const provider = ethers.getDefaultProvider('mainnet', {
       infura: process.env.INFURA_API_KEY,
@@ -57,7 +74,9 @@ export default async function handler(
       provider,
     );
 
-    for (let tokenId = 1; tokenId <= totalSupply; tokenId++) {
+    // Process the next 10 tokens
+    for (let i = 0; i < 10; i++) {
+      const tokenId = ((lastTokenId + i) % totalSupply) + 1;
       try {
         const metadata = await fetchTokenMetadata(tokenId);
         console.log(`Processing token ID: ${tokenId}`);
@@ -111,6 +130,19 @@ export default async function handler(
       } catch (error) {
         console.error(`Failed to process token ${tokenId}:`, error);
       }
+    }
+    lastTokenId = (lastTokenId + 10) % totalSupply;
+    if ('id' in cronState && cronState.id) {
+      // Update the existing record
+      await prisma.cronJobState.update({
+        where: { id: cronState.id },
+        data: { lastTokenId },
+      });
+    } else {
+      // Create a new record
+      await prisma.cronJobState.create({
+        data: { lastTokenId },
+      });
     }
 
     res.status(200).json({ message: 'Tokens updated successfully' });
