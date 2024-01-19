@@ -6,13 +6,20 @@ import { itscTigerContract } from '~/contracts/tiger';
 
 async function fetchTokenMetadata(tokenId: number): Promise<any> {
   try {
-    // Use full URL for server-side requests
-    const baseUrl = process.env.NEXTAUTH_URL;
-    const response = await axios.get(`${baseUrl}/api/nft?tokenId=${tokenId}`);
+    let baseUrl;
+    if (process.env.NEXT_PUBLIC_APP_ENV === 'production') {
+      baseUrl = 'https://itsc.vercel.app';
+    } else {
+      baseUrl = 'http://localhost:3000'; // Default to localhost for development
+    }
+
+    const url = `${baseUrl}/api/nft?tokenId=${tokenId}`;
+    console.log(`Fetching token metadata from: ${url}`); // Log the URL being used
+    const response = await axios.get(url);
     return response.data;
   } catch (error) {
     console.error(
-      `Failed to fetch token metadata for token ${tokenId}:`,
+      `Failed to fetch token metadata for token ${tokenId} from ${url}:`,
       error,
     );
     throw error;
