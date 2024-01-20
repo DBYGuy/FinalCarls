@@ -7,6 +7,10 @@
       {
         "path": "/api/updateTokenImages",
         "schedule": "* * * * *"
+      },
+      {
+        "path": "/api/resetDailyRewards",
+        "schedule": "*/30 * * * *"
       }
     ]
   }
