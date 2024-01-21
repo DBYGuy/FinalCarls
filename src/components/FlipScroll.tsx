@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from 'react';
 
-const FlipScroll = ({ value }) => {
+type FlipScrollProps = {
+  value: number | undefined;
+};
+
+const FlipScroll: React.FC<FlipScrollProps> = ({ value }) => {
   const [currentValue, setCurrentValue] = useState(value);
   const [animation, setAnimation] = useState(false);
 
