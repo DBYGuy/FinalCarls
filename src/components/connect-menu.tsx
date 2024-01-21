@@ -7,11 +7,12 @@ import React, {
 } from 'react';
 import type { NextPage } from 'next';
 import DesktopDropdown from './DesktopDropdown'; // Ensure this path is correct
-import { getTruncatedWalletAddress } from '~/utils/wallet';
-import { useGetPoints } from '~/hooks/useGetPoints';
 import { useMe } from '~/hooks/useMe';
+import { useGetPoints } from '~/hooks/useGetPoints';
 import { useGetLevel } from '~/hooks/useGetLevel';
 import { useGetAvatar } from '~/hooks/useGetAvatar';
+import { getTruncatedWalletAddress } from '~/utils/wallet';
+import FlipScroll from '~/components/FlipScroll';
 
 type ConnectMenuType = {
   avatar?: string;
@@ -38,30 +39,23 @@ const ConnectMenu: NextPage<ConnectMenuType> = ({
     [connectWalletDisplay],
   );
 
-  // CSS for slide-in and slide-out animations
-  const slideInStyles = {
-    transform: 'translateX(0%)',
-    transition: 'transform 300ms ease-in-out',
-  };
-
-  const slideOutStyles = {
-    transform: 'translateX(100%)', // Slide out to the right
-    transition: 'transform 300ms ease-in-out',
-  };
   const user = useMe();
   const { points } = useGetPoints();
   const { level } = useGetLevel();
   const { avatarUrl } = useGetAvatar();
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const iconRef = useRef<HTMLImageElement>(null);
 
-  const toggleDropdown = () => setShowDropdown(!showDropdown);
+  const toggleDropdown = () => setShowDropdown((prev) => !prev);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
         dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
+        !dropdownRef.current.contains(event.target as Node) &&
+        iconRef.current &&
+        !iconRef.current.contains(event.target as Node)
       ) {
         setShowDropdown(false);
       }
@@ -72,8 +66,8 @@ const ConnectMenu: NextPage<ConnectMenuType> = ({
   }, []);
 
   return (
-    <div className="relative flex">
-      <div className="rounded-50xl h-10 flex flex-row items-center justify-center gap-[8px] text-left text-base text-white-gold-itsc font-bold">
+    <div className="relative flex items-center justify-end">
+      <div className="rounded-50xl padding-r[16px] h-10 flex flex-row items-center justify-center gap-[8px] text-left text-base text-white-gold-itsc font-bold">
         {showButton && (
           <button className="cursor-pointer [border:none] py-2 px-4 bg-[transparent] rounded-15xl [background:linear-gradient(180deg,_#efd891,_#ede2b2)] shadow-[0px_4px_12px_rgba(0,_0,_0,_0.1)] h-10 flex flex-row items-center justify-start box-border">
             <b
@@ -89,7 +83,7 @@ const ConnectMenu: NextPage<ConnectMenuType> = ({
             <div className="rounded-smi bg-dark-actionbuttonsecondarybackground h-9 flex flex-row items-center justify-start p-2 box-border">
               <div className="flex flex-row items-center justify-start">
                 <b className="relative tracking-[0.6px] leading-[20px]">
-                  {points} TP
+                  <FlipScroll value={points} /> TP
                 </b>
               </div>
             </div>
@@ -98,7 +92,7 @@ const ConnectMenu: NextPage<ConnectMenuType> = ({
                 <div className="rounded-smi bg-dark-actionbuttonsecondarybackground h-9 flex flex-row items-center justify-start p-2 box-border">
                   <div className="flex flex-row items-center justify-start">
                     <b className="relative tracking-[0.6px] leading-[20px]">
-                      Level {level}
+                      Level <FlipScroll value={level} />
                     </b>
                   </div>
                 </div>
@@ -118,8 +112,11 @@ const ConnectMenu: NextPage<ConnectMenuType> = ({
                   </b>
                   {icon && (
                     <img
-                      className="relative w-6 h-6"
-                      alt=""
+                      ref={iconRef}
+                      className={`cursor-pointer w-6 h-6 transition-transform ${
+                        showDropdown ? 'rotate-90' : ''
+                      }`}
+                      alt="Menu"
                       src={icon}
                       onClick={toggleDropdown}
                     />
@@ -140,12 +137,9 @@ const ConnectMenu: NextPage<ConnectMenuType> = ({
       {showDropdown && (
         <div
           ref={dropdownRef}
-          style={{
-            position: 'absolute',
-            top: '0%',
-            right: 0,
-            ...(showDropdown ? slideInStyles : slideOutStyles), // Toggle styles
-          }}
+          className={`fixed top-[80px] right-0 h-full z-20 w-[360px] opacity-95 ${
+            showDropdown ? 'animate-slideIn' : 'animate-slideOut'
+          }`}
         >
           <DesktopDropdown />
         </div>

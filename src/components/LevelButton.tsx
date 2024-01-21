@@ -39,9 +39,9 @@ const LevelButton: NextPage = () => {
   };
 
   return (
-    <div className="relative rounded-lg overflow-hidden shadow-md w-auto h-10 flex items-center justify-center">
+    <div className="relative rounded-lg overflow-hidden shadow-md w-auto mx-1 h-10 flex items-right justify-right">
       <button
-        className="text-black bg-gradient from-rgb(180 83 9 / 0) via-rgb(253 186 116 / 0), to-rgb(159 18 57 / 0) font-semibold py-2 px-4 w-full h-full text-sm leading-none tracking-wide uppercase focus:outline-none focus:ring-0 transition duration-150 ease-in-out"
+        className="text-black bg-gradient-to-r from-orange-600 via-yellow-300 to-red-600 font-bold py-2 px-4 w-full h-full text-[16px] leading-[2px]tracking-wide uppercase focus:outline-none focus:ring-0 animate-gradientShift"
         onClick={handleLevelUp}
       >
         Level Up!

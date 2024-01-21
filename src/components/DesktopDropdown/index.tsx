@@ -49,7 +49,7 @@ const DesktopDropdown: NextPage = () => {
         <div className="absolute top-[22px] left-[31px] flex flex-col items-start justify-start gap-[8px] text-17xl font-outfit">
           <div className="relative w-[195px] h-9 font-omegle">
             <div className="absolute top-[0%] left-[0%] tracking-[1.91px] leading-[36px] text-transparent !bg-clip-text [background:linear-gradient(90deg,_#fbd099,_#fcefdf_59.9%,_#ffe299)] [-webkit-background-clip:text] [-webkit-text-fill-color:transparent] overflow-hidden text-ellipsis whitespace-nowrap">
-              {user?.ENSName ?? truncatedWalletAddress}
+              {user?.username ?? user?.ENSName ?? truncatedWalletAddress}
             </div>
           </div>
           <div className="shrink-0 flex flex-row items-start justify-start gap-[9px] text-center text-[6.75px]">

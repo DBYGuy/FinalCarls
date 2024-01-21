@@ -27,7 +27,7 @@ module.exports = {
       animation: {
         'gradient-x': 'gradient-x 15s ease infinite',
         'gradient-y': 'gradient-y 15s ease infinite',
-        'gradient-xy': 'gradient-xy 3s ease-in-out infinite',
+        'gradient-xy': 'gradient-xy 1s ease-in-out infinite',
       },
       keyframes: {
         'gradient-y': {

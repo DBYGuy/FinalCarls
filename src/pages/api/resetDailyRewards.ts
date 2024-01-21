@@ -23,7 +23,6 @@ export default async function resetDailyRewardsHandler(
       },
     });
 
-    // Reset currentDay for these users
     for (const user of usersToReset) {
       await prisma.userDailyReward.update({
         where: { userId: user.userId },

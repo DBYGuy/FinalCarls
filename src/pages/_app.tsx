@@ -25,14 +25,6 @@ import {
 } from '@rainbow-me/rainbowkit/wallets';
 import { Session } from 'next-auth';
 import DesktopHeader from '~/components/DesktopHeader';
-import HomeScreen from '~/components/HomeScreen';
-import DailyCheckIn from '~/components/DailyCheckIn';
-import DesktopDirectory from '~/components/DesktopDirectory';
-import DesktopDropdown from '~/components/DesktopDropdown';
-import TigerProfile from '~/components/TigerProfile';
-import Leaderboard from '~/components/Leaderboard';
-import HoldingsGallery from '~/components/HoldingsGallery';
-import Footer from '~/components/Footer';
 import { PopupProvider } from '~/components/PopUp/popupContext';
 import { ConfirmationModalProvider } from '../context/ConfirmationModalContext';
 import { EditProfileModalProvider } from '../context/EditProfileModalContext';
@@ -159,21 +151,11 @@ const MyApp = (({
                       <EditProfileModalProvider>
                         <PopupProvider>
                           <DesktopHeader />
-                          <HomeScreen />
-                          <DailyCheckIn />
-                          <DesktopDirectory />
-                          <DesktopDropdown />
-                          <TigerProfile />
-                          <HoldingsGallery />
-                          <Leaderboard />
-                          <Footer />
+                          <div>{page}</div>
                         </PopupProvider>
                       </EditProfileModalProvider>
                     </AvatarModalProvider>
                   </ConfirmationModalProvider>
-                  {/* <div>
-                    <DefaultLayout>{page}</DefaultLayout>
-                  </div> */}
                 </main>
               </>
             </RainbowKitProvider>

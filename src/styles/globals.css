@@ -20,3 +20,61 @@ body {
   }
 }
 
+@keyframes flip {
+  0% {
+    transform: rotateX(0);
+  }
+  50% {
+    transform: rotateX(-90deg);
+  }
+  100% {
+    transform: rotateX(0);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideOut {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes gradientAnimation {
+  0% {
+    background-position: 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+}
+}
+
+.animate-flip {
+  animation: flip 0.3s ease-in;
+}
+
+.animate-slideIn {
+  animation: slideIn 0.6s forwards; /* Adjust duration as needed */
+}
+
+.animate-slideOut {
+  animation: slideOut 0.5s; /* Adjust duration as needed */
+}
+
+.animate-gradientShift {
+  background-size: 300% 300%;
+  animation: gradientAnimation 2s linear infinite;
+}

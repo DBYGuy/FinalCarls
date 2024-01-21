@@ -25,11 +25,13 @@ const Container: NextPage<ContainerType> = ({ propTop }) => {
 
   return (
     <div
-      className="fixed z-10 top-0 left-0 right-0 mx-4 w-[97%] h-10 flex flex-row items-center justify-between py-2 px-8 bg-black bg-opacity-70"
+      className="fixed z-10 top-0 left-0 right-0 mx-4 w-[96%] h-10 flex flex-row items-center justify-between py-2 px-8 bg-black bg-opacity-70"
       style={property1Variant2Style}
     >
       <Logo iTSCLogo1="/itsclogo-11.svg" />
-      <NavMenu />
+      <div>
+        <NavMenu />
+      </div>
       {/* Conditionally render the LevelButton if the user is eligible */}
       {isEligible && (
         <div>
