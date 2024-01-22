@@ -101,6 +101,45 @@ const DesktopDirectory = () => {
     setSearchResults([]);
   };
 
+  const generateSvgRows = (numItems: number, direction: string) => {
+    const rowItems = [];
+    for (let i = 0; i < numItems; i++) {
+      // Determine the animation class based on direction
+      const animationClass =
+        direction === 'left'
+          ? 'animate-rotateClockwise'
+          : 'animate-rotateCounterClockwise';
+
+      // Add the flower with animation
+      rowItems.push(
+        <img
+          key={`flower-${i}`}
+          src="/flower.svg"
+          alt="Flower"
+          className={`w-15 h-15 mr-3 ml-3 ${animationClass}`}
+        />,
+      );
+
+      // Add the dot, but skip the last one if direction is 'left'
+      if (!(direction === 'left' && i === numItems - 1)) {
+        rowItems.push(
+          <img
+            key={`dot-${i}`}
+            src="/dot.svg"
+            alt="Dot"
+            className="w-2 h-2 justify-center"
+            style={{
+              width: '8px',
+              height: '8px',
+              position: 'relative',
+              top: '-25px',
+            }}
+          />,
+        );
+      }
+    }
+    return rowItems;
+  };
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -180,17 +219,17 @@ const DesktopDirectory = () => {
         </div>
       </div>
       <img
-        className="absolute h-[0.28%] w-[3.65%] top-[25.88%] right-[86.57%] bottom-[73.84%] left-[9.78%] max-w-full overflow-hidden max-h-full"
+        className="absolute h-[0.28%] w-[3.65%] top-[25.88%] right-[86.57%] bottom-[73.84%] left-[9.78%] max-w-full overflow-hidden z-5 max-h-full"
         alt=""
         src="/group.svg"
       />
       <img
-        className="absolute h-[2.21%] w-[17.79%] top-[23.08%] right-[77.84%] bottom-[74.71%] left-[4.37%] max-w-full overflow-hidden max-h-full"
+        className="absolute h-[2.21%] w-[17.79%] top-[23.08%] right-[77.84%] bottom-[74.71%] left-[4.37%] max-w-full overflow-hidden max-h-full z-1 animate-marquee"
         alt=""
         src="/left-gallery-cloud.svg"
       />
       <img
-        className="absolute h-[3.62%] w-[16.49%] top-[17.92%] right-[2.69%] bottom-[78.46%] left-[80.82%] max-w-full overflow-hidden max-h-full"
+        className="absolute h-[3.62%] w-[16.49%] top-[17.92%] right-[2.69%] bottom-[78.46%] left-[80.82%] max-w-full overflow-hidden max-h-full z-1 animate-marquee"
         alt=""
         src="/right-gallery-cloud.svg"
       />
@@ -255,7 +294,7 @@ const DesktopDirectory = () => {
         )}
       </div>
       <div className="absolute top-[276px] left-[367px] text-inherit tracking-[1.02px] leading-[26px] font-inherit flex items-center w-[475px]">
-        <span className="[line-break:anywhere] w-full">
+        <span className="[line-break:anywhere] w-full bg-gradient-to-l from-text-gold-start via-text-gold-middle to-text-gold-end bg-clip-text text-transparent">
           <p className="m-0">{`Welcome to the Tiger Directory!`}</p>
           <ul className="m-0 pl-8">
             <li className="mb-0">{`Find your friends`}</li>
@@ -270,22 +309,18 @@ const DesktopDirectory = () => {
         src="/isolation-mode.svg"
       />
       <div className="absolute top-[0.68px] left-[calc(50%_-_1917px)] w-[3250.29px] h-[209.26px] text-center text-45xl font-title">
-        <div className="absolute top-[0px] left-[calc(50%_-_31.15px)] tracking-[3.4px] leading-[64px] flex items-center w-[647px] h-[126.34px] [text-shadow:6px_-5px_4px_rgba(0,_0,_0,_0.25)]">
-          <span className="[line-break:anywhere] w-full">
+        <div className="absolute top-[0px] left-[calc(50%_-_31.15px)] tracking-[3.4px] leading-[64px] flex items-center w-[647px] h-[126.34px]">
+          <span className="[line-break:anywhere] w-full bg-gradient-to-l from-text-gold-start via-text-gold-middle to-text-gold-end bg-clip-text text-transparent animate-fadeUp">
             <p className="m-0">{`TIGER GALLERY `}</p>
             <p className="m-0">MEMBER DIRECTORY</p>
           </span>
         </div>
-        <img
-          className="absolute h-[68.79%] w-[52%] top-[31.21%] right-[0%] bottom-[0%] left-[38.75%] max-w-full overflow-hidden max-h-full"
-          alt=""
-          src="/group-1054.svg"
-        />
-        <img
-          className="absolute h-[68.79%] w-[48.07%] top-[31.21%] right-[16.21%] bottom-[0%] left-[17.72%] max-w-full overflow-hidden max-h-full"
-          alt=""
-          src="/group-1055.svg"
-        />
+        <div className="absolute h-[68.79%] w-[52%] top-[31.21%] right-[0%] bottom-[0%] left-[54%] max-w-full overflow-hidden max-h-full">
+          {generateSvgRows(8, 'right')}
+        </div>
+        <div className="absolute h-[68.79%] w-[48.07%] top-[31.21%] bottom-[0%] left-[13.72%] max-w-full overflow-hidden max-h-full">
+          {generateSvgRows(8, 'left')}
+        </div>
       </div>
     </div>
   );

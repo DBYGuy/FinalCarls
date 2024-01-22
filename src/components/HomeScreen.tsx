@@ -5,7 +5,7 @@ import { useMe } from '~/hooks/useMe';
 const HomeScreen: NextPage = () => {
   const { user, isLoading } = useMe();
   return (
-    <div className="bg-itsc-black w-full h-[60vh] overflow-hidden object-contain text-center text-[90px] relative">
+    <div className="bg-itsc-black w-full h-[75vh] overflow-hidden object-contain text-center text-[90px] relative">
       {/* Background SVG */}
       <img
         src="/BG ELEMENTS STARS A.svg"
@@ -30,7 +30,7 @@ const HomeScreen: NextPage = () => {
       <img
         src="/hero tigers.png"
         alt="Hero Tigers"
-        className="absolute bottom-[-2px] left-1/2 transform -translate-x-1/2 z-5 w-[37vw] lg:w-[41vw] h-auto hidden md3:block"
+        className="absolute bottom-[-8px] left-1/2 transform -translate-x-1/2 z-5 w-[46vw] lg:w-[48vw] h-auto hidden md3:block"
       />
       <div className="absolute top-[5%] left-[20%] w-[60vw] h-[60vh] hidden lg:block"></div>
 
