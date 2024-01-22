@@ -8,7 +8,7 @@ import { useCheckLevelEligibility } from '~/hooks/useCheckLevelEligibility';
 import LevelButton from '~/components/LevelButton';
 
 const DesktopDropdown: NextPage = () => {
-  const user = useMe();
+  const { user, isLoading } = useMe();
   const { points } = useGetPoints();
   const { level } = useGetLevel();
   const { avatarUrl } = useGetAvatar();

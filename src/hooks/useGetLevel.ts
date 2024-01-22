@@ -2,13 +2,13 @@ import { trpc } from '../utils/trpc'; // Adjust the import path based on your pr
 import { useMe } from './useMe';
 
 export function useGetLevel() {
-  const user = useMe();
+  const { user, isLoading } = useMe();
   const userId = user?.id ?? '';
 
   // Using tRPC's useQuery hook to fetch user level
   const {
     data: level,
-    isLoading,
+    isLoading: isLoadingLevel,
     isError,
     error,
   } = trpc.level.getUserLevel.useQuery(userId, {
@@ -17,7 +17,7 @@ export function useGetLevel() {
 
   return {
     level,
-    isLoading,
+    isLoading: isLoadingLevel,
     isError,
     error,
   };

@@ -9,7 +9,7 @@ import { useEditProfileModal } from '~/context/EditProfileModalContext';
 import { useGetAvatar } from '~/hooks/useGetAvatar';
 
 const TigerProfile: NextPage = () => {
-  const user = useMe();
+  const { user, isLoading } = useMe();
   const truncatedWalletAddress = getTruncatedWalletAddress(
     user?.walletAddress ?? '',
   );

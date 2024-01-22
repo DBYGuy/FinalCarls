@@ -4,7 +4,7 @@ import Custom404 from '~/pages/404';
 import { useMe } from '~/hooks/useMe';
 
 const ProfilePage = () => {
-  const user = useMe();
+  const { user, isLoading } = useMe();
 
   if (!user) {
     return <Custom404 />;

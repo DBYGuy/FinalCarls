@@ -25,9 +25,10 @@ export interface Attribute {
 }
 export const useTigerNfts = () => {
   const [nfts, setNfts] = useState<NftProps[] | undefined>();
-  const user = useMe();
+  const { user, isLoading } = useMe();
   const ownerid = user?.id ?? '';
-  const { data: userNfts, isLoading } = trpc.token.byOwner.useQuery(ownerid);
+  const { data: userNfts, isLoading: isLoadingTokens } =
+    trpc.token.byOwner.useQuery(ownerid);
 
   useEffect(() => {
     if (!isLoading && userNfts) {

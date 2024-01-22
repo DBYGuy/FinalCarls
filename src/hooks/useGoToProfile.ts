@@ -4,7 +4,7 @@ import { useMe } from './useMe';
 
 export const useGoToProfile = () => {
   const { push } = useRouter();
-  const user = useMe();
+  const { user, isLoading } = useMe();
 
   const goToProfile = useCallback(
     (fragment = '') => {

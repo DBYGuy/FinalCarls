@@ -6,7 +6,7 @@ import { useMe } from './useMe';
 export default function useIsMyProfile() {
   const isAuthenticated = useIsAuthenticated();
   const usernameOrAddress = useRouter().query.user as string;
-  const user = useMe();
+  const { user, isLoading } = useMe();
 
   if (!user) {
     return undefined;

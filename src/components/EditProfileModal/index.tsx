@@ -28,7 +28,7 @@ export const EditProfileModal: React.FC = () => {
     setValue, // Add this
     formState: { errors },
   } = useForm<EditProfileFormData>();
-  const user = useMe();
+  const { user, isLoading } = useMe();
   const utils = trpc.useContext();
   const { showPopup } = usePopup();
   const { closeModal } = useEditProfileModal();

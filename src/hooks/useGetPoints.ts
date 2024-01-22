@@ -2,12 +2,12 @@ import { trpc } from '../utils/trpc'; // Adjust the import path based on your pr
 import { useMe } from './useMe';
 
 export function useGetPoints() {
-  const user = useMe();
+  const { user, isLoading } = useMe();
 
   // Using tRPC's useQuery hook to fetch user points
   const {
     data: points,
-    isLoading,
+    isLoading: isLoadingPoints,
     isError,
     error,
   } = trpc.points.getUserPoints.useQuery(
@@ -19,7 +19,7 @@ export function useGetPoints() {
 
   return {
     points,
-    isLoading,
+    isLoading: isLoadingPoints,
     isError,
     error,
   };

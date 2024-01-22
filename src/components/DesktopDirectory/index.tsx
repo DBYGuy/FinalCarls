@@ -23,10 +23,6 @@ interface TokenType {
   tokenTraits: TokenTraitType[];
 }
 
-interface TokenTraitWithToken {
-  token: TokenType;
-}
-
 const DesktopDirectory = () => {
   const [selectedTraitType, setSelectedTraitType] = useState<string>('');
   const [selectedTraitValue, setSelectedTraitValue] = useState<string>('');

@@ -1,10 +1,4 @@
-import React, {
-  useState,
-  useEffect,
-  useRef,
-  useMemo,
-  CSSProperties,
-} from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import type { NextPage } from 'next';
 import DesktopDropdown from './DesktopDropdown'; // Ensure this path is correct
 import { useMe } from '~/hooks/useMe';
@@ -13,33 +7,23 @@ import { useGetLevel } from '~/hooks/useGetLevel';
 import { useGetAvatar } from '~/hooks/useGetAvatar';
 import { getTruncatedWalletAddress } from '~/utils/wallet';
 import FlipScroll from '~/components/FlipScroll';
+import Button from '~/components/button';
 
 type ConnectMenuType = {
   avatar?: string;
   icon?: string;
   iconsBurgerLine?: string;
-  showButton?: boolean;
   showAccountButton?: boolean;
   showIconsBurgerLine?: boolean;
-  connectWalletDisplay?: CSSProperties['display'];
 };
 
 const ConnectMenu: NextPage<ConnectMenuType> = ({
   icon,
   iconsBurgerLine,
-  showButton,
   showAccountButton,
   showIconsBurgerLine,
-  connectWalletDisplay,
 }) => {
-  const connectWalletStyle = useMemo(
-    () => ({
-      display: connectWalletDisplay,
-    }),
-    [connectWalletDisplay],
-  );
-
-  const user = useMe();
+  const { user, isLoading } = useMe();
   const { points } = useGetPoints();
   const { level } = useGetLevel();
   const { avatarUrl } = useGetAvatar();
@@ -65,19 +49,21 @@ const ConnectMenu: NextPage<ConnectMenuType> = ({
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  if (!user) {
+    return <Button />;
+  }
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-end">
+        <div className="text-white">Loading...</div>
+      </div>
+    );
+  }
+
   return (
-    <div className="relative flex items-center justify-end">
+    <div className="relative flex items-center justify-end pr-14">
       <div className="rounded-50xl padding-r[16px] h-10 flex flex-row items-center justify-center gap-[8px] text-left text-base text-white-gold-itsc font-bold">
-        {showButton && (
-          <button className="cursor-pointer [border:none] py-2 px-4 bg-[transparent] rounded-15xl [background:linear-gradient(180deg,_#efd891,_#ede2b2)] shadow-[0px_4px_12px_rgba(0,_0,_0,_0.1)] h-10 flex flex-row items-center justify-start box-border">
-            <b
-              className="relative text-base tracking-[0.6px] leading-[20px] font-bold text-black text-left"
-              style={connectWalletStyle}
-            >
-              Connect Wallet
-            </b>
-          </button>
-        )}
         {showAccountButton && (
           <div className="rounded-sm bg-dark-connectbuttonbackground shadow-[0px_4px_12px_rgba(0,_0,_0,_0.1)] h-10 flex flex-row items-center justify-start py-0 px-0.5 box-border gap-[8px]">
             <div className="rounded-smi bg-dark-actionbuttonsecondarybackground h-9 flex flex-row items-center justify-start p-2 box-border">

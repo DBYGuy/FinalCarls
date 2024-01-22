@@ -2,7 +2,7 @@ import { trpc } from '../utils/trpc'; // Adjust the import path based on your pr
 import { useMe } from './useMe';
 
 export function useUpdatePoints() {
-  const user = useMe();
+  const { user, isLoading } = useMe();
   const updateUserPointsMutation = trpc.points.updateUserPoints.useMutation();
 
   const updatePoints = async (additionalPoints: number) => {

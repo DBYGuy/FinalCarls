@@ -11,9 +11,8 @@ const IndexPage = () => {
     <>
       <Head>
         <title>Welcome to ITSCTigers</title>
-        {/* Add any additional head elements here */}
       </Head>
-      <main className="flex flex-col items-center justify-center">
+      <main className="flex flex-col">
         <HomeScreen />
         <DailyCheckIn />
         <DesktopDirectory />

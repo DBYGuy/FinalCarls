@@ -5,6 +5,10 @@ module.exports = {
   content: ['./src/**/*.{js,ts,jsx,tsx,mdx}'],
   theme: {
     extend: {
+      screens: {
+        md2: '670px',
+        md3: '725px',
+      },
       colors: {
         blueviolet: '#9747ff',
         'dark-connectbuttonbackground': '#1a1b1f',
@@ -22,6 +26,11 @@ module.exports = {
         khaki: '#ffe299',
         mediumorchid: 'rgba(208, 58, 184, 0.19)',
         linear: '#fbd099',
+        'gold-start': '#efd891',
+        'gold-end': '#ede2b2',
+        'text-gold-start': '#fbd099',
+        'text-gold-middle': '#fcefdf',
+        'text-gold-end': '#ffe299',
       },
 
       animation: {
