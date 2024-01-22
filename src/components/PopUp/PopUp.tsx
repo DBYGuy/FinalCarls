@@ -1,5 +1,4 @@
 import React from 'react';
-import Image from 'next/image';
 
 type PopUpProps = {
   mainText: string;
@@ -14,31 +13,32 @@ const PopUp: React.FC<PopUpProps> = ({
   content,
   onClose,
 }) => {
-  // Determine if the content is a level number (number) or an image (string)
   const isLevel = typeof content === 'number';
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-      <div className="relative rounded-lg bg-itsc-black border-4 border-linear p-8 text-white max-w-sm w-full">
-        {/* Close Button */}
-        <button className="absolute top-2 right-2 text-white" onClick={onClose}>
-          x
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 animate-fadeUp">
+      <div className="relative rounded-lg bg-itsc-black border-4 border-linear p-8 text-white max-w-sm w-full text-center">
+        {/* Close Button with SVG */}
+        <button className="absolute top-[-12px] right-[-12px]" onClick={onClose}>
+          <img src="/CLOSE X BUTTON SQUARE.svg" alt="Close" width="36" height="36" />
         </button>
 
         {/* Main Text */}
         <h1 className="text-2xl font-bold mb-4">{mainText}</h1>
 
-        {/* Subtitle */}
-        {subtitle && <h2 className="text-xl mb-4">{subtitle}</h2>}
-
         {/* Content: Image or Level Number */}
-        <div className="text-center mb-4">
+        <div className="text-center mb-4 animate-celebratoryFadeIn">
           {isLevel ? (
-            <span className="text-6xl font-omegle">{content}</span>
+            <span className="text-[66px] font-omegle bg-gradient-to-r from-text-gold-start via-text-gold-middle to-text-gold-end bg-clip-text text-transparent">
+              {content}
+            </span>
           ) : (
-            <Image src={content} alt="Reward" width={100} height={100} />
+            <img src={content} alt="Reward" width={100} height={100} />
           )}
         </div>
+
+        {/* Subtitle */}
+        {subtitle && <h2 className="text-xl mb-4">{subtitle}</h2>}
 
         {/* Close Button */}
         <button
