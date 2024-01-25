@@ -141,7 +141,7 @@ export const tokenRouter = router({
     // Group values by trait types
     const groupedTraits = traitTypes.reduce((acc, trait) => {
       if (acc && trait.traitType && trait.value) {
-        acc[trait.traitType] = acc[trait.traitType] || [];
+        acc[trait.traitType] = acc[trait.traitType] ?? [];
         acc[trait.traitType]?.push(trait.value);
       }
       return acc;

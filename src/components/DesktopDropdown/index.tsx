@@ -1,4 +1,5 @@
 import type { NextPage } from 'next';
+import { useRouter } from 'next/router';
 import { useGetPoints } from '~/hooks/useGetPoints';
 import { useGetLevel } from '~/hooks/useGetLevel';
 import { useMe } from '~/hooks/useMe';
@@ -6,8 +7,10 @@ import { useGetAvatar } from '~/hooks/useGetAvatar';
 import { getTruncatedWalletAddress } from '~/utils/wallet';
 import { useCheckLevelEligibility } from '~/hooks/useCheckLevelEligibility';
 import LevelButton from '~/components/LevelButton';
+import { useEditProfileModal } from '~/context/EditProfileModalContext';
 
 const DesktopDropdown: NextPage = () => {
+  const router = useRouter();
   const { user, isLoading } = useMe();
   const { points } = useGetPoints();
   const { level } = useGetLevel();
@@ -17,6 +20,14 @@ const DesktopDropdown: NextPage = () => {
   );
   const userId = user?.id ?? '';
   const { isEligible, toNextLevel } = useCheckLevelEligibility(userId);
+  const { openModal } = useEditProfileModal();
+  const handleButtonClick = () => {
+    if (router.pathname === '/') {
+      router.push('/profile');
+    } else {
+      openModal();
+    }
+  };
 
   return (
     <div className="relative rounded-[5px] z-8 box-border w-full h-[964px] overflow-hidden text-left text-[25.51px] text-white-gold-itsc font-sfpro">
@@ -211,9 +222,12 @@ const DesktopDropdown: NextPage = () => {
             <div className="shrink-0 flex flex-row items-start justify-start">
               <div className="shadow-[0px_1.7239909172058105px_1.72px_rgba(0,_0,_0,_0.25)] shrink-0 flex flex-row items-start justify-start">
                 <div className="rounded-[10.26px] [background:linear-gradient(180deg,_rgba(0,_0,_0,_0.17),_rgba(0,_0,_0,_0)_57.81%,_rgba(0,_0,_0,_0.2)),_#d15454] shadow-[0px_2.9307847023010254px_8.79px_rgba(0,_0,_0,_0.1)] h-[29.31px] flex flex-row items-center justify-start py-[5.861569404602051px] px-[11.723138809204102px] box-border text-[14.2px]">
-                  <b className="relative tracking-[0.94px] leading-[31.33px]">
-                    Edit Profile
-                  </b>
+                  <button
+                    className="relative tracking-[0.94px] leading-[31.33px] bg-transparent text-white"
+                    onClick={handleButtonClick}
+                  >
+                    {router.pathname === '/' ? 'Go To Profile' : 'Edit Profile'}
+                  </button>
                 </div>
               </div>
             </div>

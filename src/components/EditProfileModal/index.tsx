@@ -61,7 +61,7 @@ export const EditProfileModal: React.FC = () => {
     // Call the update user profile mutation
     updateUser(userData);
     updateProfile(userProfileData);
-    utils.profile.getUserProfile.invalidate()!;
+    utils.profile.getUserProfile.invalidate();
     showPopup(
       'Congratulations!',
       `You have successfully updated your profile!`,

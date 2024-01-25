@@ -121,7 +121,7 @@ const DesktopDirectory = () => {
       );
 
       // Add the dot, but skip the last one if direction is 'left'
-      if (!(direction === 'left' && i === numItems - 1)) {
+      if (!(i === numItems - 1)) {
         rowItems.push(
           <img
             key={`dot-${i}`}
@@ -140,6 +140,45 @@ const DesktopDirectory = () => {
     }
     return rowItems;
   };
+  const latticeLeftRef = useRef<HTMLImageElement>(null);
+  const latticeRightRef = useRef<HTMLImageElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && entry.intersectionRatio >= 1) {
+            const target = entry.target as HTMLImageElement; // Type assertion
+            if (target === latticeLeftRef.current) {
+              target.classList.add('animate-moveInLeft');
+            } else if (target === latticeRightRef.current) {
+              target.classList.add('animate-moveInRight');
+            }
+          }
+        });
+      },
+      { threshold: 1 },
+    );
+
+    const leftRef = latticeLeftRef.current;
+    const rightRef = latticeRightRef.current;
+
+    if (leftRef) {
+      observer.observe(leftRef);
+    }
+    if (rightRef) {
+      observer.observe(rightRef);
+    }
+
+    return () => {
+      if (leftRef) {
+        observer.unobserve(leftRef);
+      }
+      if (rightRef) {
+        observer.unobserve(rightRef);
+      }
+    };
+  }, []);
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -191,38 +230,34 @@ const DesktopDirectory = () => {
   };
 
   return (
-    <div className="relative bg-gray-100 w-full h-[1930px] overflow-hidden text-left text-5xl text-white font-outfit">
-      <img
-        className="absolute top-[258.68px] left-[951.68px] rounded-sm w-[257.53px] h-[286.02px] object-cover"
-        alt=""
-        src="/snp-04-1@2x.png"
-      />
+    <div className="relative bg-gray-100 w-full min-h-screen overflow-hidden text-left text-5xl text-white font-outfit">
+      <div className="absolute top-32 left-0 right-0 flex justify-between items-center px-4">
+        <img src="/lattice.svg" alt="Lattice Left" />
+        <img src="/lattice.svg" alt="Lattice Right" />
+      </div>
 
-      <div className="absolute top-[572px] left-[calc(50%_-_484px)] flex flex-row items-start justify-start gap-[16px]">
-        <div className="relative shadow-[5px_4px_4px_rgba(0,_0,_0,_0.25)] w-[1092px] h-[400px]">
-          <div className="absolute h-full w-full top-[0%] right-[0%] bottom-[0%] left-[0%] rounded bg-gray-100 shadow-[0px_4px_4px_rgba(0,_0,_0,_0.25)_inset]" />
-          <div className="absolute top-[0px] left-[calc(50%_-_724px)] grid grid-cols-4 gap-35 h-[80vh] overflow-y-auto">
+      <div className="absolute top-[572px] w-full flex flex-col items-center justify-center">
+        <div className="shadow-[5px_4px_4px_rgba(0,_0,_0,_0.25)] w-[95%] mx-auto p-4">
+          <div
+            className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 overflow-auto"
+            style={{ maxHeight: '1200px' }}
+          >
             {!isLoading &&
-              tokens.map((token, index) => {
-                return (
-                  <ProfileCard
-                    key={index}
-                    name={token?.name}
-                    src={token?.s3ImageUrl ?? token?.image}
-                    trait1={token?.tokenTraits?.[0]?.value ?? 'N/A'}
-                    trait2={token?.tokenTraits?.[1]?.value ?? 'N/A'}
-                  />
-                );
-              })}
+              tokens.map((token, index) => (
+                <ProfileCard
+                  key={index}
+                  name={token?.name}
+                  src={token?.s3ImageUrl ?? token?.image}
+                  trait1={token?.tokenTraits?.[0]?.value ?? 'N/A'}
+                  trait2={token?.tokenTraits?.[1]?.value ?? 'N/A'}
+                />
+              ))}
           </div>
-          <button onClick={handleLoadMore}>Load More</button>
+          <button onClick={handleLoadMore} className="mt-4">
+            Load More
+          </button>
         </div>
       </div>
-      <img
-        className="absolute h-[0.28%] w-[3.65%] top-[25.88%] right-[86.57%] bottom-[73.84%] left-[9.78%] max-w-full overflow-hidden z-5 max-h-full"
-        alt=""
-        src="/group.svg"
-      />
       <img
         className="absolute h-[2.21%] w-[17.79%] top-[23.08%] right-[77.84%] bottom-[74.71%] left-[4.37%] max-w-full overflow-hidden max-h-full z-1 animate-marquee"
         alt=""
@@ -233,9 +268,8 @@ const DesktopDirectory = () => {
         alt=""
         src="/right-gallery-cloud.svg"
       />
-      <div className="absolute top-[521px] left-[132px] flex flex-row items-start justify-start gap-[8px] text-xs text-dimgray font-caption-2">
-        <div className="relative w-[400px] h-10">
-          <div className="absolute h-full w-full top-[0%] right-[0%] bottom-[0%] left-[0%] rounded-17xl [background:linear-gradient(90deg,_#fbd099,_#fcefdf_59.9%,_#ffe299)]" />
+      <div className="absolute top-[521px] left-1/2 transform -translate-x-1/2 flex items-center justify-center gap-4">
+        <div className="relative w-screen max-w-[280px] sm:max-w-[350px] md:max-w-[500px] lg:max-w-[600px]">
           <SearchBar
             onSelect={handleSearchSelect}
             onEnterPress={handleEnterPressInSearch}
@@ -247,12 +281,11 @@ const DesktopDirectory = () => {
           />
         </div>
         <img
-          className="absolute cursor-pointer"
+          className="cursor-pointer z-10 w-[40px] h-[40px] sm:w-[35px] sm:h-[35px] md:w-[40px] md:h-[40px]"
           alt="Menu"
           src="/buttons.svg"
           onClick={toggleDrawer}
         />
-
         {/* Drawer Menu */}
         {isDrawerOpen && (
           <div
@@ -308,17 +341,17 @@ const DesktopDirectory = () => {
         alt=""
         src="/isolation-mode.svg"
       />
-      <div className="absolute top-[0.68px] left-[calc(50%_-_1917px)] w-[3250.29px] h-[209.26px] text-center text-45xl font-title">
+      <div className="absolute top-[0.68px] left-[calc(50%_-_1917px)] w-[3250.29px] h-[209.26px] text-center text-24px font-title">
         <div className="absolute top-[0px] left-[calc(50%_-_31.15px)] tracking-[3.4px] leading-[64px] flex items-center w-[647px] h-[126.34px]">
-          <span className="[line-break:anywhere] w-full bg-gradient-to-l from-text-gold-start via-text-gold-middle to-text-gold-end bg-clip-text text-transparent animate-fadeUp">
+          <span className="[line-break:anywhere] w-full bg-gradient-to-l 2xs:text-[24px] xs:text-[24px] sm:text-[28px] md:text-[32px] lg:text-[36px] xl:text-[40px] 2xl:text-[44px] from-text-gold-start via-text-gold-middle to-text-gold-end bg-clip-text text-transparent animate-fadeUp">
             <p className="m-0">{`TIGER GALLERY `}</p>
             <p className="m-0">MEMBER DIRECTORY</p>
           </span>
         </div>
-        <div className="absolute h-[68.79%] w-[52%] top-[31.21%] right-[0%] bottom-[0%] left-[54%] max-w-full overflow-hidden max-h-full">
+        <div className="absolute h-[68.79%] w-[52%] top-[31.21%] right-[0%] bottom-[0%] left-[51%] max-w-full overflow-hidden max-h-full">
           {generateSvgRows(8, 'right')}
         </div>
-        <div className="absolute h-[68.79%] w-[48.07%] top-[31.21%] bottom-[0%] left-[13.72%] max-w-full overflow-hidden max-h-full">
+        <div className="absolute h-[68.79%] w-[48.07%] top-[31.21%] bottom-[0%] left-[16.72%] max-w-full overflow-hidden max-h-full">
           {generateSvgRows(8, 'left')}
         </div>
       </div>

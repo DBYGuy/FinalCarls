@@ -59,7 +59,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSelect, onEnterPress }) => {
 
   return (
     <div
-      className="relative w-[400px] h-10 bg-gradient-to-r from-[#fbd099] via-[#fcefdf] to-[#ffe299] rounded-full shadow-[5px_4px_4px_rgba(0,_0,_0,_0.25)] flex items-center px-4"
+      className="relative w-full max-w-[400px] sm:max-w-[400px] md:max-w-[500px] lg:max-w-[600px] h-10 bg-gradient-to-r from-[#fbd099] via-[#fcefdf] to-[#ffe299] rounded-full shadow-[5px_4px_4px_rgba(0,_0,_0,_0.25)] flex items-center px-4"
       ref={searchBarRef}
     >
       <img className="mr-2.5 w-6 h-6" src="/icons20pxsearch.svg" alt="Search" />

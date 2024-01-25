@@ -30,7 +30,7 @@ const HomeScreen: NextPage = () => {
       <img
         src="/hero tigers.png"
         alt="Hero Tigers"
-        className="absolute bottom-[-8px] left-1/2 transform -translate-x-1/2 z-5 w-[46vw] lg:w-[48vw] h-auto hidden md3:block"
+        className="absolute bottom-[-8px] left-1/2 transform -translate-x-1/2 z-5 w-[46vw] lg:w-[48vw] h-auto hidden md3:block max-w-[800px] max-h-[600px]"
       />
       <div className="absolute top-[5%] left-[20%] w-[60vw] h-[60vh] hidden lg:block"></div>
 

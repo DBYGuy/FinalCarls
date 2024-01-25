@@ -7,7 +7,7 @@ export const useUpdateAvatar = () => {
   const updateAvatar = async (avatarUrl: string) => {
     try {
       await updateAvatarMutation.mutateAsync({ avatarUrl });
-      utils.users.me.invalidate();
+      utils.users.getAvatar.invalidate();
     } catch (error) {
       console.error('Failed to update avatar:', error);
       throw error; // Re-throw the error for handling by the calling component

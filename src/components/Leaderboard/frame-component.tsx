@@ -1,5 +1,4 @@
 import type { NextPage } from 'next';
-import { useMemo, type CSSProperties } from 'react';
 
 type FrameComponentType = {
   privateAvatarBase?: string;
@@ -7,9 +6,6 @@ type FrameComponentType = {
   username?: string;
   level?: number;
   points?: number;
-
-  /** Style props */
-  frameDivPosition?: CSSProperties['position'];
 };
 
 const FrameComponent: NextPage<FrameComponentType> = ({
@@ -18,48 +14,35 @@ const FrameComponent: NextPage<FrameComponentType> = ({
   username,
   level,
   points,
-  frameDivPosition,
 }) => {
-  const frameDivStyle: CSSProperties = useMemo(() => {
-    return {
-      position: frameDivPosition,
-    };
-  }, [frameDivPosition]);
-
   return (
-    <div
-      className="w-[1267px] h-[72px] text-left text-17xl text-white-gold-itsc font-roboto"
-      style={frameDivStyle}
-    >
-      {/* Rank */}
-      <div className="absolute top-[4px] left-[0px] w-[126px] h-16 text-45xl font-title">
-        <div className="absolute w-full top-[0%] left-[0%] tracking-[3.4px] leading-[64px] text-transparent !bg-clip-text [background:linear-gradient(90deg,_#fbd099,_#fcefdf_59.9%,_#ffe299)] [-webkit-background-clip:text] [-webkit-text-fill-color:transparent] inline-block">
+    <div className="grid grid-cols-12 items-center w-full max-w-[703px] mx-auto gap-2 p-2">
+      {/* Rank and Avatar (span 3 columns) */}
+      <div className="col-span-4 md:col-span-3 flex items-center space-x-1 md:space-x-2">
+        <div
+          className="flex items-center justify-center w-12 h-12 md:w-18 md:h-18 font-title text-transparent bg-clip-text bg-gradient-to-r from-text-gold-start to-text-gold-end truncate text-3xl md:text-4xl"
+          style={{ lineHeight: '48px' }}
+        >
           {rank}
         </div>
+        <img
+          className="w-12 h-12 md:w-18 md:h-18 object-cover rounded-full"
+          alt={username}
+          src={privateAvatarBase}
+          style={{ maxWidth: '48px', maxHeight: '48px' }}
+        />
       </div>
-      {/* Avatar */}
-      <img
-        className="absolute top-[0px] left-[134px] w-[72px] h-[72px] object-cover rounded-[77px]"
-        alt=""
-        src={privateAvatarBase}
-      />
-      {/* Username */}
-      <div className="absolute top-[15px] left-[270px] w-[411px] h-[42px]">
-        <b className="absolute w-full top-[0%] left-[0%] inline-block">
-          {username}
-        </b>
+      {/* Username (span 5 columns) */}
+      <div className="col-span-4 md:col-span-5 text-center truncate text-sm md:text-base">
+        <b>{username}</b>
       </div>
-      {/* Level */}
-      <div className="absolute top-[15px] left-[796px] w-[113px] h-[42px] text-center">
-        <b className="absolute w-full top-[0%] left-[0%] inline-block">
-          {level}
-        </b>
+      {/* Level (span 2 columns) */}
+      <div className="col-span-2 md:col-span-2 text-center truncate text-sm md:text-base">
+        <b>{level}</b>
       </div>
-      {/* Points */}
-      <div className="absolute top-[12px] left-[1012px] w-[193px] h-[42px] text-right">
-        <b className="absolute w-full top-[0%] left-[0%] inline-block">
-          {points}
-        </b>
+      {/* Points (span 2 columns) */}
+      <div className="col-span-2 md:col-span-2 text-right truncate text-sm md:text-base">
+        <b>{points}</b>
       </div>
     </div>
   );

@@ -17,10 +17,9 @@ const SectionCard: NextPage<SectionCardType> = ({
   avatarBaseImageUrl = '/-privateavatarbase@2x.png',
 }) => {
   return (
-    <div className="w-[1205px] flex flex-col items-start justify-start">
+    <div className="w-full flex flex-col items-start justify-start">
       <FrameComponent
         privateAvatarBase={avatarBaseImageUrl}
-        frameDivPosition="relative"
         rank={rank}
         username={username}
         level={level}

@@ -37,7 +37,7 @@ const DailyCheckIn: NextPage = () => {
 
   return (
     <div className="relative w-full mx-4 text-center font-rainbow-buttons-1 py-12">
-      <div className="text-[4vw] font-title bg-gradient-to-r from-text-gold-start via-text-gold-middle to-text-gold-end bg-clip-text text-transparent animate-fadeUp">
+      <div className="text-[36px] m:text-[42px] l:text-[50px] xl:text-[60px] 2xl:text-[75px] font-title bg-gradient-to-r from-text-gold-start via-text-gold-middle to-text-gold-end bg-clip-text text-transparent animate-fadeUp">
         DAILY CHECK-IN
       </div>
       <div className="mt-4 w-[30vw] mx-auto text-[1.8vw] font-outfit bg-gradient-to-l from-text-gold-start via-text-gold-middle to-text-gold-end bg-clip-text text-transparent animate-fadeUpDelayed">
@@ -65,7 +65,7 @@ const DailyCheckIn: NextPage = () => {
           ))}
         </div>
         {/* Large Check-Ins */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mt-10">
+        <div className="grid md:grid-cols-1 lg:grid-cols-3 gap-8 mt-10">
           {rewards?.slice(4, 7).map((reward: DailyReward, index: number) => (
             <LargeCheckIn
               key={reward.day}
