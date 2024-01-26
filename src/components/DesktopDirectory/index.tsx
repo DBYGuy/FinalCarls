@@ -1,19 +1,19 @@
 import { useState, useEffect, useRef } from 'react';
 import ProfileCard from '../ProfileCard';
-import { usePaginatedTokens } from '~/hooks/usePaginatedTokens';
 import { useTokensByTrait } from '~/hooks/useTokensByTrait';
 import { useTraitTypesAndValues } from '~/hooks/useTraitTypesAndValues';
 import SearchBar from '../SearchBar';
 import { SearchResult } from '~/components/SearchBar';
+import { useTokenSearch } from '~/hooks/useTokenSearch';
 
-interface TokenTraitType {
+export interface TokenTraitType {
   id: number;
   tokenID: number;
   traitType: string;
   value: string;
 }
 
-interface TokenType {
+export interface TokenType {
   tokenID: number;
   image: string;
   name: string;
@@ -34,29 +34,22 @@ const DesktopDirectory = () => {
   const [lastUpdated, setLastUpdated] = useState<
     'searchResult' | 'searchResults' | 'traits'
   >();
-  const {
-    tokens: paginatedTokens,
-    isLoading: isLoadingPaginated,
-    loadMore,
-  } = usePaginatedTokens();
-
+  const { results: randomTokens, loadMore: loadMoreRandomTokens } =
+    useTokenSearch('');
+  const { tokens: traitTokens, loadMore: loadMoreTraitTokens } =
+    useTokensByTrait(selectedTraitType, selectedTraitValue);
   const { traitTypesAndValues } = useTraitTypesAndValues();
-  const { tokens: traitTokens, isLoading: isLoadingTrait } = useTokensByTrait(
-    selectedTraitType,
-    selectedTraitValue,
-  );
-
   const toggleDrawer = () => setIsDrawerOpen(!isDrawerOpen);
 
   const handleSearchSelect = (selectedResult: SearchResult) => {
     const convertedResult: TokenType = {
-      tokenID: selectedResult.tokenID, // Assuming SearchResult has tokenID
+      tokenID: selectedResult.tokenID,
       image: selectedResult.s3ImageUrl ?? '',
       name: selectedResult.name,
-      lastUpdated: null, // Default value
+      lastUpdated: null,
       s3ImageUrl: selectedResult.s3ImageUrl,
       ownerID: selectedResult.owner?.walletAddress ?? null,
-      tokenTraits: [], // Default value or fetch if needed
+      tokenTraits: selectedResult.tokenTraits, // Use the traits from the search result
     };
     setSearchResult(convertedResult);
     setSelectedTraitType('');
@@ -68,11 +61,12 @@ const DesktopDirectory = () => {
       tokenID: result.tokenID,
       image: result.s3ImageUrl ?? '',
       name: result.name,
-      lastUpdated: null, // Default value
+      lastUpdated: null,
       s3ImageUrl: result.s3ImageUrl,
       ownerID: result.owner?.walletAddress ?? null,
-      tokenTraits: [], // Default value or fetch if needed
+      tokenTraits: result.tokenTraits, // Use the traits from each search result
     }));
+
     if (formattedResults.length > 0) {
       setSearchResults(formattedResults);
       setLastUpdated('searchResults');
@@ -82,6 +76,7 @@ const DesktopDirectory = () => {
       setLastUpdated(undefined);
     }
   };
+
   const handleTraitCheckboxChange = (
     traitType: string,
     value: string,
@@ -91,14 +86,18 @@ const DesktopDirectory = () => {
       setSelectedTraitType(traitType);
       setSelectedTraitValue(value);
       setLastUpdated('traits');
+      // Clear search results when a new trait type or value is selected
+      setSearchResults([]);
+      setSearchResult(null);
     } else {
-      // Revert to paginated tokens when a trait box is unchecked
+      // Revert to random tokens when a trait box is unchecked
       setSelectedTraitType('');
       setSelectedTraitValue('');
       setLastUpdated(undefined);
+      // Also clear search results here
+      setSearchResults([]);
+      setSearchResult(null);
     }
-    setSearchResult(null);
-    setSearchResults([]);
   };
 
   const generateSvgRows = (numItems: number, direction: string) => {
@@ -140,45 +139,6 @@ const DesktopDirectory = () => {
     }
     return rowItems;
   };
-  const latticeLeftRef = useRef<HTMLImageElement>(null);
-  const latticeRightRef = useRef<HTMLImageElement>(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting && entry.intersectionRatio >= 1) {
-            const target = entry.target as HTMLImageElement; // Type assertion
-            if (target === latticeLeftRef.current) {
-              target.classList.add('animate-moveInLeft');
-            } else if (target === latticeRightRef.current) {
-              target.classList.add('animate-moveInRight');
-            }
-          }
-        });
-      },
-      { threshold: 1 },
-    );
-
-    const leftRef = latticeLeftRef.current;
-    const rightRef = latticeRightRef.current;
-
-    if (leftRef) {
-      observer.observe(leftRef);
-    }
-    if (rightRef) {
-      observer.observe(rightRef);
-    }
-
-    return () => {
-      if (leftRef) {
-        observer.unobserve(leftRef);
-      }
-      if (rightRef) {
-        observer.unobserve(rightRef);
-      }
-    };
-  }, []);
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -206,27 +166,30 @@ const DesktopDirectory = () => {
     setCollapsed(initialCollapsedState);
   }, [traitTypesAndValues]);
 
-  let tokens;
-  let isLoading;
+  let tokensToShow = [];
+  let isLoading = false;
+
   if (lastUpdated === 'searchResults' && searchResults.length > 0) {
-    tokens = searchResults;
+    tokensToShow = searchResults;
     isLoading = false;
   } else if (lastUpdated === 'searchResult' && searchResult) {
-    tokens = [searchResult];
+    tokensToShow = [searchResult];
     isLoading = false;
   } else if (lastUpdated === 'traits') {
-    tokens = traitTokens;
-    isLoading = isLoadingTrait;
+    tokensToShow = traitTokens;
   } else {
-    tokens = paginatedTokens;
-    isLoading = isLoadingPaginated;
+    tokensToShow = randomTokens;
   }
   const drawerStyle = {
     transform: isDrawerOpen ? 'translateX(0)' : 'translateX(-100%)',
     transition: 'transform 0.3s ease-in-out',
   };
   const handleLoadMore = () => {
-    // Logic to load more tokens
+    if (lastUpdated === 'traits') {
+      loadMoreTraitTokens();
+    } else if (lastUpdated === 'searchResults') {
+      loadMoreRandomTokens();
+    }
   };
 
   return (
@@ -236,35 +199,42 @@ const DesktopDirectory = () => {
         <img src="/lattice.svg" alt="Lattice Right" />
       </div>
 
-      <div className="absolute top-[572px] w-full flex flex-col items-center justify-center">
-        <div className="shadow-[5px_4px_4px_rgba(0,_0,_0,_0.25)] w-[95%] mx-auto p-4">
-          <div
-            className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 overflow-auto"
-            style={{ maxHeight: '1200px' }}
-          >
+      <div className="w-full flex flex-col items-center justify-center pt-[600px]">
+        {' '}
+        {/* Adjusted padding-top */}
+        <div className="shadow-[5px_4px_4px_rgba(0,_0,_0,_0.25)] w-[95%] mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+            {/* Map through tokensToShow and render ProfileCard components */}
             {!isLoading &&
-              tokens.map((token, index) => (
+              tokensToShow.map((token) => (
                 <ProfileCard
-                  key={index}
+                  key={token.tokenID}
                   name={token?.name}
-                  src={token?.s3ImageUrl ?? token?.image}
+                  src={token?.s3ImageUrl ?? ''}
                   trait1={token?.tokenTraits?.[0]?.value ?? 'N/A'}
                   trait2={token?.tokenTraits?.[1]?.value ?? 'N/A'}
                 />
               ))}
           </div>
-          <button onClick={handleLoadMore} className="mt-4">
-            Load More
-          </button>
+          {lastUpdated === 'traits' && (
+            <div className="flex justify-center mt-4">
+              <button
+                onClick={handleLoadMore}
+                className="relative inline-block tracking-[0.94px] leading-[31.33px] bg-transparent text-white rounded-[10.26px] shadow-[0px_2.9307847023010254px_8.79px_rgba(0,_0,_0,_0.1)] py-[5.861569404602051px] px-[11.723138809204102px] text-[14.2px] [background:linear-gradient(180deg,_rgba(0,_0,_0,_0.17),_rgba(0,_0,_0,_0)_57.81%,_rgba(0,_0,_0,_0.2)),_#d15454]"
+              >
+                Load More
+              </button>
+            </div>
+          )}
         </div>
       </div>
       <img
-        className="absolute h-[2.21%] w-[17.79%] top-[23.08%] right-[77.84%] bottom-[74.71%] left-[4.37%] max-w-full overflow-hidden max-h-full z-1 animate-marquee"
+        className="absolute h-[2.21%] w-[17.79%] top-[350px] right-[77.84%] bottom-[74.71%] left-[4.37%] max-w-full overflow-hidden max-h-full z-1 animate-marquee"
         alt=""
         src="/left-gallery-cloud.svg"
       />
       <img
-        className="absolute h-[3.62%] w-[16.49%] top-[17.92%] right-[2.69%] bottom-[78.46%] left-[80.82%] max-w-full overflow-hidden max-h-full z-1 animate-marquee"
+        className="absolute h-[3.62%] w-[16.49%] top-[200px] right-[2.69%] bottom-[78.46%] left-[80.82%] max-w-full overflow-hidden max-h-full z-1 animate-marquee"
         alt=""
         src="/right-gallery-cloud.svg"
       />
@@ -326,24 +296,18 @@ const DesktopDirectory = () => {
           </div>
         )}
       </div>
-      <div className="absolute top-[276px] left-[367px] text-inherit tracking-[1.02px] leading-[26px] font-inherit flex items-center w-[475px]">
-        <span className="[line-break:anywhere] w-full bg-gradient-to-l from-text-gold-start via-text-gold-middle to-text-gold-end bg-clip-text text-transparent">
-          <p className="m-0">{`Welcome to the Tiger Directory!`}</p>
-          <ul className="m-0 pl-8">
-            <li className="mb-0">{`Find your friends`}</li>
-            <li className="mb-0">{`Have fun`}</li>
-            <li>{`Learn about other tigers`}</li>
+      <div className="absolute top-[276px] left-[35%] transform -translate-x-1/2 w-full max-w-[475px] px-4 text-center animate-fadeUp">
+        <span className="inline-block w-full bg-gradient-to-l from-text-gold-start via-text-gold-middle to-text-gold-end bg-clip-text text-transparent">
+          <p className="text-[24px] sm:text-[20px] xs:text-[16px] m-0">{`Welcome to the Tiger Directory!`}</p>
+          <ul className="text-[18px] sm:text-[16px] xs:text-[14px] m-0 pl-0 list-none">
+            <li className="mb-0">{`Search and filter to find tigers`}</li>
+            <li className="mb-0">{`and view community profiles`}</li>
           </ul>
         </span>
       </div>
-      <img
-        className="absolute top-[278.12px] left-[766.77px] w-[141.47px] h-[165.77px] overflow-hidden"
-        alt=""
-        src="/isolation-mode.svg"
-      />
       <div className="absolute top-[0.68px] left-[calc(50%_-_1917px)] w-[3250.29px] h-[209.26px] text-center text-24px font-title">
         <div className="absolute top-[0px] left-[calc(50%_-_31.15px)] tracking-[3.4px] leading-[64px] flex items-center w-[647px] h-[126.34px]">
-          <span className="[line-break:anywhere] w-full bg-gradient-to-l 2xs:text-[24px] xs:text-[24px] sm:text-[28px] md:text-[32px] lg:text-[36px] xl:text-[40px] 2xl:text-[44px] from-text-gold-start via-text-gold-middle to-text-gold-end bg-clip-text text-transparent animate-fadeUp">
+          <span className="[line-break:anywhere] w-full bg-gradient-to-l text-[22px] 2xs:text-[24px] xs:text-[24px] sm:text-[28px] md:text-[32px] lg:text-[36px] xl:text-[40px] 2xl:text-[44px] from-text-gold-start via-text-gold-middle to-text-gold-end bg-clip-text text-transparent animate-fadeUp">
             <p className="m-0">{`TIGER GALLERY `}</p>
             <p className="m-0">MEMBER DIRECTORY</p>
           </span>

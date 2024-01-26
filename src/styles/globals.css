@@ -216,6 +216,10 @@ body {
   animation: rotateClockwise 3s linear infinite;
 }
 
+.animate-rotateClockwiseFast {
+  animation: rotateClockwise 2s cubic-bezier(0.6, -0.28, 0.735, 0.045) infinite;
+}
+
 .animate-rotateCounterClockwise {
   animation: rotateCounterClockwise 3s linear infinite;
 }

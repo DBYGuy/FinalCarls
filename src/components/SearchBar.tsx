@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useTokenSearch } from '~/hooks/useTokenSearch';
+import { TokenTraitType } from '~/components/DesktopDirectory';
 
 export interface SearchResult {
   tokenID: number;
@@ -10,7 +11,7 @@ export interface SearchResult {
     username: string | null;
     ENSName: string | null;
   } | null;
-  // Add other fields as necessary
+  tokenTraits: TokenTraitType[];
 }
 
 interface SearchBarProps {
@@ -22,7 +23,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSelect, onEnterPress }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [isResultsVisible, setIsResultsVisible] = useState(false);
   const searchBarRef = useRef<HTMLDivElement>(null);
-  const { results, isLoading, isError } = useTokenSearch(searchTerm);
+  const { results } = useTokenSearch(searchTerm);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -72,7 +73,6 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSelect, onEnterPress }) => {
         onKeyDown={handleKeyDown}
         className="flex-grow bg-transparent border-none outline-none text-sm text-black placeholder-gray-500"
       />
-      {isLoading && searchTerm && <div>Loading...</div>}
       {isResultsVisible && results && results.length > 0 && (
         <div className="absolute top-full left-0 w-full bg-black shadow-[0px_4px_4px_rgba(0,_0,_0,_0.25)] rounded-b-md z-10">
           {results.slice(0, 6).map((result, index) => (
@@ -86,7 +86,6 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSelect, onEnterPress }) => {
           ))}
         </div>
       )}
-      {isError && <div>Error loading results.</div>}
     </div>
   );
 };

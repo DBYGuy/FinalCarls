@@ -3,19 +3,37 @@ import { z } from 'zod';
 
 export const tokenRouter = router({
   byTrait: procedure
-    .input(z.object({ traitType: z.string(), value: z.string() }))
+    .input(
+      z.object({
+        traitType: z.string(),
+        value: z.string(),
+        page: z.number().min(0).default(0),
+        itemsPerPage: z.number().min(1).default(12),
+      }),
+    )
     .query(async ({ input, ctx }) => {
+      const { traitType, value, page, itemsPerPage } = input;
+      const skip = page * itemsPerPage;
+
       return ctx.prisma.token.findMany({
         where: {
           tokenTraits: {
             some: {
-              traitType: input.traitType,
-              value: input.value,
+              traitType: traitType,
+              value: value,
             },
           },
         },
+        skip,
+        take: itemsPerPage,
         include: {
-          tokenTraits: true,
+          tokenTraits: {
+            where: {
+              value: {
+                not: 'none', // Exclude traits with value 'none'
+              },
+            },
+          },
         },
       });
     }),
@@ -29,9 +47,17 @@ export const tokenRouter = router({
   }),
 
   search: procedure
-    .input(z.object({ query: z.string().optional() }))
+    .input(
+      z.object({
+        query: z.string().optional(),
+        page: z.number().min(0).default(0),
+        itemsPerPage: z.number().min(1).default(12),
+      }),
+    )
     .query(async ({ input, ctx }) => {
-      const { query } = input;
+      const { query, page, itemsPerPage } = input;
+      const skip = page * itemsPerPage;
+
       return ctx.prisma.token.findMany({
         where: {
           OR: [
@@ -54,9 +80,17 @@ export const tokenRouter = router({
             // Add other searchable fields as necessary
           ],
         },
+        skip,
+        take: itemsPerPage,
         include: {
           owner: true,
-          tokenTraits: true,
+          tokenTraits: {
+            where: {
+              value: {
+                not: 'none', // Exclude traits with value 'none'
+              },
+            },
+          },
         },
       });
     }),
