@@ -10,6 +10,7 @@ export interface SearchResult {
     walletAddress: string;
     username: string | null;
     ENSName: string | null;
+    id: string;
   } | null;
   tokenTraits: TokenTraitType[];
 }

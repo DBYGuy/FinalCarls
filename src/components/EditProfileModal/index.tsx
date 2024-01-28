@@ -16,7 +16,6 @@ type EditProfileFormData = {
   location?: string;
   bio?: string;
   Xhandle?: string;
-  discordID?: string;
   avatar?: string;
 };
 
@@ -55,7 +54,6 @@ export const EditProfileModal: React.FC = () => {
       username: data.username,
       displayName: data.displayName,
       Xhandle: data.Xhandle,
-      discordID: data.discordID,
     };
 
     // Call the update user profile mutation
@@ -124,59 +122,68 @@ export const EditProfileModal: React.FC = () => {
       ></div>
 
       {/* Modal container */}
-      <div className="relative bg-itsc-black rounded w-[350px] h-[401px] p-8 text-white overflow-auto">
+      <div className="relative bg-itsc-black rounded w-[360px] h-[441px] p-8 text-white overflow-auto">
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="flex mt-20 flex-col items-start justify-start gap-4"
         >
           {/* Input fields for user profile */}
           <input
-            className="rounded bg-white p-2 border border-gray-200 w-full"
+            className="rounded bg-white p-2 border border-gray-200 w-[275px]"
             placeholder="Username"
             {...register('username')}
           />
+          <div className="flex items-center gap-1">
+            <input
+              className="rounded bg-white p-2 border border-gray-200 w-[230px]"
+              placeholder="Region or Country"
+              {...register('location')}
+            />
+            <button
+              type="button"
+              className="flex items-center justify-center p-2 bg-transparent"
+              onClick={handleGeolocation}
+            >
+              <img
+                src="/locator.svg"
+                alt="Use Current Location"
+                className="w-10 h-10" // Adjust the size as needed
+              />
+            </button>
+          </div>
           <input
-            className="rounded bg-white p-2 border border-gray-200 w-full"
-            placeholder="Region or Country"
-            {...register('location')}
-          />
-          <button
-            type="button"
-            className="rounded bg-blue-500 text-white py-2 px-4"
-            onClick={handleGeolocation}
-          >
-            Use Current Location
-          </button>
-          <input
-            className="rounded bg-white p-2 border border-gray-200 w-full"
-            placeholder="Discord Handle"
-            {...register('discordID')}
-          />
-          <input
-            className="rounded bg-white p-2 border border-gray-200 w-full"
+            className="rounded bg-white p-2 border border-gray-200 w-[275px]"
             placeholder="X Handle"
             {...register('Xhandle')}
           />
           <textarea
-            className="rounded bg-white p-2 border border-gray-200 w-full"
+            className="rounded bg-white p-2 border border-gray-200 w-[275px]"
             placeholder="Bio"
             {...register('bio')}
           />
-          {/* Save Button */}
-          <button
-            type="submit"
-            // disabled={isLoading}
-            className="rounded bg-blue-500 text-white py-2 px-4"
-          >
-            Save Profile
-          </button>
-          <button
-            type="button"
-            className="rounded bg-blue-500 text-white py-2 px-4"
-            onClick={showAvatarModal} // Show Avatar Modal on click
-          >
-            Select Avatar from NFTs
-          </button>
+          <div className="flex items-center gap-4">
+            {/* Save Profile Button */}
+            <button
+              type="submit"
+              className="flex items-center rounded text-white py-2 px-4 bg-transparent border border-white hover:bg-white hover:text-black transition duration-300"
+            >
+              Save Profile
+            </button>
+
+            {/* Select Avatar from NFTs Button */}
+            <button
+              type="button"
+              className="flex items-center rounded text-white py-2 px-4 bg-transparent border border-white hover:bg-white hover:text-black transition duration-300"
+              onClick={showAvatarModal}
+            >
+              <img
+                src="/isolation-mode.svg"
+                alt="Select Avatar"
+                className="w-5 h-5 mr-2"
+              />
+              Select Avatar
+            </button>
+          </div>
         </form>
         <NftModal
           isOpen={isNftModalOpen}

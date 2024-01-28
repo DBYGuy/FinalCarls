@@ -5,6 +5,8 @@ import { useTraitTypesAndValues } from '~/hooks/useTraitTypesAndValues';
 import SearchBar from '../SearchBar';
 import { SearchResult } from '~/components/SearchBar';
 import { useTokenSearch } from '~/hooks/useTokenSearch';
+import TigerModal from '../TigerModal';
+import TraitDrawer from '../TraitDrawer';
 
 export interface TokenTraitType {
   id: number;
@@ -19,17 +21,25 @@ export interface TokenType {
   name: string;
   lastUpdated: Date | null;
   s3ImageUrl: string | null;
-  ownerID: string | null;
+  owner: OwnerType | null;
   tokenTraits: TokenTraitType[];
+}
+
+export interface OwnerType {
+  walletAddress: string;
+  id: string;
+  username: string | null;
+  ENSName: string | null;
 }
 
 const DesktopDirectory = () => {
   const [selectedTraitType, setSelectedTraitType] = useState<string>('');
   const [selectedTraitValue, setSelectedTraitValue] = useState<string>('');
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [isTigerModalOpen, setIsTigerModalOpen] = useState(false);
+  const [currentUserId, setCurrentUserId] = useState('');
   const [searchResult, setSearchResult] = useState<TokenType | null>(null);
   const [searchResults, setSearchResults] = useState<TokenType[]>([]);
-  const [collapsed, setCollapsed] = useState<Record<string, boolean>>({});
   const drawerRef = useRef<HTMLDivElement>(null);
   const [lastUpdated, setLastUpdated] = useState<
     'searchResult' | 'searchResults' | 'traits'
@@ -48,13 +58,20 @@ const DesktopDirectory = () => {
       name: selectedResult.name,
       lastUpdated: null,
       s3ImageUrl: selectedResult.s3ImageUrl,
-      ownerID: selectedResult.owner?.walletAddress ?? null,
-      tokenTraits: selectedResult.tokenTraits, // Use the traits from the search result
+      owner: selectedResult.owner, // Use the owner object directly
+      tokenTraits: selectedResult.tokenTraits,
     };
     setSearchResult(convertedResult);
     setSelectedTraitType('');
     setSelectedTraitValue('');
     setLastUpdated('searchResult');
+  };
+  const handleTraitSelect = (traitType: string, value: string) => {
+    setSelectedTraitType(traitType);
+    setSelectedTraitValue(value);
+    setLastUpdated('traits');
+    // Update the search results based on the selected trait
+    // You might need to call a function to fetch or filter tokens based on the selected trait
   };
   const handleEnterPressInSearch = (results: SearchResult[]) => {
     const formattedResults: TokenType[] = results.map((result) => ({
@@ -63,8 +80,8 @@ const DesktopDirectory = () => {
       name: result.name,
       lastUpdated: null,
       s3ImageUrl: result.s3ImageUrl,
-      ownerID: result.owner?.walletAddress ?? null,
-      tokenTraits: result.tokenTraits, // Use the traits from each search result
+      owner: result.owner, // Use the owner object directly
+      tokenTraits: result.tokenTraits,
     }));
 
     if (formattedResults.length > 0) {
@@ -74,29 +91,6 @@ const DesktopDirectory = () => {
       setSearchResult(null);
       setSearchResults([]);
       setLastUpdated(undefined);
-    }
-  };
-
-  const handleTraitCheckboxChange = (
-    traitType: string,
-    value: string,
-    isChecked: boolean,
-  ) => {
-    if (isChecked) {
-      setSelectedTraitType(traitType);
-      setSelectedTraitValue(value);
-      setLastUpdated('traits');
-      // Clear search results when a new trait type or value is selected
-      setSearchResults([]);
-      setSearchResult(null);
-    } else {
-      // Revert to random tokens when a trait box is unchecked
-      setSelectedTraitType('');
-      setSelectedTraitValue('');
-      setLastUpdated(undefined);
-      // Also clear search results here
-      setSearchResults([]);
-      setSearchResult(null);
     }
   };
 
@@ -153,19 +147,6 @@ const DesktopDirectory = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [drawerRef]);
 
-  const toggleCollapse = (traitType: string) => {
-    setCollapsed((prev) => ({ ...prev, [traitType]: !prev[traitType] }));
-  };
-  useEffect(() => {
-    const initialCollapsedState = Object.keys(traitTypesAndValues).reduce<
-      Record<string, boolean>
-    >((acc, traitType) => {
-      acc[traitType] = false; // Start with all traits collapsed
-      return acc;
-    }, {});
-    setCollapsed(initialCollapsedState);
-  }, [traitTypesAndValues]);
-
   let tokensToShow = [];
   let isLoading = false;
 
@@ -180,10 +161,7 @@ const DesktopDirectory = () => {
   } else {
     tokensToShow = randomTokens;
   }
-  const drawerStyle = {
-    transform: isDrawerOpen ? 'translateX(0)' : 'translateX(-100%)',
-    transition: 'transform 0.3s ease-in-out',
-  };
+
   const handleLoadMore = () => {
     if (lastUpdated === 'traits') {
       loadMoreTraitTokens();
@@ -191,17 +169,29 @@ const DesktopDirectory = () => {
       loadMoreRandomTokens();
     }
   };
+  const openTigerModal = (userId: string) => {
+    setCurrentUserId(userId);
+    setIsTigerModalOpen(true);
+  };
+
+  // Function to close TigerModal
+  const closeTigerModal = () => {
+    setIsTigerModalOpen(false);
+    setCurrentUserId('');
+  };
 
   return (
     <div className="relative bg-gray-100 w-full min-h-screen overflow-hidden text-left text-5xl text-white font-outfit">
+      {isTigerModalOpen && (
+        <TigerModal userId={currentUserId} onClose={closeTigerModal} />
+      )}
       <div className="absolute top-32 left-0 right-0 flex justify-between items-center px-4">
         <img src="/lattice.svg" alt="Lattice Left" />
         <img src="/lattice.svg" alt="Lattice Right" />
       </div>
 
-      <div className="w-full flex flex-col items-center justify-center pt-[600px]">
-        {' '}
-        {/* Adjusted padding-top */}
+      <div className="flex justify-center pt-[600px]">
+        {/* NFT Grid Container */}
         <div className="shadow-[5px_4px_4px_rgba(0,_0,_0,_0.25)] w-[95%] mx-auto">
           <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
             {/* Map through tokensToShow and render ProfileCard components */}
@@ -209,13 +199,17 @@ const DesktopDirectory = () => {
               tokensToShow.map((token) => (
                 <ProfileCard
                   key={token.tokenID}
-                  name={token?.name}
-                  src={token?.s3ImageUrl ?? ''}
-                  trait1={token?.tokenTraits?.[0]?.value ?? 'N/A'}
-                  trait2={token?.tokenTraits?.[1]?.value ?? 'N/A'}
+                  name={token.name}
+                  src={token.s3ImageUrl ?? ''}
+                  trait1={token.tokenTraits?.[0]?.value ?? 'N/A'}
+                  trait2={token.tokenTraits?.[1]?.value ?? 'N/A'}
+                  hasUser={!!token.owner}
+                  userId={token.owner?.id ?? ''}
+                  openTigerModal={() => openTigerModal(token.owner?.id ?? '')}
                 />
               ))}
           </div>
+          {/* Load More button */}
           {lastUpdated === 'traits' && (
             <div className="flex justify-center mt-4">
               <button
@@ -227,6 +221,16 @@ const DesktopDirectory = () => {
             </div>
           )}
         </div>
+
+        {/* Trait Drawer */}
+        {isDrawerOpen && (
+          <div className="absolute left-0 top-[487px] w-[350px] h-[600px] shadow-md z-10">
+            <TraitDrawer
+              traitTypesAndValues={traitTypesAndValues}
+              onTraitSelect={handleTraitSelect}
+            />
+          </div>
+        )}
       </div>
       <img
         className="absolute h-[2.21%] w-[17.79%] top-[350px] right-[77.84%] bottom-[74.71%] left-[4.37%] max-w-full overflow-hidden max-h-full z-1 animate-marquee"
@@ -256,45 +260,6 @@ const DesktopDirectory = () => {
           src="/buttons.svg"
           onClick={toggleDrawer}
         />
-        {/* Drawer Menu */}
-        {isDrawerOpen && (
-          <div
-            ref={drawerRef}
-            style={drawerStyle}
-            className="absolute left-0 top-0 w-[300px] h-full bg-white shadow-md z-10"
-          >
-            {Object.entries(traitTypesAndValues).map(([traitType, values]) => (
-              <div key={traitType}>
-                <button onClick={() => toggleCollapse(traitType)}>
-                  {traitType}
-                </button>
-                {collapsed[traitType] && (
-                  <div>
-                    {values.map((value) => (
-                      <label key={value}>
-                        <input
-                          type="checkbox"
-                          checked={
-                            selectedTraitType === traitType &&
-                            selectedTraitValue === value
-                          }
-                          onChange={(e) =>
-                            handleTraitCheckboxChange(
-                              traitType,
-                              value,
-                              e.target.checked,
-                            )
-                          }
-                        />
-                        {value}
-                      </label>
-                    ))}
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-        )}
       </div>
       <div className="absolute top-[276px] left-[35%] transform -translate-x-1/2 w-full max-w-[475px] px-4 text-center animate-fadeUp">
         <span className="inline-block w-full bg-gradient-to-l from-text-gold-start via-text-gold-middle to-text-gold-end bg-clip-text text-transparent">

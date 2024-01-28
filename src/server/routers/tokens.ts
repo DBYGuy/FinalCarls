@@ -27,6 +27,7 @@ export const tokenRouter = router({
         skip,
         take: itemsPerPage,
         include: {
+          owner: true,
           tokenTraits: {
             where: {
               value: {

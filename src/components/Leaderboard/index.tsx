@@ -18,6 +18,14 @@ const Leaderboard: NextPage = () => {
   const loadMore = () => {
     setPage((prevPage) => prevPage + 1);
   };
+
+  useEffect(() => {
+    if (leaderboard && leaderboard.length === 0 && page > 1) {
+      // If no results are returned and it's not the first page, reset to the first page
+      setPage(1);
+    }
+  }, [leaderboard, page]);
+
   return (
     <div className="relative bg-itsc-black w-full flex flex-col items-center justify-start p-4 box-border gap-4 text-center text-lg font-outfit">
       <LeaderboardContainer />
@@ -50,13 +58,13 @@ const Leaderboard: NextPage = () => {
                 points={entry.points}
                 avatarBaseImageUrl={
                   entry?.avatar ?? '/-privateavatarbase@2x.png'
-                } // or dynamic if available
+                }
               />
             ))}
           </div>
         )}
         {/* Load More Button */}
-        {!isLoading && leaderboard && leaderboard.length > 0 && (
+        {!isLoading && leaderboard && (
           <button
             className="mt-4 px-4 py-2 text-white bg-blue-500 hover:bg-blue-700 rounded"
             onClick={loadMore}

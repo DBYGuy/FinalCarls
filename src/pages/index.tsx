@@ -14,9 +14,15 @@ const IndexPage = () => {
       </Head>
       <main className="flex flex-col">
         <HomeScreen />
-        <DailyCheckIn />
-        <DesktopDirectory />
-        <Leaderboard />
+        <div id="DailyCheckIn">
+          <DailyCheckIn />
+        </div>
+        <div id="DesktopDirectory">
+          <DesktopDirectory />
+        </div>
+        <div id="Leaderboard">
+          <Leaderboard />
+        </div>
         <Footer />
       </main>
     </>

@@ -5,7 +5,7 @@ export const useTraitTypesAndValues = () => {
     trpc.token.getTraitTypesAndValues.useQuery();
 
   return {
-    traitTypesAndValues: data || {},
+    traitTypesAndValues: data ?? {},
     isLoading,
     error,
   };

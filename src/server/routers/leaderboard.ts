@@ -28,6 +28,8 @@ export const leaderboardRouter = router({
                 id: true,
                 walletAddress: true,
                 avatar: true,
+                username: true,
+                ENSName: true,
               },
             },
             totalPoints: true,
@@ -39,7 +41,10 @@ export const leaderboardRouter = router({
         return leaderboard.map((entry, index) => ({
           rank: skip + index + 1,
           userId: entry.user.id,
-          username: entry.user.walletAddress,
+          username:
+            entry.user?.username ??
+            entry.user?.ENSName ??
+            entry.user.walletAddress,
           points: entry.totalPoints,
           level: entry.level,
           avatar: entry.user.avatar,

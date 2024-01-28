@@ -29,6 +29,7 @@ import { PopupProvider } from '~/components/PopUp/popupContext';
 import { ConfirmationModalProvider } from '../context/ConfirmationModalContext';
 import { EditProfileModalProvider } from '../context/EditProfileModalContext';
 import { AvatarModalProvider } from '../context/AvatarModalContext';
+import { TigerModalProvider } from '../context/TigerModalContext';
 import localFont from '@next/font/local';
 import { trpc } from '../utils/trpc';
 import '~/styles/globals.css';
@@ -149,10 +150,12 @@ const MyApp = (({
                   <ConfirmationModalProvider>
                     <AvatarModalProvider>
                       <EditProfileModalProvider>
-                        <PopupProvider>
-                          <DesktopHeader />
-                          <div>{page}</div>
-                        </PopupProvider>
+                        <TigerModalProvider>
+                          <PopupProvider>
+                            <DesktopHeader />
+                            <div>{page}</div>
+                          </PopupProvider>
+                        </TigerModalProvider>
                       </EditProfileModalProvider>
                     </AvatarModalProvider>
                   </ConfirmationModalProvider>

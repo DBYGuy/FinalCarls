@@ -17,7 +17,7 @@ const SectionCard: NextPage<SectionCardType> = ({
   avatarBaseImageUrl = '/-privateavatarbase@2x.png',
 }) => {
   return (
-    <div className="w-full flex flex-col items-start justify-start">
+    <div className="w-full flex flex-col items-start justify-start animate-slideInFromLeft">
       <FrameComponent
         privateAvatarBase={avatarBaseImageUrl}
         rank={rank}

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useTigerNfts, NftProps } from '~/hooks/useTigerNfts';
-import { useConfirmationModal } from '~/context/ConfirmationModalContext'; // Import Confirmation Modal Context
-import { useUpdateAvatar } from '~/hooks/useUpdateAvatar'; // Import useUpdateAvatar hook
+import { useConfirmationModal } from '~/context/ConfirmationModalContext';
+import { useUpdateAvatar } from '~/hooks/useUpdateAvatar';
 
 interface AvatarSelectionModalProps {
   onClose: () => void;
@@ -17,19 +17,21 @@ const AvatarSelectionModal: React.FC<AvatarSelectionModalProps> = ({
   const handleAvatarSelection = (nft: NftProps) => {
     showConfirmation(
       `Are you sure you want to set this image as your avatar?`,
-      () => handleAvatarUpdate(nft?.s3ImageUrl ?? ''), // Pass the avatar URL to the update function
+      () => handleAvatarUpdate(nft?.s3ImageUrl ?? ''),
     );
   };
 
   const handleAvatarUpdate = async (avatarUrl: string) => {
     await updateAvatar(avatarUrl);
-    onClose(); // Close the AvatarSelectionModal after updating
+    onClose();
   };
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-      <div className="bg-white rounded-lg p-6 max-w-lg w-full overflow-hidden">
-        <h2 className="text-lg font-semibold mb-4">Select Your Avatar</h2>
+      <div className="relative bg-itsc-black rounded w-[360px] max-w-lg w-full overflow-hidden p-8">
+        <h2 className="text-[42px] font-omegle mb-4 text-transparent bg-clip-text bg-gradient-to-r from-text-gold-start via-text-gold-middle to-text-gold-end">
+          Select Your Avatar
+        </h2>
         <div className="grid grid-cols-3 gap-4 overflow-y-auto max-h-96">
           {nfts?.map((nft, index) => (
             <div
@@ -51,7 +53,7 @@ const AvatarSelectionModal: React.FC<AvatarSelectionModalProps> = ({
             ))}
         </div>
         <button
-          className="mt-4 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition duration-300"
+          className="mt-4 text-white bg-transparent border border-white px-4 py-2 rounded hover:bg-white hover:text-black transition duration-300"
           onClick={onClose}
         >
           Close

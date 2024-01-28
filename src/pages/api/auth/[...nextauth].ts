@@ -10,6 +10,12 @@ import { SiweMessage } from 'siwe';
 import { DOMAIN, websiteUrl } from '../../../constants';
 import { prisma } from '../../../server/context/db';
 import { InfuraProvider } from 'ethers';
+import DiscordProvider from 'next-auth/providers/discord';
+
+type DiscordProfile = {
+  username: string;
+  discriminator: string;
+};
 
 const UNSECURE_SESSION_TOKEN_COOKIE_NAME = 'next-auth.session-token';
 const SECURE_SESSION_TOKEN_COOKIE_NAME = '__Secure-next-auth.session-token';
@@ -112,9 +118,31 @@ export function getServerContext(
           }
         },
       }),
+      DiscordProvider({
+        clientId: process.env?.DISCORD_CLIENT_ID ?? '',
+        clientSecret: process.env?.DISCORD_CLIENT_SECRET ?? '',
+        authorization: {
+          params: {
+            scope: 'identify',
+          },
+        },
+      }),
     ],
     callbacks: {
-      async signIn({ user }) {
+      async signIn({ user, account, profile }) {
+        if (account?.provider === 'discord' && profile) {
+          // Use type assertion with 'unknown' first
+          const discordProfile = profile as unknown as DiscordProfile;
+
+          const updatedUser = await prisma.user.update({
+            where: { id: user.id },
+            data: {
+              discordID: `${discordProfile.username}#${discordProfile.discriminator}`,
+            },
+          });
+
+          return updatedUser ? true : false;
+        }
         if (isCredentialsCallback(req) && user) {
           const sessionToken = generateSessionToken();
           const sessionMaxAge = 60 * 60 * 24 * 30; // 30 Days
@@ -126,6 +154,7 @@ export function getServerContext(
               userId: user.id,
               expires,
             });
+            return true;
           }
 
           const provider = new InfuraProvider(

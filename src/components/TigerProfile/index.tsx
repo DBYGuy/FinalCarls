@@ -7,6 +7,7 @@ import { useCheckLevelEligibility } from '~/hooks/useCheckLevelEligibility';
 import { useGetProfile } from '~/hooks/useGetProfile';
 import { useEditProfileModal } from '~/context/EditProfileModalContext';
 import { useGetAvatar } from '~/hooks/useGetAvatar';
+import { signIn } from 'next-auth/react';
 
 const TigerProfile: NextPage = () => {
   const { user, isLoading } = useMe();
@@ -94,9 +95,7 @@ const TigerProfile: NextPage = () => {
               <div className="flex gap-4 mb-4">
                 <button
                   className="bg-dusty-red text-white py-2 px-4 rounded shadow"
-                  onClick={() => {
-                    /* Connect Discord logic */
-                  }}
+                  onClick={() => signIn('discord')} // Corrected
                 >
                   Connect Discord
                 </button>

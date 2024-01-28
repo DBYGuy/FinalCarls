@@ -158,6 +158,34 @@ export const usersRouter = router({
 
       return user;
     }),
+  getUserInfo: procedure
+    .input(z.string()) // Input is the user ID
+    .query(async ({ input: userId, ctx }) => {
+      const user = await ctx.prisma.user.findUnique({
+        where: { id: userId },
+        include: {
+          userPoints: true, // Include user points
+          userProfile: true, // Include user profile
+          // Include other related models as needed
+        },
+      });
+
+      if (!user) {
+        throw new Error('User not found');
+      }
+
+      // Extract and return relevant information
+      return {
+        username: user.username ?? user.ENSName ?? user.walletAddress,
+        level: user.userPoints?.level ?? 0,
+        totalPoints: user.userPoints?.totalPoints ?? 0,
+        location: user.userProfile?.location ?? 'Not specified',
+        joinedDate: user.userProfile?.joinedDate?.toDateString() ?? 'Unknown',
+        avatar: user.avatar ?? '',
+        xHandle: user.Xhandle ?? 'Not Specified',
+        discordID: user.discordID ?? 'Not Specified',
+      };
+    }),
   getAvatar: procedure
     .input(z.object({ userId: z.string() }))
     .query(async ({ input, ctx }) => {

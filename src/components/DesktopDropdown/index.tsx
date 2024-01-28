@@ -8,6 +8,8 @@ import { getTruncatedWalletAddress } from '~/utils/wallet';
 import { useCheckLevelEligibility } from '~/hooks/useCheckLevelEligibility';
 import LevelButton from '~/components/LevelButton';
 import { useEditProfileModal } from '~/context/EditProfileModalContext';
+import { signOut } from 'next-auth/react';
+import { usePopup } from '~/components/PopUp/popupContext';
 
 const DesktopDropdown: NextPage = () => {
   const router = useRouter();
@@ -27,6 +29,19 @@ const DesktopDropdown: NextPage = () => {
     } else {
       openModal();
     }
+  };
+  const { showPopup } = usePopup();
+
+  const handleLogout = async () => {
+    await signOut({ redirect: false });
+    showPopup(
+      'Success!',
+      'You have successfully logged out.',
+      '/itsclogo-1.svg',
+    );
+    setTimeout(() => {
+      window.location.reload();
+    }, 1000);
   };
 
   return (
@@ -239,6 +254,14 @@ const DesktopDropdown: NextPage = () => {
             )}
           </div>
         </div>
+      </div>
+      <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 mb-4">
+        <button
+          onClick={handleLogout}
+          className="rounded text-white py-2 px-4 bg-transparent border border-white"
+        >
+          Log Out
+        </button>
       </div>
     </div>
   );

@@ -1,10 +1,15 @@
 import React, { useState, useEffect } from 'react';
+import { itscTigerContract } from '~/contracts/tiger';
+import { getOpenSeaTokenBaseAddress } from '~/utils/wallet';
 
 interface ProfileCardProps {
   name: string;
   src: string; // Image URL
   trait1: string; // First trait
   trait2: string; // Second trait
+  hasUser?: boolean; // Indicates if there is a user associated with the token
+  userId?: string; // User ID associated with the token
+  openTigerModal: (userId: string) => void; // Function to open the Tiger modal
 }
 
 const ProfileCard: React.FC<ProfileCardProps> = ({
@@ -12,6 +17,9 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
   src,
   trait1,
   trait2,
+  hasUser = false,
+  userId,
+  openTigerModal,
 }) => {
   const [isImageLoading, setIsImageLoading] = useState(true);
 
@@ -21,6 +29,12 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
     image.onload = () => setIsImageLoading(false);
     image.onerror = () => setIsImageLoading(false); // Handle error case
   }, [src]);
+
+  const handleTigerIconClick = () => {
+    if (userId) {
+      openTigerModal(userId);
+    }
+  };
 
   return (
     <div className="relative shadow-[5px_4px_4px_rgba(0,_0,_0,_0.25)] w-[300px] h-[400px] text-left text-5xl text-white font-outfit">
@@ -51,7 +65,29 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
           </div>
         </div>
       </div>
-      {/* Optional Button or Other Elements */}
+      <div className="absolute bottom-4 right-4 flex items-center">
+        <div className="flex items-center justify-center mr-3">
+          {hasUser && (
+            <img
+              src="/day-7-tiger.svg"
+              alt="User"
+              className="w-6 h-6 cursor-pointer"
+              onClick={handleTigerIconClick}
+            />
+          )}
+        </div>
+        <div className="flex items-center justify-center mt-2 mr-4">
+          <a
+            href={`${getOpenSeaTokenBaseAddress()}/${
+              itscTigerContract.address as `0x${string}`
+            }/${Number(name.split('#')[1]?.match(/\d+/)?.[0] ?? '')}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img src="/opensea-ship.svg" alt="OpenSea" className="w-6 h-6" />
+          </a>
+        </div>
+      </div>
     </div>
   );
 };
