@@ -107,6 +107,8 @@ model Token {
   ownerID     String?      @map("owner_id")
   owner       User?        @relation(fields: [ownerID], references: [id])
   tokenTraits TokenTrait[]
+  @@index([ownerID])
+  @@index([tokenID])
 }
 
 model TokenTrait {
@@ -115,6 +117,9 @@ model TokenTrait {
   traitType String
   value    String
   token    Token  @relation(fields: [tokenID], references: [tokenID])
+
+  @@index([tokenID])
+  @@index([traitType, value])
 }
 
 model UserPoints {
