@@ -59,55 +59,73 @@ export const tokenRouter = router({
       const { query, page, itemsPerPage } = input;
       const skip = page * itemsPerPage;
 
-      return ctx.prisma.token.findMany({
-        where: {
-          OR: [
-            { name: { contains: query, mode: 'insensitive' } },
-            {
-              tokenTraits: {
-                some: { value: { contains: query, mode: 'insensitive' } },
-              },
-            },
-            {
-              owner: {
-                OR: [
-                  { walletAddress: { contains: query, mode: 'insensitive' } },
-                  { username: { contains: query, mode: 'insensitive' } },
-                  { ENSName: { contains: query, mode: 'insensitive' } },
-                ],
-              },
-            },
-            { ownerAddress: { contains: query, mode: 'insensitive' } }, // Added condition for ownerAddress
-            // Add other searchable fields as necessary
-          ],
-        },
-        skip,
-        take: itemsPerPage,
-        include: {
-          owner: true,
-          tokenTraits: {
-            where: {
-              value: {
-                not: 'none', // Exclude traits with value 'none'
+      if (!query) {
+        // Logic to fetch default tokens when the search term is empty
+        // This could be fetching popular or random tokens, for example
+        return ctx.prisma.token.findMany({
+          skip,
+          take: itemsPerPage,
+          include: {
+            owner: true,
+            tokenTraits: {
+              where: {
+                value: {
+                  not: 'none', // Exclude traits with value 'none'
+                },
               },
             },
           },
-        },
-      });
+          // Additional logic to determine which tokens to fetch by default
+        });
+      } else {
+        // Regular search logic
+        return ctx.prisma.token.findMany({
+          where: {
+            OR: [
+              { name: { contains: query, mode: 'insensitive' } },
+              {
+                tokenTraits: {
+                  some: { value: { contains: query, mode: 'insensitive' } },
+                },
+              },
+              {
+                owner: {
+                  OR: [
+                    { walletAddress: { contains: query, mode: 'insensitive' } },
+                    { username: { contains: query, mode: 'insensitive' } },
+                    { ENSName: { contains: query, mode: 'insensitive' } },
+                  ],
+                },
+              },
+              { ownerAddress: { contains: query, mode: 'insensitive' } }, // Added condition for ownerAddress
+              // Add other searchable fields as necessary
+            ],
+          },
+          skip,
+          take: itemsPerPage,
+          include: {
+            owner: true,
+            tokenTraits: {
+              where: {
+                value: {
+                  not: 'none', // Exclude traits with value 'none'
+                },
+              },
+            },
+          },
+        });
+      }
     }),
 
-  getTokenDetails: procedure
-    .input(z.number()) // Assuming tokenID is a number
-    .query(async ({ input, ctx }) => {
-      const tokenID = input;
-      return ctx.prisma.token.findUnique({
-        where: { tokenID },
-        include: {
-          tokenTraits: true, // Include related traits if necessary
-          // Include other relations if needed
-        },
-      });
-    }),
+  getTokenDetails: procedure.input(z.number()).query(async ({ input, ctx }) => {
+    const tokenID = input;
+    return ctx.prisma.token.findUnique({
+      where: { tokenID },
+      include: {
+        tokenTraits: true,
+      },
+    });
+  }),
   updateTokenMetadata: procedure
     .input(
       z.object({
@@ -142,7 +160,6 @@ export const tokenRouter = router({
     .mutation(async ({ input, ctx }) => {
       const { tokenID, traits } = input;
 
-      // This assumes a "replace all traits" strategy. Adjust as needed.
       await ctx.prisma.tokenTrait.deleteMany({ where: { tokenID } });
 
       const newTraits = traits.map((trait) => ({

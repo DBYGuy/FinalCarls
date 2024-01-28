@@ -10,20 +10,24 @@ export const useTokenSearch = (searchTerm: string, itemsPerPage = 12) => {
 
   const { data, isLoading, isError } = trpc.token.search.useQuery(
     {
-      query: debouncedSearchTerm || searchTerm,
+      query: debouncedSearchTerm || undefined, // Handle empty search term
       page,
       itemsPerPage,
     },
     {
-      enabled: !!searchTerm,
+      enabled: true, // Always enabled, even for empty search term
       refetchOnWindowFocus: true,
       refetchOnMount: true,
     },
   );
 
   useEffect(() => {
-    // Reset results and page when the search term changes
-    if (searchTerm !== debouncedSearchTerm) {
+    // Fetch default tokens when search term is empty
+    if (!searchTerm) {
+      // Logic to fetch default tokens
+      // This could be a separate API call or a modification of the existing one
+      // Example: Fetch popular or random tokens
+    } else if (searchTerm !== debouncedSearchTerm) {
       setResults([]);
       setPage(0);
     }
