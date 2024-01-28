@@ -18,7 +18,6 @@ export const useTokensByTrait = (
   });
 
   useEffect(() => {
-    // Reset tokens and page when traitType or value changes
     setTokens([]);
     setPage(0);
   }, [traitType, value]);

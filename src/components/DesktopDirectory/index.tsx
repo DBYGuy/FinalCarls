@@ -48,9 +48,11 @@ const DesktopDirectory = () => {
     'searchResult' | 'searchResults' | 'traits'
   >();
   const { results: randomTokens, loadMore: loadMoreRandomTokens } =
-    useTokenSearch('');
-    const { tokens: traitTokens, loadMore: loadMoreTraitTokens } = useTokensByTrait(selectedTraitType, selectedTraitValue, page);
+    useTokenSearch('69');
+  const { tokens: traitTokens, loadMore: loadMoreTraitTokens } =
+    useTokensByTrait(selectedTraitType, selectedTraitValue, page);
   const { traitTypesAndValues } = useTraitTypesAndValues();
+
   const toggleDrawer = () => setIsDrawerOpen(!isDrawerOpen);
   const updateTokensToShow = (newTokens: TokenType[], loading: boolean) => {
     setTokensToShow(newTokens);
@@ -151,11 +153,6 @@ const DesktopDirectory = () => {
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [drawerRef]);
-
-  // Effect to handle initial token search
-  useEffect(() => {
-    updateTokensToShow(randomTokens, false);
-  }, [randomTokens]);
 
   // Update tokensToShow based on the lastUpdated state
   useEffect(() => {
