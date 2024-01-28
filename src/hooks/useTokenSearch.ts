@@ -10,12 +10,12 @@ export const useTokenSearch = (searchTerm: string, itemsPerPage = 12) => {
 
   const { data, isLoading, isError } = trpc.token.search.useQuery(
     {
-      query: debouncedSearchTerm || '',
+      query: debouncedSearchTerm || searchTerm,
       page,
       itemsPerPage,
     },
     {
-      enabled: true,
+      enabled: !!searchTerm,
       refetchOnWindowFocus: true,
       refetchOnMount: true,
     },
@@ -31,7 +31,7 @@ export const useTokenSearch = (searchTerm: string, itemsPerPage = 12) => {
 
   useEffect(() => {
     // Append new data to existing results, avoiding duplicates
-    if (data && !isLoading && !isError) {
+    if (data && !isError) {
       setResults((prevResults) => {
         const existingIDs = new Set(
           prevResults.map((result) => result.tokenID),
