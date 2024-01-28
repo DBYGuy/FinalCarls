@@ -9,7 +9,7 @@ export const useTokenSearch = (searchTerm: string, itemsPerPage = 12) => {
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
   const { data, isLoading, isError } = trpc.token.search.useQuery({
-    query: debouncedSearchTerm || '',
+    query: debouncedSearchTerm || undefined,
     page,
     itemsPerPage,
   });

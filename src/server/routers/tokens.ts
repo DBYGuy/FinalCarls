@@ -96,16 +96,6 @@ export const tokenRouter = router({
       });
     }),
 
-  byMetadata: procedure
-    .input(z.object({ key: z.string(), value: z.string() }))
-    .query(async ({ input, ctx }) => {
-      // This is a placeholder - actual implementation will depend on how metadata is stored and structured
-      return ctx.prisma.token.findMany({
-        where: {
-          // Your metadata query logic here
-        },
-      });
-    }),
   getTokenDetails: procedure
     .input(z.number()) // Assuming tokenID is a number
     .query(async ({ input, ctx }) => {
@@ -184,25 +174,4 @@ export const tokenRouter = router({
 
     return groupedTraits;
   }),
-  getPaginatedTokens: procedure
-    .input(
-      z.object({
-        page: z.number().min(0).default(0),
-        pageSize: z.number().min(1).default(50),
-      }),
-    )
-    .query(async ({ input, ctx }) => {
-      const { page, pageSize } = input;
-      const skip = page * pageSize;
-      return ctx.prisma.token.findMany({
-        skip,
-        take: pageSize,
-        orderBy: {
-          tokenID: 'asc', // Order by tokenID in descending order
-        },
-        include: {
-          tokenTraits: true,
-        },
-      });
-    }),
 });
