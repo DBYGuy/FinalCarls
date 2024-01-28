@@ -22,6 +22,17 @@ const TigerProfile: NextPage = () => {
   const { openModal } = useEditProfileModal();
   const { avatarUrl } = useGetAvatar();
   const progressPercentage = (points / (points + toNextLevel)) * 100 ?? 0;
+  const handleDiscordSignIn = async () => {
+    const userId = user?.id ?? '';
+    document.cookie = `userId=${userId}; path=/; max-age=300`; // 5 minutes expiry
+    await signIn(
+      'discord',
+      {
+        callbackUrl: `/api/auth/callback/discord`,
+      },
+      { userId: userId },
+    );
+  };
 
   return (
     <div className="relative bg-itsc-black w-full min-h-screen flex flex-col items-center justify-center pt-10 lg:pt-20">
@@ -95,7 +106,7 @@ const TigerProfile: NextPage = () => {
               <div className="flex gap-4 mb-4">
                 <button
                   className="bg-dusty-red text-white py-2 px-4 rounded shadow"
-                  onClick={() => signIn('discord')} // Corrected
+                  onClick={() => handleDiscordSignIn()} // Corrected
                 >
                   Connect Discord
                 </button>

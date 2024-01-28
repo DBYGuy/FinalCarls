@@ -15,6 +15,7 @@ import DiscordProvider from 'next-auth/providers/discord';
 type DiscordProfile = {
   username: string;
   discriminator: string;
+  global_name: string;
 };
 
 const UNSECURE_SESSION_TOKEN_COOKIE_NAME = 'next-auth.session-token';
@@ -131,17 +132,30 @@ export function getServerContext(
     callbacks: {
       async signIn({ user, account, profile }) {
         if (account?.provider === 'discord' && profile) {
-          // Use type assertion with 'unknown' first
           const discordProfile = profile as unknown as DiscordProfile;
-
-          const updatedUser = await prisma.user.update({
-            where: { id: user.id },
-            data: {
-              discordID: `${discordProfile.username}#${discordProfile.discriminator}`,
-            },
-          });
-
-          return updatedUser ? true : false;
+          // Retrieve userId from the cookie
+          const cookies = new Cookies(req, res);
+          const userId = cookies.get('userId');
+          if (!userId) {
+            console.error('UserId cookie is missing');
+            return false;
+          }
+          try {
+            const updatedUser = await prisma.user.update({
+              where: { id: userId },
+              data: {
+                discordID: `${
+                  discordProfile?.global_name ?? discordProfile?.username
+                }`,
+              },
+            });
+            // Optionally, clear the userId cookie after use
+            cookies.set('userId', '', { maxAge: -1 });
+            return updatedUser ? true : false;
+          } catch (error) {
+            console.error('Error updating user:', error);
+            return false;
+          }
         }
         if (isCredentialsCallback(req) && user) {
           const sessionToken = generateSessionToken();
