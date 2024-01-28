@@ -13,6 +13,8 @@ export interface SearchResult {
     id: string;
   } | null;
   tokenTraits: TokenTraitType[];
+  image: string; // Added to match TokenType
+  lastUpdated: Date | null; // Added to match TokenType
 }
 
 interface SearchBarProps {

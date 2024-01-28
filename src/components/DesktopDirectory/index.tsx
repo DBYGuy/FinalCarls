@@ -40,16 +40,22 @@ const DesktopDirectory = () => {
   const [currentUserId, setCurrentUserId] = useState('');
   const [searchResult, setSearchResult] = useState<TokenType | null>(null);
   const [searchResults, setSearchResults] = useState<TokenType[]>([]);
+  const [tokensToShow, setTokensToShow] = useState<TokenType[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [page, setPage] = useState(0);
   const drawerRef = useRef<HTMLDivElement>(null);
   const [lastUpdated, setLastUpdated] = useState<
     'searchResult' | 'searchResults' | 'traits'
   >();
   const { results: randomTokens, loadMore: loadMoreRandomTokens } =
     useTokenSearch('');
-  const { tokens: traitTokens, loadMore: loadMoreTraitTokens } =
-    useTokensByTrait(selectedTraitType, selectedTraitValue);
+    const { tokens: traitTokens, loadMore: loadMoreTraitTokens } = useTokensByTrait(selectedTraitType, selectedTraitValue, page);
   const { traitTypesAndValues } = useTraitTypesAndValues();
   const toggleDrawer = () => setIsDrawerOpen(!isDrawerOpen);
+  const updateTokensToShow = (newTokens: TokenType[], loading: boolean) => {
+    setTokensToShow(newTokens);
+    setIsLoading(loading);
+  };
 
   const handleSearchSelect = (selectedResult: SearchResult) => {
     const convertedResult: TokenType = {
@@ -70,8 +76,7 @@ const DesktopDirectory = () => {
     setSelectedTraitType(traitType);
     setSelectedTraitValue(value);
     setLastUpdated('traits');
-    // Update the search results based on the selected trait
-    // You might need to call a function to fetch or filter tokens based on the selected trait
+    setPage(12); // Reset page to 0 when a new trait is selected
   };
   const handleEnterPressInSearch = (results: SearchResult[]) => {
     const formattedResults: TokenType[] = results.map((result) => ({
@@ -147,19 +152,28 @@ const DesktopDirectory = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [drawerRef]);
 
-  const tokensToShow =
-    lastUpdated === 'searchResults' && searchResults.length > 0
-      ? searchResults
-      : lastUpdated === 'searchResult' && searchResult
-      ? [searchResult]
-      : lastUpdated === 'traits'
-      ? traitTokens
-      : randomTokens;
+  // Effect to handle initial token search
+  useEffect(() => {
+    updateTokensToShow(randomTokens, false);
+  }, [randomTokens]);
 
-  // Define isLoading based on the lastUpdated state
-  const isLoading =
-    lastUpdated === 'traits' ||
-    (lastUpdated === 'searchResults' && searchResults.length === 0);
+  // Update tokensToShow based on the lastUpdated state
+  useEffect(() => {
+    switch (lastUpdated) {
+      case 'searchResults':
+        updateTokensToShow(searchResults, searchResults.length === 0);
+        break;
+      case 'searchResult':
+        updateTokensToShow(searchResult ? [searchResult] : [], false);
+        break;
+      case 'traits':
+        updateTokensToShow(traitTokens, traitTokens.length === 0);
+        break;
+      default:
+        updateTokensToShow(randomTokens, false);
+        break;
+    }
+  }, [lastUpdated, searchResults, searchResult, traitTokens, randomTokens]);
 
   const handleLoadMore = () => {
     if (lastUpdated === 'traits') {
