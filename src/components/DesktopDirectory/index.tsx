@@ -147,20 +147,19 @@ const DesktopDirectory = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [drawerRef]);
 
-  let tokensToShow = [];
-  let isLoading = false;
+  const tokensToShow =
+    lastUpdated === 'searchResults' && searchResults.length > 0
+      ? searchResults
+      : lastUpdated === 'searchResult' && searchResult
+      ? [searchResult]
+      : lastUpdated === 'traits'
+      ? traitTokens
+      : randomTokens;
 
-  if (lastUpdated === 'searchResults' && searchResults.length > 0) {
-    tokensToShow = searchResults;
-    isLoading = false;
-  } else if (lastUpdated === 'searchResult' && searchResult) {
-    tokensToShow = [searchResult];
-    isLoading = false;
-  } else if (lastUpdated === 'traits') {
-    tokensToShow = traitTokens;
-  } else {
-    tokensToShow = randomTokens;
-  }
+  // Define isLoading based on the lastUpdated state
+  const isLoading =
+    lastUpdated === 'traits' ||
+    (lastUpdated === 'searchResults' && searchResults.length === 0);
 
   const handleLoadMore = () => {
     if (lastUpdated === 'traits') {
