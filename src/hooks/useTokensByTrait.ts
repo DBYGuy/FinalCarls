@@ -10,17 +10,12 @@ export const useTokensByTrait = (
   const [tokens, setTokens] = useState<TokenType[]>([]);
   const [page, setPage] = useState(0);
 
-  const { data, isLoading } = trpc.token.byTrait.useQuery(
-    {
-      traitType,
-      value,
-      page,
-      itemsPerPage,
-    },
-    {
-      enabled: !!traitType && !!value,
-    },
-  );
+  const { data, isLoading } = trpc.token.byTrait.useQuery({
+    traitType,
+    value,
+    page,
+    itemsPerPage,
+  });
 
   useEffect(() => {
     // Reset tokens and page when traitType or value changes

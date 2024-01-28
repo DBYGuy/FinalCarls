@@ -8,17 +8,11 @@ export const useTokenSearch = (searchTerm: string, itemsPerPage = 12) => {
   const [page, setPage] = useState(0);
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
-  const { data, isLoading, isError } = trpc.token.search.useQuery(
-    {
-      query: debouncedSearchTerm || undefined,
-      page,
-      itemsPerPage,
-    },
-    {
-      enabled: true,
-      keepPreviousData: true,
-    },
-  );
+  const { data, isLoading, isError } = trpc.token.search.useQuery({
+    query: debouncedSearchTerm || '',
+    page,
+    itemsPerPage,
+  });
 
   useEffect(() => {
     // Reset results and page only when the actual search term changes
