@@ -162,13 +162,13 @@ export function getServerContext(
           const sessionMaxAge = 60 * 60 * 24 * 30; // 30 Days
           const expires = getExpiryDate(sessionMaxAge);
 
-          if (adapter?.createSession) {
+          // eslint-disable-next-line @typescript-eslint/prefer-optional-chain
+          if (adapter && adapter.createSession) {
             await adapter.createSession({
               sessionToken,
               userId: user.id,
               expires,
             });
-            return true;
           }
 
           const provider = new InfuraProvider(

@@ -1,5 +1,3 @@
-import type { NextPage } from 'next';
-
 interface TraitCategoryProps {
   traitType: string;
   traitCount: number;

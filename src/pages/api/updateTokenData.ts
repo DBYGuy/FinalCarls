@@ -27,6 +27,7 @@ async function getTotalSupply(): Promise<number> {
   const provider = ethers.getDefaultProvider('mainnet', {
     infura: process.env.INFURA_API_KEY,
   });
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const contract = new ethers.Contract(
     itscTigerContract.address as `0x${string}`,
     itscTigerContract.abi as InterfaceAbi,
@@ -34,7 +35,7 @@ async function getTotalSupply(): Promise<number> {
   ) as ethers.Contract & { totalSupply: () => Promise<number> };
 
   try {
-    const totalSupplyBigNumber = await contract.totalSupply();
+    // Fetch the total supply of tokens add better logic to do so later
     return 2400;
   } catch (error) {
     console.error('Error fetching total supply:', error);
@@ -59,7 +60,7 @@ export default async function handler(
   }
   try {
     // Fetch the last processed token ID
-    const cronState = (await prisma.cronJobState.findFirst()) || {
+    const cronState = (await prisma.cronJobState.findFirst()) ?? {
       lastTokenId: 0,
     };
     let lastTokenId = cronState.lastTokenId;

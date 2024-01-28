@@ -21,7 +21,7 @@ export default async function updateTokenImagesHandler(
   try {
     // Fetch the last processed image token ID
     const cronState = await prisma.cronJobState.findFirst();
-    let lastImageTokenId = cronState?.lastImageTokenId || 0;
+    let lastImageTokenId = cronState?.lastImageTokenId ?? 0;
 
     // Fetch next 5 tokens starting from the last processed token
     const tokens = await prisma.token.findMany({
