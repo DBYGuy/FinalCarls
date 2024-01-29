@@ -52,9 +52,18 @@ const DesktopDirectory = () => {
   const { traitTypesAndValues } = useTraitTypesAndValues();
   const toggleDrawer = () => setIsDrawerOpen(!isDrawerOpen);
   useEffect(() => {
-    // Set the initial tokens to display when the component mounts
-    if (randomTokens.length > 0) {
-      setSearchResults(randomTokens);
+    // Format the initial tokens in the same way as in handleEnterPressInSearch
+    const formattedInitialResults: TokenType[] = randomTokens.map((result) => ({
+      tokenID: result.tokenID,
+      image: result.s3ImageUrl ?? '',
+      name: result.name,
+      lastUpdated: null,
+      s3ImageUrl: result.s3ImageUrl,
+      owner: result.owner,
+      tokenTraits: result.tokenTraits,
+    }));
+    if (formattedInitialResults.length > 0) {
+      setSearchResults(formattedInitialResults);
       setLastUpdated('searchResults');
       setIsLoading(false);
     } else {
