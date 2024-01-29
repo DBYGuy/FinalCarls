@@ -1,11 +1,10 @@
 import { trpc } from '../utils/trpc';
 
-export const useGetLeaderboard = (page: number) => {
+export const useGetLeaderboard = (page: number, isEnabled = true) => {
   const query = trpc.leaderboard.getLeaderboard.useQuery(
     { page },
     {
-      enabled: true,
-      refetchOnMount: true,
+      enabled: isEnabled,
     },
   );
 

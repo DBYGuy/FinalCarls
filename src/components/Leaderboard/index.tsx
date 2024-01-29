@@ -6,7 +6,19 @@ import { useGetLeaderboard } from '~/hooks/useGetLeaderboard';
 
 const Leaderboard: NextPage = () => {
   const [page, setPage] = useState(1); // Manage current page
-  const { leaderboard, isLoading, isError, error } = useGetLeaderboard(page);
+  const [isClientReady, setIsClientReady] = useState(false); // State to track client readiness
+
+  useEffect(() => {
+    // Check if the client is ready (e.g., window object is available)
+    if (typeof window !== 'undefined') {
+      setIsClientReady(true);
+    }
+  }, []);
+
+  const { leaderboard, isLoading, isError, error } = useGetLeaderboard(
+    page,
+    isClientReady,
+  );
 
   useEffect(() => {
     if (isError && error) {
