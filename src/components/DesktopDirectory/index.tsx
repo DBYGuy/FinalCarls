@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import ProfileCard from '../ProfileCard';
 import { useTokensByTrait } from '~/hooks/useTokensByTrait';
-import { useTraitTypesAndValues } from '~/hooks/useTraitTypesAndValues';
 import SearchBar from '../SearchBar';
 import { SearchResult } from '~/components/SearchBar';
 import { useTokenSearch } from '~/hooks/useTokenSearch';
@@ -49,7 +48,6 @@ const DesktopDirectory = () => {
     useTokenSearch('69');
   const { tokens: traitTokens, loadMore: loadMoreTraitTokens } =
     useTokensByTrait(selectedTraitType, selectedTraitValue);
-  const { traitTypesAndValues } = useTraitTypesAndValues();
   const toggleDrawer = () => setIsDrawerOpen(!isDrawerOpen);
   useEffect(() => {
     // Format the initial tokens in the same way as in handleEnterPressInSearch
@@ -263,10 +261,7 @@ const DesktopDirectory = () => {
         {/* Trait Drawer */}
         {isDrawerOpen && (
           <div className="absolute left-0 top-[487px] w-[350px] h-[600px] shadow-md z-10">
-            <TraitDrawer
-              traitTypesAndValues={traitTypesAndValues}
-              onTraitSelect={handleTraitSelect}
-            />
+            <TraitDrawer onTraitSelect={handleTraitSelect} />
           </div>
         )}
       </div>
