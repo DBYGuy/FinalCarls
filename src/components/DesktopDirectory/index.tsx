@@ -38,6 +38,7 @@ const DesktopDirectory = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isTigerModalOpen, setIsTigerModalOpen] = useState(false);
   const [currentUserId, setCurrentUserId] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
   const [searchResult, setSearchResult] = useState<TokenType | null>(null);
   const [searchResults, setSearchResults] = useState<TokenType[]>([]);
   const drawerRef = useRef<HTMLDivElement>(null);
@@ -55,6 +56,9 @@ const DesktopDirectory = () => {
     if (randomTokens.length > 0) {
       setSearchResults(randomTokens);
       setLastUpdated('searchResults');
+      setIsLoading(false);
+    } else {
+      setIsLoading(true);
     }
   }, [randomTokens]);
 
@@ -154,15 +158,25 @@ const DesktopDirectory = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [drawerRef]);
 
-  let tokensToShow = [];
-  let isLoading = false;
+  useEffect(() => {
+    // Check if tokens are loaded and update isLoading accordingly
+    if (lastUpdated === 'searchResults' && searchResults.length > 0) {
+      setIsLoading(false);
+    } else if (lastUpdated === 'searchResult' && searchResult) {
+      setIsLoading(false);
+    } else if (lastUpdated === 'traits' && traitTokens.length > 0) {
+      setIsLoading(false);
+    } else if (!lastUpdated) {
+      setIsLoading(randomTokens.length === 0);
+    }
+  }, [lastUpdated, searchResults, searchResult, traitTokens, randomTokens]);
 
-  if (lastUpdated === 'searchResults' && searchResults.length > 0) {
+  let tokensToShow = [];
+
+  if (lastUpdated === 'searchResults') {
     tokensToShow = searchResults;
-    isLoading = false;
-  } else if (lastUpdated === 'searchResult' && searchResult) {
+  } else if (lastUpdated === 'searchResult') {
     tokensToShow = [searchResult];
-    isLoading = false;
   } else if (lastUpdated === 'traits') {
     tokensToShow = traitTokens;
   } else {
@@ -202,19 +216,27 @@ const DesktopDirectory = () => {
         <div className="shadow-[5px_4px_4px_rgba(0,_0,_0,_0.25)] w-[95%] mx-auto">
           <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
             {/* Map through tokensToShow and render ProfileCard components */}
-            {!isLoading &&
-              tokensToShow.map((token) => (
-                <ProfileCard
-                  key={token.tokenID}
-                  name={token.name}
-                  src={token.s3ImageUrl ?? ''}
-                  trait1={token.tokenTraits?.[0]?.value ?? 'N/A'}
-                  trait2={token.tokenTraits?.[1]?.value ?? 'N/A'}
-                  hasUser={!!token.owner}
-                  userId={token.owner?.id ?? ''}
-                  openTigerModal={() => openTigerModal(token.owner?.id ?? '')}
-                />
-              ))}
+            {isLoading ? (
+              <div>Loading...</div> // Replace with your loading indicator
+            ) : (
+              tokensToShow.map(
+                (token) =>
+                  token && ( // Check if token is not null
+                    <ProfileCard
+                      key={token.tokenID}
+                      name={token.name}
+                      src={token.s3ImageUrl ?? ''}
+                      trait1={token.tokenTraits?.[0]?.value ?? 'N/A'}
+                      trait2={token.tokenTraits?.[1]?.value ?? 'N/A'}
+                      hasUser={!!token.owner}
+                      userId={token.owner?.id ?? ''}
+                      openTigerModal={() =>
+                        openTigerModal(token.owner?.id ?? '')
+                      }
+                    />
+                  ),
+              )
+            )}
           </div>
           {/* Load More button */}
           {lastUpdated === 'traits' && (
