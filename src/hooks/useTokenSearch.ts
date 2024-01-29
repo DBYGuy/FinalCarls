@@ -15,9 +15,8 @@ export const useTokenSearch = (searchTerm: string, itemsPerPage = 12) => {
       itemsPerPage,
     },
     {
-      enabled: true, // Always enabled, even for empty search term
-      refetchOnWindowFocus: false,
-      refetchOnMount: false,
+      refetchOnWindowFocus: true,
+      refetchOnMount: true,
     },
   );
 
