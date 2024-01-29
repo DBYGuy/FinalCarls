@@ -7,7 +7,7 @@ import { usePopup } from '~/components/PopUp/popupContext'; // Import usePopup h
 import { useGetLevel } from '~/hooks/useGetLevel'; // Import useGetLevel hook
 
 const LevelButton: NextPage = () => {
-  const { user, isLoading } = useMe();
+  const { user } = useMe();
   const { levelUp } = useLevelUp();
   const { showConfirmation } = useConfirmationModal();
   const { showPopup } = usePopup(); // Use the usePopup hook

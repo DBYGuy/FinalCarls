@@ -3,9 +3,6 @@ import type { NextPage } from 'next';
 import Logo from './logo';
 import NavMenu from './nav-menu';
 import ConnectMenu from './connect-menu';
-import { useMe } from '~/hooks/useMe';
-import { useCheckLevelEligibility } from '~/hooks/useCheckLevelEligibility';
-import LevelButton from '~/components/LevelButton';
 
 type ContainerType = {
   /** Style props */
@@ -19,10 +16,6 @@ const Container: NextPage<ContainerType> = ({ propTop }) => {
       top: propTop,
     };
   }, [propTop]);
-
-  const { user, isLoading } = useMe();
-  const userId = user?.id ?? '';
-  const { isEligible } = useCheckLevelEligibility(userId);
 
   useEffect(() => {
     // Function to update the state with the current window width
@@ -49,12 +42,6 @@ const Container: NextPage<ContainerType> = ({ propTop }) => {
       {windowWidth > 1175 && (
         <div>
           <NavMenu />
-        </div>
-      )}
-      {/* Conditionally render the LevelButton if the user is eligible */}
-      {windowWidth > 610 && isEligible && (
-        <div>
-          <LevelButton />
         </div>
       )}
 

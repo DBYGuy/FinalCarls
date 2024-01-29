@@ -20,7 +20,7 @@ const CheckInButton: React.FC<CheckInButtonProps> = ({
 }) => {
   const [currentTime, setCurrentTime] = useState(new Date());
   const { claimReward } = useClaimReward();
-  const { user, isLoading } = useMe();
+  const { user } = useMe();
   const userId = user?.id ?? '';
   const { showPopup } = usePopup();
 

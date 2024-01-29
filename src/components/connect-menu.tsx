@@ -8,6 +8,8 @@ import { useGetAvatar } from '~/hooks/useGetAvatar';
 import { getTruncatedWalletAddress } from '~/utils/wallet';
 import FlipScroll from '~/components/FlipScroll';
 import Button from '~/components/button';
+import LevelButton from '~/components/LevelButton'; // Import LevelButton
+import { useCheckLevelEligibility } from '~/hooks/useCheckLevelEligibility'; // Import useCheckLevelEligibility
 
 type ConnectMenuType = {
   avatar?: string;
@@ -30,6 +32,8 @@ const ConnectMenu: NextPage<ConnectMenuType> = ({
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const iconRef = useRef<HTMLImageElement>(null);
+  const userId = user?.id ?? '';
+  const { isEligible } = useCheckLevelEligibility(userId); // Check if the user is eligible for leveling up
 
   const toggleDropdown = () => setShowDropdown((prev) => !prev);
 
@@ -63,6 +67,14 @@ const ConnectMenu: NextPage<ConnectMenuType> = ({
 
   return (
     <div className="relative flex items-center justify-end pr-14">
+      {/* Conditionally render the LevelButton if the user is eligible */}
+      {isEligible && (
+        <div className="mr-2 hidden sm:block">
+          {' '}
+          {/* Add margin to separate from other elements */}
+          <LevelButton />
+        </div>
+      )}
       <div className="rounded-50xl padding-r[16px] h-10 flex flex-row items-center justify-center gap-[8px] text-left text-base text-white-gold-itsc font-bold">
         {showAccountButton && (
           <div className="rounded-sm bg-dark-connectbuttonbackground shadow-[0px_4px_12px_rgba(0,_0,_0,_0.1)] h-10 flex flex-row items-center justify-start py-0 px-0.5 box-border gap-[8px]">

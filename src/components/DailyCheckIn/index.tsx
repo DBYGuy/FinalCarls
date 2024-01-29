@@ -45,11 +45,11 @@ const DailyCheckIn: NextPage = () => {
         claim
       </div>
       <div
-        className="flex flex-col items-center justify-center mt-10 bg-gray-800 py-10"
+        className="flex flex-col items-center justify-center mt-10 bg-gray-800 py-10 w-full"
         style={{
           backgroundImage: "url('/group-1022.svg')",
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
+          backgroundSize: 'fixed',
+          backgroundPosition: 'top',
         }}
       >
         {/* Thin Check-Ins */}

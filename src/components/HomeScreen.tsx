@@ -3,7 +3,7 @@ import Button from './button';
 import { useMe } from '~/hooks/useMe';
 
 const HomeScreen: NextPage = () => {
-  const { user, isLoading } = useMe();
+  const { user } = useMe();
   return (
     <div className="bg-itsc-black w-full h-[75vh] overflow-hidden object-contain text-center text-[90px] relative">
       {/* Background SVG */}
@@ -44,7 +44,7 @@ const HomeScreen: NextPage = () => {
         </span>
       </div>
 
-      {!user && !isLoading && (
+      {!user && (
         <div className="absolute top-[55%] left-[5vw] w-[224px] h-[15vh] text-left font-outfit">
           <Button />
           <div className="absolute top-1 left-[73%] text-[30px] lg:text-[30px] bg-clip-text text-transparent bg-gradient-to-r from-text-gold-start via-text-gold-middle to-text-gold-end hidden md2:block">
