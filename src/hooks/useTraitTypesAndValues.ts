@@ -8,7 +8,7 @@ export const useTraitTypesAndValues = () => {
     undefined,
     {
       enabled: !!user,
-      refetchOnMount: true,
+      refetchOnMount: false,
     },
   );
 
