@@ -14,17 +14,18 @@ const LevelButton: NextPage = () => {
   const { level } = useGetLevel(); // Get the current level
   const userId = user?.id ?? '';
   const { nextLevelPoints } = useCheckLevelEligibility(userId);
+  const levelDisplay = typeof level === 'number' ? level + 1 : 0;
 
   const handleLevelUp = async () => {
     const confirmLevelUp = async () => {
-      if (user?.id && level) {
+      if (user?.id) {
         try {
           await levelUp(userId);
           // Show popup on successful level up
           showPopup(
             'Congratulations!',
-            `You've reached level ${level + 1}!`, // Assuming level is the current level
-            level + 1,
+            `You've reached level ${levelDisplay}!`, // Assuming level is the current level
+            levelDisplay,
           );
         } catch (error) {
           console.error('Failed to level up:', error);

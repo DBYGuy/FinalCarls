@@ -4,8 +4,7 @@ export const useGetLeaderboard = (page: number) => {
   const query = trpc.leaderboard.getLeaderboard.useQuery(
     { page },
     {
-      enabled: page > 0, // Ensure both conditions are met
-      refetchOnWindowFocus: false,
+      enabled: true,
       refetchOnMount: true,
     },
   );
