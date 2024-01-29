@@ -2,11 +2,13 @@ import { useState, useEffect } from 'react';
 import { trpc } from '~/utils/trpc';
 import type { SearchResult } from '~/components/SearchBar';
 import useDebounce from '~/hooks/useDebounce';
+import { useMe } from '~/hooks/useMe';
 
 export const useTokenSearch = (searchTerm: string, itemsPerPage = 12) => {
   const [results, setResults] = useState<SearchResult[]>([]);
   const [page, setPage] = useState(0);
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
+  const { user } = useMe();
 
   const { data, isLoading, isError } = trpc.token.search.useQuery(
     {
@@ -17,6 +19,7 @@ export const useTokenSearch = (searchTerm: string, itemsPerPage = 12) => {
     {
       refetchOnWindowFocus: true,
       refetchOnMount: true,
+      enabled: !!user,
     },
   );
 
