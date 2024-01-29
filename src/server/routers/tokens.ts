@@ -172,20 +172,18 @@ export const tokenRouter = router({
       });
     }),
   getTraitTypesAndValues: procedure.query(async ({ ctx }) => {
-    const traitTypes = await ctx.prisma.tokenTrait.findMany({
-      select: {
-        traitType: true,
-        value: true,
+    // Fetch all trait types along with their associated values
+    const traitTypes = await ctx.prisma.traitType.findMany({
+      include: {
+        traitValues: true, // Include associated trait values
       },
-      distinct: ['traitType', 'value'],
     });
 
-    // Group values by trait types
-    const groupedTraits = traitTypes.reduce((acc, trait) => {
-      if (acc && trait.traitType && trait.value) {
-        acc[trait.traitType] = acc[trait.traitType] ?? [];
-        acc[trait.traitType]?.push(trait.value);
-      }
+    // Transform the data into the desired format
+    const groupedTraits = traitTypes.reduce((acc, traitType) => {
+      acc[traitType.name] = traitType.traitValues.map(
+        (traitValue) => traitValue.value,
+      );
       return acc;
     }, {} as Record<string, string[]>);
 

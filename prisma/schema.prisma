@@ -180,3 +180,16 @@ model CronJobState {
   lastImageTokenId Int   @default(0)
   updatedAt       DateTime @updatedAt
 }
+
+model TraitType {
+  id          Int          @id @default(autoincrement())
+  name        String       @unique
+  traitValues TraitValue[]
+}
+
+model TraitValue {
+  id          Int       @id @default(autoincrement())
+  value       String
+  traitTypeId Int
+  traitType   TraitType @relation(fields: [traitTypeId], references: [id])
+}
