@@ -10,6 +10,7 @@ const IndexPage = () => {
   return (
     <>
       <Head>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>Welcome to ITSCTigers</title>
       </Head>
       <main className="flex flex-col">

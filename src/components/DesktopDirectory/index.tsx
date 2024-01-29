@@ -213,15 +213,26 @@ const DesktopDirectory = () => {
       {isTigerModalOpen && (
         <TigerModal userId={currentUserId} onClose={closeTigerModal} />
       )}
-      <div className="absolute top-32 left-0 right-0 flex justify-between items-center px-4">
-        <img src="/lattice.svg" alt="Lattice Left" />
-        <img src="/lattice.svg" alt="Lattice Right" />
+      {/* Adjusted Lattice Images */}
+      <div className="absolute top-[125.68px] left-1/2 transform -translate-x-1/2 w-full flex justify-center items-center">
+        <img
+          src="/lattice.svg"
+          alt="Lattice Left"
+          className="h-[42.8px] w-auto"
+          style={{ maxWidth: '3122.36px' }} // Half of the desired width
+        />
+        <img
+          src="/lattice.svg"
+          alt="Lattice Right"
+          className="h-[42.8px] w-auto"
+          style={{ maxWidth: '3122.36px' }} // Half of the desired width
+        />
       </div>
 
       <div className="flex justify-center pt-[600px]">
         {/* NFT Grid Container */}
-        <div className="shadow-[5px_4px_4px_rgba(0,_0,_0,_0.25)] w-[95%] mx-auto">
-          <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+        <div className="w-[90%] mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-9">
             {/* Map through tokensToShow and render ProfileCard components */}
             {isLoading ? (
               <div>Loading...</div> // Replace with your loading indicator
@@ -266,17 +277,26 @@ const DesktopDirectory = () => {
         )}
       </div>
       <img
-        className="absolute h-[2.21%] w-[17.79%] top-[350px] right-[77.84%] bottom-[74.71%] left-[4.37%] max-w-full overflow-hidden max-h-full z-1 animate-marquee"
+        className="absolute h-[2.21%] w-[17.79%] top-[350px] right-[77.84%] bottom-[74.71%] left-[4.37%] max-w-full overflow-hidden max-h-full z-[0] animate-marquee"
         alt=""
         src="/left-gallery-cloud.svg"
       />
       <img
-        className="absolute h-[3.62%] w-[16.49%] top-[200px] right-[2.69%] bottom-[78.46%] left-[80.82%] max-w-full overflow-hidden max-h-full z-1 animate-marquee"
+        className="absolute h-[3.62%] w-[16.49%] top-[200px] right-[2.69%] bottom-[78.46%] left-[80.82%] max-w-full overflow-hidden max-h-full z-[0] animate-marquee"
         alt=""
         src="/right-gallery-cloud.svg"
       />
-      <div className="absolute top-[521px] left-1/2 transform -translate-x-1/2 flex items-center justify-center gap-4">
-        <div className="relative w-screen max-w-[280px] sm:max-w-[350px] md:max-w-[500px] lg:max-w-[600px]">
+      <div className="absolute top-[521px] left-[20%] transform -translate-x-[26%] flex items-center justify-center gap-4">
+        {/* Button positioned to the left of the SearchBar */}
+        <img
+          className="cursor-pointer z-10 w-[40px] h-[40px] sm:w-[35px] sm:h-[35px] md:w-[40px] md:h-[40px]"
+          alt="Menu"
+          src="/buttons.svg"
+          onClick={toggleDrawer}
+        />
+
+        {/* SearchBar */}
+        <div className="relative w-screen max-w-[280px] sm:max-w-[350px] md:max-w-[400px] lg:max-w-[450px]">
           <SearchBar
             onSelect={handleSearchSelect}
             onEnterPress={handleEnterPressInSearch}
@@ -287,16 +307,10 @@ const DesktopDirectory = () => {
             src="/icons20pxsearch.svg"
           />
         </div>
-        <img
-          className="cursor-pointer z-10 w-[40px] h-[40px] sm:w-[35px] sm:h-[35px] md:w-[40px] md:h-[40px]"
-          alt="Menu"
-          src="/buttons.svg"
-          onClick={toggleDrawer}
-        />
       </div>
-      <div className="absolute top-[276px] left-[35%] transform -translate-x-1/2 w-full max-w-[475px] px-4 text-center animate-fadeUp">
+      <div className="absolute top-[376px] left-[15vw] transform -translate-x-[26%] w-full max-w-[475px] px-4 text-center animate-fadeUp">
         <span className="inline-block w-full bg-gradient-to-l from-text-gold-start via-text-gold-middle to-text-gold-end bg-clip-text text-transparent">
-          <p className="text-[24px] sm:text-[20px] xs:text-[16px] m-0">{`Welcome to the Tiger Directory!`}</p>
+          <p className="text-[20px] sm:text-[20px] xs:text-[16px] m-0">{`Welcome to the Tiger Directory!`}</p>
           <ul className="text-[18px] sm:text-[16px] xs:text-[14px] m-0 pl-0 list-none">
             <li className="mb-0">{`Search and filter to find tigers`}</li>
             <li className="mb-0">{`and view community profiles`}</li>

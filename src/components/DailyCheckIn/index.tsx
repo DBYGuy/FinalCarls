@@ -36,11 +36,11 @@ const DailyCheckIn: NextPage = () => {
   ];
 
   return (
-    <div className="relative w-full mx-4 text-center font-rainbow-buttons-1 py-12">
+    <div className="relative w-screen text-center font-rainbow-buttons-1 py-12">
       <div className="text-[36px] m:text-[42px] l:text-[50px] xl:text-[60px] 2xl:text-[75px] font-title bg-gradient-to-r from-text-gold-start via-text-gold-middle to-text-gold-end bg-clip-text text-transparent animate-fadeUp">
         DAILY CHECK-IN
       </div>
-      <div className="mt-4 w-[30vw] mx-auto text-[1.8vw] font-outfit bg-gradient-to-l from-text-gold-start via-text-gold-middle to-text-gold-end bg-clip-text text-transparent animate-fadeUpDelayed">
+      <div className="mt-4 w-[40vw] mx-auto text-[17px] m:text-[20px] l:text-[22px] xl:text-[28px] 2xl:text-[32px] font-outfit bg-gradient-to-l from-text-gold-start via-text-gold-middle to-text-gold-end bg-clip-text text-transparent animate-fadeUpDelayed">
         Come back every day to claim reward points! Streak resets 48 hours after
         claim
       </div>
@@ -48,7 +48,7 @@ const DailyCheckIn: NextPage = () => {
         className="flex flex-col items-center justify-center mt-10 bg-gray-800 py-10 w-full"
         style={{
           backgroundImage: "url('/group-1022.svg')",
-          backgroundSize: 'fixed',
+          backgroundSize: '100%',
           backgroundPosition: 'top',
         }}
       >

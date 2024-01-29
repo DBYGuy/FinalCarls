@@ -99,7 +99,7 @@ const CheckInButton: React.FC<CheckInButtonProps> = ({
     } else if (isTimeToClaim()) {
       return (
         <button
-          className="rounded-3xl bg-linear-gradient shadow-[0px_4px_12px_rgba(0,_0,_0,_0.1)] h-10 flex items-center justify-center py-2 px-4 box-border text-black mt-2"
+          className="rounded-3xl bg-gradient-to-r from-gold-start via-gold-end to-gold-start shadow-[0px_4px_12px_rgba(0,_0,_0,_0.1)] h-10 flex items-center justify-center py-2 px-4 box-border text-black mt-2"
           onClick={handleClaimReward}
         >
           <b className="tracking-[0.6px] leading-[30px]">Claim {tp} TP</b>
