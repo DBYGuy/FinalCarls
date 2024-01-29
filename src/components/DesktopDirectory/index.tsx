@@ -46,7 +46,7 @@ const DesktopDirectory = () => {
     'searchResult' | 'searchResults' | 'traits'
   >();
   const { results: randomTokens, loadMore: loadMoreRandomTokens } =
-    useTokenSearch('');
+    useTokenSearch('69');
   const { tokens: traitTokens, loadMore: loadMoreTraitTokens } =
     useTokensByTrait(selectedTraitType, selectedTraitValue);
   const { traitTypesAndValues } = useTraitTypesAndValues();
