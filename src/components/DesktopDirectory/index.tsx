@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import ProfileCard from '../ProfileCard';
 import { useTokensByTrait } from '~/hooks/useTokensByTrait';
 import SearchBar from '../SearchBar';
@@ -22,6 +22,7 @@ export interface TokenType {
   s3ImageUrl: string | null;
   owner: OwnerType | null;
   tokenTraits: TokenTraitType[];
+  selectedTraits: (TokenTraitType | undefined)[]; // Allow undefined
 }
 
 export interface OwnerType {
@@ -48,7 +49,9 @@ const DesktopDirectory = () => {
     useTokenSearch('69');
   const { tokens: traitTokens, loadMore: loadMoreTraitTokens } =
     useTokensByTrait(selectedTraitType, selectedTraitValue);
-  const toggleDrawer = () => setIsDrawerOpen(!isDrawerOpen);
+  const toggleDrawer = useCallback(() => {
+    setIsDrawerOpen((prevState) => !prevState);
+  }, []);
   useEffect(() => {
     // Format the initial tokens in the same way as in handleEnterPressInSearch
     const formattedInitialResults: TokenType[] = randomTokens.map((result) => ({
@@ -59,6 +62,7 @@ const DesktopDirectory = () => {
       s3ImageUrl: result.s3ImageUrl,
       owner: result.owner,
       tokenTraits: result.tokenTraits,
+      selectedTraits: getRandomTraits(result.tokenTraits),
     }));
     if (formattedInitialResults.length > 0) {
       setSearchResults(formattedInitialResults);
@@ -78,6 +82,7 @@ const DesktopDirectory = () => {
       s3ImageUrl: selectedResult.s3ImageUrl,
       owner: selectedResult.owner, // Use the owner object directly
       tokenTraits: selectedResult.tokenTraits,
+      selectedTraits: getRandomTraits(selectedResult.tokenTraits),
     };
     setSearchResult(convertedResult);
     setSelectedTraitType('');
@@ -100,6 +105,7 @@ const DesktopDirectory = () => {
       s3ImageUrl: result.s3ImageUrl,
       owner: result.owner, // Use the owner object directly
       tokenTraits: result.tokenTraits,
+      selectedTraits: getRandomTraits(result.tokenTraits),
     }));
 
     if (formattedResults.length > 0) {
@@ -208,6 +214,38 @@ const DesktopDirectory = () => {
     setCurrentUserId('');
   };
 
+  const getRandomTraits = (traits: TokenTraitType[]) => {
+    if (traits.length <= 2) {
+      return traits;
+    } else {
+      const randomIndex1 = Math.floor(Math.random() * traits.length);
+      let randomIndex2 = Math.floor(Math.random() * traits.length);
+      while (randomIndex1 === randomIndex2) {
+        randomIndex2 = Math.floor(Math.random() * traits.length);
+      }
+      return [traits[randomIndex1], traits[randomIndex2]];
+    }
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        drawerRef.current &&
+        !drawerRef.current.contains(event.target as Node)
+      ) {
+        toggleDrawer();
+      }
+    };
+
+    // Adding event listener to document
+    document.addEventListener('mousedown', handleClickOutside);
+
+    return () => {
+      // Removing event listener
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [drawerRef, toggleDrawer]);
+
   return (
     <div className="relative bg-gray-100 w-full min-h-screen overflow-hidden text-left text-5xl text-white font-outfit">
       {isTigerModalOpen && (
@@ -235,25 +273,30 @@ const DesktopDirectory = () => {
           <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-9">
             {/* Map through tokensToShow and render ProfileCard components */}
             {isLoading ? (
-              <div>Loading...</div> // Replace with your loading indicator
+              <div>Loading...</div>
             ) : (
-              tokensToShow.map(
-                (token) =>
-                  token && ( // Check if token is not null
-                    <ProfileCard
-                      key={token.tokenID}
-                      name={token.name}
-                      src={token.s3ImageUrl ?? ''}
-                      trait1={token.tokenTraits?.[0]?.value ?? 'N/A'}
-                      trait2={token.tokenTraits?.[1]?.value ?? 'N/A'}
-                      hasUser={!!token.owner}
-                      userId={token.owner?.id ?? ''}
-                      openTigerModal={() =>
-                        openTigerModal(token.owner?.id ?? '')
-                      }
-                    />
-                  ),
-              )
+              tokensToShow.map((token) => {
+                if (!token) return null; // Add this line to guard against null tokens
+
+                const trait1 = token.selectedTraits?.[0]
+                  ? `${token.selectedTraits[0].traitType}: ${token.selectedTraits[0].value}`
+                  : '';
+                const trait2 = token.selectedTraits?.[1]
+                  ? `${token.selectedTraits[1].traitType}: ${token.selectedTraits[1].value}`
+                  : '';
+                return (
+                  <ProfileCard
+                    key={token.tokenID}
+                    name={token.name}
+                    src={token.s3ImageUrl ?? ''}
+                    trait1={trait1}
+                    trait2={trait2}
+                    hasUser={!!token.owner}
+                    userId={token.owner?.id ?? ''}
+                    openTigerModal={() => openTigerModal(token.owner?.id ?? '')}
+                  />
+                );
+              })
             )}
           </div>
           {/* Load More button */}

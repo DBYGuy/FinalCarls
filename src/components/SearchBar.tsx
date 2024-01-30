@@ -14,7 +14,8 @@ export interface SearchResult {
   } | null;
   tokenTraits: TokenTraitType[];
   image: string; // Added to match TokenType
-  lastUpdated: Date | null; // Added to match TokenType
+  lastUpdated: Date | null;
+  selectedTraits: (TokenTraitType | undefined)[];
 }
 
 interface SearchBarProps {

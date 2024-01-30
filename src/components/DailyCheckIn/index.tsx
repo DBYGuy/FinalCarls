@@ -40,8 +40,8 @@ const DailyCheckIn: NextPage = () => {
       <div className="text-[36px] m:text-[42px] l:text-[50px] xl:text-[60px] 2xl:text-[75px] font-title bg-gradient-to-r from-text-gold-start via-text-gold-middle to-text-gold-end bg-clip-text text-transparent animate-fadeUp">
         DAILY CHECK-IN
       </div>
-      <div className="mt-4 w-[40vw] mx-auto text-[17px] m:text-[20px] l:text-[22px] xl:text-[28px] 2xl:text-[32px] font-outfit bg-gradient-to-l from-text-gold-start via-text-gold-middle to-text-gold-end bg-clip-text text-transparent animate-fadeUpDelayed">
-        Come back every day to claim reward points! Streak resets 48 hours after
+      <div className="mt-4 w-[40vw] mx-auto text-[17px] m:text-[20px] l:text-[22px] xl:text-[28px] 2xl:text-[32px] font-sf-pro bg-gradient-to-l from-text-gold-start via-text-gold-middle to-text-gold-end bg-clip-text text-transparent animate-fadeUpDelayed">
+        Come back every day to claim reward points! Reset is 48 hours after each
         claim
       </div>
       <div

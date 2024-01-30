@@ -75,7 +75,7 @@ const ConnectMenu: NextPage<ConnectMenuType> = ({
           <LevelButton />
         </div>
       )}
-      <div className="rounded-50xl padding-r[16px] h-10 flex flex-row items-center justify-center gap-[8px] text-left text-base text-white-gold-itsc font-bold">
+      <div className="rounded-50xl padding-r[16px] h-10 flex flex-row items-center justify-center gap-[8px] text-left text-base text-white-gold-itsc font-sf-pro">
         {showAccountButton && (
           <div className="rounded-sm bg-dark-connectbuttonbackground shadow-[0px_4px_12px_rgba(0,_0,_0,_0.1)] h-10 flex flex-row items-center justify-start py-0 px-0.5 box-border gap-[8px]">
             <div className="rounded-smi bg-dark-actionbuttonsecondarybackground h-9 flex flex-row items-center justify-start p-2 box-border">

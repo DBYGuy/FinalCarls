@@ -13,7 +13,7 @@ import { usePopup } from '~/components/PopUp/popupContext';
 
 const DesktopDropdown: NextPage = () => {
   const router = useRouter();
-  const { user, isLoading } = useMe();
+  const { user } = useMe();
   const { points } = useGetPoints();
   const { level } = useGetLevel();
   const { avatarUrl } = useGetAvatar();
@@ -49,9 +49,6 @@ const DesktopDropdown: NextPage = () => {
       <div className="absolute top-[16px] left-[16px] w-[351px] h-[932px]">
         <div className="absolute top-[0px] left-[0px] rounded-lg bg-itsc-black box-border w-[357px] h-[932px] border-t-[3px] border-solid border-linear border-b-[3px] border-l-[3px]" />
         <div className="absolute top-[223px] left-[32px] flex flex-col items-start justify-start gap-[24px]">
-          <b className="relative tracking-[0.64px] leading-[21.26px]">
-            View Full Profile
-          </b>
           <b className="relative tracking-[0.64px] leading-[21.26px]">
             Daily Check-in
           </b>
@@ -233,15 +230,15 @@ const DesktopDropdown: NextPage = () => {
               </div>
             </div>
           </div>
-          <div className="shrink-0 flex flex-col items-start justify-start gap-[8px] text-[25.06px] text-itsc-black font-bold">
+          <div className="shrink-0 flex flex-col items-start justify-start gap-[8px] text-[25.06px] text-itsc-black font-semibold">
             <div className="shrink-0 flex flex-row items-start justify-start">
               <div className="shadow-[0px_1.7239909172058105px_1.72px_rgba(0,_0,_0,_0.25)] shrink-0 flex flex-row items-start justify-start">
-                <div className="rounded-[10.26px] [background:linear-gradient(180deg,_rgba(0,_0,_0,_0.17),_rgba(0,_0,_0,_0)_57.81%,_rgba(0,_0,_0,_0.2)),_#d15454] shadow-[0px_2.9307847023010254px_8.79px_rgba(0,_0,_0,_0.1)] h-[29.31px] flex flex-row items-center justify-start py-[5.861569404602051px] px-[11.723138809204102px] box-border text-[14.2px]">
+                <div className="relative rounded-lg overflow-hidden shadow-md w-auto mx-1 h-10 flex items-right justify-right [background:linear-gradient(180deg,_rgba(0,_0,_0,_0.17),_rgba(0,_0,_0,_0)_57.81%,_rgba(0,_0,_0,_0.2)),_#d15454] shadow-[0px_2.9307847023010254px_8.79px_rgba(0,_0,_0,_0.1)] h-[29.31px] flex flex-row items-center justify-start py-[5.861569404602051px] px-[11.723138809204102px] box-border text-[14.2px]">
                   <button
                     className="relative tracking-[0.94px] leading-[31.33px] bg-transparent text-white"
                     onClick={handleButtonClick}
                   >
-                    {router.pathname === '/' ? 'Go To Profile' : 'Edit Profile'}
+                    {router.pathname === '/' ? 'PROFILE' : 'Edit Profile'}
                   </button>
                 </div>
               </div>
@@ -255,7 +252,29 @@ const DesktopDropdown: NextPage = () => {
           </div>
         </div>
       </div>
-      <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 mb-4">
+      <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 mb-4 flex flex-col items-center">
+        {/* Small Icons */}
+        <div className="flex flex-row items-center justify-center gap-4 mb-4">
+          <div className="small-icon-background">
+            <img className="h-5 w-5 object-contain" alt="" src="/x-logo.svg" />
+          </div>
+          <div className="small-icon-background">
+            <img
+              className="h-5 w-5 object-contain"
+              alt=""
+              src="/opensea-ship@2x.png"
+            />
+          </div>
+          <div className="small-icon-background">
+            <img
+              className="h-5 w-5 object-contain"
+              alt=""
+              src="/vector@2x.png"
+            />
+          </div>
+        </div>
+
+        {/* Logout Button */}
         <button
           onClick={handleLogout}
           className="rounded text-white py-2 px-4 bg-transparent border border-white"
@@ -263,6 +282,20 @@ const DesktopDropdown: NextPage = () => {
           Log Out
         </button>
       </div>
+
+      <style>{`
+        .small-icon-background {
+          background: linear-gradient(90deg, #fbd099, #fcefdf 59.9%, #ffe299);
+          border: 3px solid #d15454;
+          border-radius: 8.375px; 
+          overflow: hidden;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 27.5px;
+          height: 27.5px;
+        }
+      `}</style>
     </div>
   );
 };

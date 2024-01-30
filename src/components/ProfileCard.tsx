@@ -36,6 +36,10 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
     }
   };
 
+  const getTraitClass = (trait: string) => {
+    return trait.length > 20 ? 'text-xs' : 'text-[14px]';
+  };
+
   return (
     <div className="relative shadow-[5px_4px_4px_rgba(0,_0,_0,_0.25)] w-[300px] h-[400px] text-left text-5xl text-white font-outfit">
       <div className="absolute h-full w-full top-0 right-0 bottom-0 left-0 rounded bg-itsc-black shadow-[0px_4px_4px_rgba(0,_0,_0,_0.25)_inset] box-border border-[7px] border-solid border-linear" />
@@ -53,14 +57,16 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
             src={src}
           />
         )}
-        <div className="shrink-0 flex flex-col items-center justify-end">
+        <div className="shrink-0 flex flex-col items-center justify-end pt-2">
           <div className="relative tracking-[-0.01em] leading-[3px] flex items-center w-[250px] h-7">
             {isImageLoading ? 'Loading...' : name}
           </div>
-          <div className="relative text-base tracking-[-0.01em] font-light flex items-center w-[206px] h-7 mt-[-6px]">
+          <div className={`text-left ${getTraitClass(trait1)} w-[250px]`}>
             {isImageLoading ? '' : trait1}
           </div>
-          <div className="relative text-base tracking-[-0.01em] font-light flex items-center w-[206px] h-7 mt-[-6px]">
+          <div
+            className={`text-left ${getTraitClass(trait2)} w-[250px] mt-[-3px]`}
+          >
             {isImageLoading ? '' : trait2}
           </div>
         </div>

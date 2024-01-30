@@ -9,24 +9,23 @@ interface TraitDrawerProps {
 }
 
 const TraitDrawer: React.FC<TraitDrawerProps> = ({ onTraitSelect }) => {
-  const { traitTypesAndValues, isLoading, error } = useTraitTypesAndValues(); // Assuming the hook provides isLoading and error states
+  const { traitTypesAndValues } = useTraitTypesAndValues(); // Use the useTraitTypesAndValues hook
   const [collapsedCategories, setCollapsedCategories] = useState<
     Record<string, boolean>
   >({});
 
   useEffect(() => {
-    if (traitTypesAndValues) {
-      const initialCollapsedState = Object.keys(traitTypesAndValues).reduce<
-        Record<string, boolean>
-      >(
-        (acc, traitType) => {
-          acc[traitType] = true; // Initialize as true (collapsed)
-          return acc;
-        },
-        {}, // Initial object
-      );
-      setCollapsedCategories(initialCollapsedState);
-    }
+    // Initialize collapsed state for each category
+    const initialCollapsedState = Object.keys(traitTypesAndValues).reduce<
+      Record<string, boolean>
+    >(
+      (acc, traitType) => {
+        acc[traitType] = true; // Initialize as true (collapsed)
+        return acc;
+      },
+      {}, // Initial object
+    );
+    setCollapsedCategories(initialCollapsedState);
   }, [traitTypesAndValues]);
 
   const toggleCategory = (traitType: string) => {
@@ -36,36 +35,27 @@ const TraitDrawer: React.FC<TraitDrawerProps> = ({ onTraitSelect }) => {
     }));
   };
 
-  if (isLoading) {
-    return <div>Loading...</div>; // Or some loading component
-  }
-
-  if (error) {
-    return <div>Error: {error.message}</div>; // Adjust error handling as needed
-  }
-
   return (
     <RectangleComponent>
       <div className="overflow-auto h-full">
-        {traitTypesAndValues &&
-          Object.entries(traitTypesAndValues).map(([traitType, values]) => (
-            <div key={traitType}>
-              <TraitCategory
-                traitType={traitType}
-                traitCount={values.length}
-                onClick={() => toggleCategory(traitType)}
-                collapsed={collapsedCategories[traitType] ?? false}
-              />
-              {!collapsedCategories[traitType] &&
-                values.map((value) => (
-                  <Trait
-                    key={value}
-                    value={value}
-                    onSelect={() => onTraitSelect(traitType, value)}
-                  />
-                ))}
-            </div>
-          ))}
+        {Object.entries(traitTypesAndValues).map(([traitType, values]) => (
+          <div key={traitType}>
+            <TraitCategory
+              traitType={traitType}
+              traitCount={values.length}
+              onClick={() => toggleCategory(traitType)}
+              collapsed={collapsedCategories[traitType] ?? false}
+            />
+            {!collapsedCategories[traitType] &&
+              values.map((value) => (
+                <Trait
+                  key={value}
+                  value={value}
+                  onSelect={() => onTraitSelect(traitType, value)}
+                />
+              ))}
+          </div>
+        ))}
       </div>
     </RectangleComponent>
   );

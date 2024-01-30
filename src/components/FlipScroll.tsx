@@ -14,7 +14,7 @@ const FlipScroll: React.FC<FlipScrollProps> = ({ value }) => {
       setTimeout(() => {
         setCurrentValue(value);
         setAnimation(false);
-      }, 300); // Duration of the flip animation
+      }, 300);
     }
   }, [value, currentValue]);
 
