@@ -36,15 +36,20 @@ export const useTokenSearch = (searchTerm: string, itemsPerPage = 12) => {
   }, [searchTerm, debouncedSearchTerm]);
 
   useEffect(() => {
-    // Append new data to existing results, avoiding duplicates
     if (data && !isError) {
       setResults((prevResults) => {
         const existingIDs = new Set(
           prevResults.map((result) => result.tokenID),
         );
-        const newResults = data.filter(
-          (result) => !existingIDs.has(result.tokenID),
-        );
+        const newResults = data
+          .filter((result) => !existingIDs.has(result.tokenID))
+          .map((result) => {
+            // Add the selectedTraits property to each result
+            return {
+              ...result,
+              selectedTraits: [], // Initialize selectedTraits as an empty array
+            };
+          });
         return [...prevResults, ...newResults];
       });
     }
