@@ -3,7 +3,7 @@ import type { NextPage } from 'next';
 const Footer: NextPage = () => {
   const currentYear = new Date().getFullYear();
   return (
-    <footer className="w-full h-[564px] relative bg-itsc-black overflow-hidden flex flex-row items-end justify-center pt-[105px] pb-[68px] pr-5 pl-[21px] box-border text-left text-base text-itsc-black font-bold">
+    <footer className="w-full h-[564px] relative bg-itsc-black overflow-hidden flex flex-row items-end justify-center pt-[145px] pb-[68px] pr-5 pl-[21px] box-border text-left text-base text-itsc-black font-bold">
       <div className="h-[392px] w-[395px] flex flex-col items-center justify-start relative gap-[26px] text-center text-white-gold-itsc font-outfit">
         <div className="w-[300px] h-28 flex flex-col items-center justify-start gap-[21px]">
           <div className="w-72 flex-1 flex flex-row items-start justify-start z-[6] py-0 px-5 box-border gap-[16px]">

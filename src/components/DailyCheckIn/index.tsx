@@ -36,7 +36,7 @@ const DailyCheckIn: NextPage = () => {
   ];
 
   return (
-    <div className="relative w-screen text-center font-rainbow-buttons-1 py-12">
+    <div className="relative w-screen text-center font-rainbow-buttons-1 py-12 pt-[220px]">
       <div className="text-[36px] m:text-[42px] l:text-[50px] xl:text-[60px] 2xl:text-[75px] font-title bg-gradient-to-r from-text-gold-start via-text-gold-middle to-text-gold-end bg-clip-text text-transparent animate-fadeUp">
         DAILY CHECK-IN
       </div>

@@ -39,7 +39,7 @@ const Leaderboard: NextPage = () => {
   }, [leaderboard, page]);
 
   return (
-    <div className="relative bg-itsc-black w-full flex flex-col items-center justify-start p-4 box-border gap-4 text-center text-lg font-outfit">
+    <div className="relative bg-itsc-black pt-[120px] w-full flex flex-col items-center justify-start p-4 box-border gap-4 text-center text-lg font-outfit">
       <LeaderboardContainer />
       <div className="max-w-[703px] w-full mx-auto">
         <div className="grid grid-cols-12 gap-4 px-2">
