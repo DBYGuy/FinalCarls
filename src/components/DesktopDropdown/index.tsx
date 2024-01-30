@@ -31,6 +31,19 @@ const DesktopDropdown: NextPage = () => {
     }
   };
   const { showPopup } = usePopup();
+  const isIndexPage = router.pathname === '/'; // Check if the current page is the index page
+
+  // Function to handle navigation and apply smooth scroll if on the index page
+  const handleNavigation = (sectionId: string) => {
+    if (isIndexPage) {
+      const section = document.querySelector(sectionId);
+      if (section) {
+        section.scrollIntoView({ behavior: 'smooth' });
+      }
+    } else {
+      router.push(`/${sectionId}`);
+    }
+  };
 
   const handleLogout = async () => {
     await signOut({ redirect: false });
@@ -49,10 +62,16 @@ const DesktopDropdown: NextPage = () => {
       <div className="absolute top-[16px] left-[16px] w-[351px] h-[932px]">
         <div className="absolute top-[0px] left-[0px] rounded-lg bg-itsc-black box-border w-[357px] h-[932px] border-t-[3px] border-solid border-linear border-b-[3px] border-l-[3px]" />
         <div className="absolute top-[223px] left-[32px] flex flex-col items-start justify-start gap-[24px]">
-          <b className="relative tracking-[0.64px] leading-[21.26px]">
+          <b
+            className="relative tracking-[0.64px] leading-[21.26px]"
+            onClick={() => handleNavigation('#DailyCheckIn')}
+          >
             Daily Check-in
           </b>
-          <b className="relative tracking-[0.64px] leading-[21.26px]">{`Member Directory `}</b>
+          <b
+            className="relative tracking-[0.64px] leading-[21.26px]"
+            onClick={() => handleNavigation('#DesktopDirectory')}
+          >{`Member Directory `}</b>
         </div>
         <div className="absolute top-[49px] left-[53px] hidden flex-col items-center justify-start gap-[8px] text-base text-black">
           <div className="rounded-15xl [background:linear-gradient(180deg,_#efd891,_#ede2b2)] shadow-[0px_4px_12px_rgba(0,_0,_0,_0.1)] h-10 flex flex-row items-center justify-start py-2 px-4 box-border">

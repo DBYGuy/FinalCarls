@@ -13,7 +13,7 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
 }) => {
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-      <div className="relative rounded-[5px] box-border w-[361px] h-[303px] overflow-hidden text-center text-white-gold-itsc font-outfit animate-fadeUp">
+      <div className="relative rounded-[5px] overflow-visible box-border w-[371px] h-[303px] overflow-hidden text-center text-white-gold-itsc font-outfit animate-fadeUp">
         <div className="absolute top-[13.38px] left-[1.38px] bg-itsc-black box-border w-full h-[228px] border-[9.8px] border-solid border-linear">
           <div className="p-4">
             <p className="text-white mb-4">{text}</p>
@@ -34,10 +34,13 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
           </div>
         </div>
         <button
-          className="absolute top-[-0px] right-[-8px] text-white"
+          className="absolute top-[-5px] right-[-20px] text-white bg-transparent"
           onClick={onClose}
         >
-          <img className="h-[28px] w-[28px]" src="/close-button@2x.png" />
+          <img
+            className="h-[38px] w-[38px] object-cover bg-transparent"
+            src="/Close button A.svg"
+          />
         </button>
       </div>
     </div>

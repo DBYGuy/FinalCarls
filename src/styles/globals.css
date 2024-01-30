@@ -102,6 +102,11 @@ body {
   100% { transform: translateX(-95%); }
 }
 
+@keyframes longMarquee {
+  0% { transform: translateX(500%); }
+  100% { transform: translateX(-695%); }
+}
+
 @keyframes megaCloudAnimation {
   0%, 100% {
     transform: translateX(0) scale(0.8);
@@ -221,10 +226,6 @@ body {
   }
 }
 
-animate-fadeIn {
-  animation: fadeIn 1s ease forwards;
-}
-
 .animate-fadeIn {
   animation: fadeIn 1s ease forwards;
 }
@@ -271,6 +272,10 @@ animate-fadeIn {
 
 .animate-marquee {
   animation: marquee 60s linear infinite;
+}
+
+.animate-longMarquee {
+  animation: longMarquee 45s linear infinite;
 }
 
 .animate-twinkle {

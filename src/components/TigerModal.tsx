@@ -37,7 +37,7 @@ const TigerModal: NextPage<TigerModalProps> = ({ userId, onClose }) => {
           {/* Profile Details */}
           <div className="text-white font-outfit max-w-md w-full lg:w-auto">
             {/* Profile Name */}
-            <h1 className="text-[40px] lg:text-[62px] font-title mb-4 bg-gradient-to-l from-text-gold-start via-text-gold-middle to-text-gold-end bg-clip-text text-transparent">
+            <h1 className="text-[40px] lg:text-[60px] font-semibold mb-4 bg-gradient-to-l from-text-gold-start via-text-gold-end to-text-gold-start bg-clip-text text-transparent">
               {userInfo.username}
             </h1>
 
@@ -72,6 +72,10 @@ const TigerModal: NextPage<TigerModalProps> = ({ userId, onClose }) => {
                 <div>
                   <span className="font-light">Discord Handle: </span>
                   <b>{userInfo.discordID}</b>
+                </div>
+                <div>
+                  <span className="font-light">Bio: </span>
+                  <b>{userInfo.bio}</b>
                 </div>
               </div>
 

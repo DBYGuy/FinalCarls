@@ -17,10 +17,10 @@ const PopUp: React.FC<PopUpProps> = ({
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 animate-fadeUp">
-      <div className="relative rounded-lg bg-itsc-black border-4 border-linear p-8 text-white max-w-sm w-full text-center">
+      <div className="relative rounded-lg bg-itsc-black border-4 border-linear p-8 text-white max-w-sm w-full text-center overflow-visible">
         {/* Close Button with SVG */}
         <button
-          className="absolute top-[-12px] right-[-12px]"
+          className="absolute top-[-15px] right-[-12px] bg-transparent"
           onClick={onClose}
         >
           <img
@@ -28,6 +28,7 @@ const PopUp: React.FC<PopUpProps> = ({
             alt="Close"
             width="36"
             height="36"
+            className="bg-transparent"
           />
         </button>
 

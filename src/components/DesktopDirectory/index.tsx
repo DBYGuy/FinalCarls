@@ -320,12 +320,12 @@ const DesktopDirectory = () => {
         )}
       </div>
       <img
-        className="absolute h-[2.21%] w-[17.79%] top-[350px] right-[77.84%] bottom-[74.71%] left-[4.37%] max-w-full overflow-hidden max-h-full z-[0] animate-marquee"
+        className="absolute h-[2.21%] w-[17.79%] top-[300px] right-[77.84%] bottom-[74.71%] left-[4.37%] max-w-full overflow-hidden max-h-full z-[0] animate-longMarquee"
         alt=""
         src="/left-gallery-cloud.svg"
       />
       <img
-        className="absolute h-[3.62%] w-[16.49%] top-[200px] right-[2.69%] bottom-[78.46%] left-[80.82%] max-w-full overflow-hidden max-h-full z-[0] animate-marquee"
+        className="absolute h-[3.62%] w-[16.49%] top-[200px] right-[2.69%] bottom-[78.46%] left-[80.82%] max-w-full overflow-hidden max-h-full z-[0] animate-longMarquee"
         alt=""
         src="/right-gallery-cloud.svg"
       />

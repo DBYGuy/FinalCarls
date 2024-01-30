@@ -184,6 +184,7 @@ export const usersRouter = router({
         avatar: user.avatar ?? '',
         xHandle: user.Xhandle ?? 'Not Specified',
         discordID: user.discordID ?? 'Not Specified',
+        bio: user.userProfile?.bio ?? "I'm a tiger!",
       };
     }),
   getAvatar: procedure
