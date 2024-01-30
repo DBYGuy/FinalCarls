@@ -24,8 +24,14 @@ export const useTokensByTrait = (
 
   useEffect(() => {
     if (data && !isLoading) {
-      // Append new data to existing tokens
-      setTokens((prevTokens) => [...prevTokens, ...data]);
+      // Append new data to existing tokens, ensuring each token has the selectedTraits property
+      setTokens((prevTokens) => [
+        ...prevTokens,
+        ...data.map((token) => ({
+          ...token,
+          selectedTraits: [], // Initialize selectedTraits
+        })),
+      ]);
     }
   }, [data, isLoading]);
 
