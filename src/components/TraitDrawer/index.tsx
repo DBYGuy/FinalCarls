@@ -2,13 +2,17 @@ import React, { useEffect, useState } from 'react';
 import RectangleComponent from './RectangleComponent';
 import Trait from '~/components/TraitDrawer/trait';
 import TraitCategory from '~/components/TraitDrawer/trait-category';
-import { useTraitTypesAndValues } from '~/hooks/useTraitTypesAndValues'; // Adjust the import path as needed
+import { useTraitTypesAndValues } from '~/hooks/useTraitTypesAndValues';
 
 interface TraitDrawerProps {
   onTraitSelect: (traitType: string, value: string) => void;
+  toggleDrawer: () => void;
 }
 
-const TraitDrawer: React.FC<TraitDrawerProps> = ({ onTraitSelect }) => {
+const TraitDrawer: React.FC<TraitDrawerProps> = ({
+  onTraitSelect,
+  toggleDrawer,
+}) => {
   const { traitTypesAndValues } = useTraitTypesAndValues(); // Use the useTraitTypesAndValues hook
   const [collapsedCategories, setCollapsedCategories] = useState<
     Record<string, boolean>
@@ -37,25 +41,35 @@ const TraitDrawer: React.FC<TraitDrawerProps> = ({ onTraitSelect }) => {
 
   return (
     <RectangleComponent>
-      <div className="overflow-auto h-full pt-1 mt-2">
-        {Object.entries(traitTypesAndValues).map(([traitType, values]) => (
-          <div key={traitType}>
-            <TraitCategory
-              traitType={traitType}
-              traitCount={values.length}
-              onClick={() => toggleCategory(traitType)}
-              collapsed={collapsedCategories[traitType] ?? false}
-            />
-            {!collapsedCategories[traitType] &&
-              values.map((value) => (
-                <Trait
-                  key={value}
-                  value={value}
-                  onSelect={() => onTraitSelect(traitType, value)}
-                />
-              ))}
-          </div>
-        ))}
+      <div className="flex flex-col h-full">
+        <div className="overflow-auto pt-1 mt-2 mb-16">
+          {Object.entries(traitTypesAndValues).map(([traitType, values]) => (
+            <div key={traitType}>
+              <TraitCategory
+                traitType={traitType}
+                traitCount={values.length}
+                onClick={() => toggleCategory(traitType)}
+                collapsed={collapsedCategories[traitType] ?? false}
+              />
+              {!collapsedCategories[traitType] &&
+                values.map((value) => (
+                  <Trait
+                    key={value}
+                    value={value}
+                    onSelect={() => onTraitSelect(traitType, value)}
+                  />
+                ))}
+            </div>
+          ))}
+        </div>
+        <div className="flex justify-center pb-2">
+          <button
+            onClick={toggleDrawer}
+            className="rounded text-white py-2 px-4 bg-transparent border border-white"
+          >
+            Close
+          </button>
+        </div>
       </div>
     </RectangleComponent>
   );

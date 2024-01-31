@@ -24,7 +24,7 @@ export const EditProfileModal: React.FC = () => {
   const {
     register,
     handleSubmit,
-    setValue, // Add this
+    setValue,
     formState: { errors },
   } = useForm<EditProfileFormData>();
   const { user, isLoading } = useMe();
@@ -115,7 +115,6 @@ export const EditProfileModal: React.FC = () => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
-      {/* Overlay: semi-transparent backdrop */}
       <div
         className="absolute inset-0 bg-black opacity-50"
         onClick={closeModal} // Clicking on the overlay can also close the modal
@@ -147,7 +146,7 @@ export const EditProfileModal: React.FC = () => {
               <img
                 src="/locator.svg"
                 alt="Use Current Location"
-                className="w-10 h-10" // Adjust the size as needed
+                className="w-10 h-10"
               />
             </button>
           </div>

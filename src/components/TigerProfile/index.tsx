@@ -8,20 +8,22 @@ import { useGetProfile } from '~/hooks/useGetProfile';
 import { useEditProfileModal } from '~/context/EditProfileModalContext';
 import { useGetAvatar } from '~/hooks/useGetAvatar';
 import { signIn } from 'next-auth/react';
+import ProgressBar from './ProgressBar';
 
 const TigerProfile: NextPage = () => {
-  const { user, isLoading } = useMe();
+  const { user } = useMe();
   const truncatedWalletAddress = getTruncatedWalletAddress(
     user?.walletAddress ?? '',
   );
   const userId = user?.id ?? '';
   const { points = 0 } = useGetPoints();
   const { level = 0 } = useGetLevel();
-  const { toNextLevel = 0 } = useCheckLevelEligibility(userId);
+  const { toNextLevel = 0, nextLevelPoints = 0 } =
+    useCheckLevelEligibility(userId);
   const { profile } = useGetProfile(userId);
   const { openModal } = useEditProfileModal();
   const { avatarUrl } = useGetAvatar();
-  const progressPercentage = (points / (points + toNextLevel)) * 100 ?? 0;
+  const progressPercentage = (points / nextLevelPoints) * 100 ?? 0;
   const handleDiscordSignIn = async () => {
     const userId = user?.id ?? '';
     document.cookie = `userId=${userId}; path=/; max-age=300`; // 5 minutes expiry
@@ -60,7 +62,7 @@ const TigerProfile: NextPage = () => {
         />
       </div>
 
-      <div className="container mx-auto px-4 lg:px-10 relative z-8">
+      <div className="container mx-auto px-4 lg:px-10 relative z-8 mb-8 lg:mb-16">
         <div
           className="bg-black bg-opacity-50 rounded-lg p-6 lg:p-10 mx-auto"
           style={{ marginTop: '8vh', marginRight: 'auto' }}
@@ -94,15 +96,9 @@ const TigerProfile: NextPage = () => {
                 </div>
               </div>
 
-              {/* Progress Bar */}
-              <div className="w-full bg-itsc-white rounded-full h-3 mb-4">
-                <div
-                  className="bg-dusty-red h-3 rounded-full"
-                  style={{ width: `${progressPercentage}%` }}
-                ></div>
+              <div className="z-4">
+                <ProgressBar progressPercentage={progressPercentage} />
               </div>
-
-              {/* Buttons */}
               <div className="flex gap-4 mb-4">
                 <button
                   className="bg-dusty-red text-white py-2 px-4 rounded shadow"
@@ -151,7 +147,7 @@ const TigerProfile: NextPage = () => {
                 </div>
 
                 {/* Profile Bio */}
-                <div className="text-[20px] leading-[20px] font-light text-white overflow-hidden text-ellipsis [-webkit-line-clamp:10] [-webkit-box-orient:vertical] w-[700px]">
+                <div className="text-[20px] leading-[20px] font-light text-white break-words w-full">
                   <p>{profile?.bio ?? 'No bio available.'}</p>
                 </div>
               </div>

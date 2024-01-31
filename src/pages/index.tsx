@@ -15,9 +15,10 @@ const IndexPage = () => {
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>Welcome to ITSCTigers</title>
+        <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="flex flex-col">
-      <HomeScreen />
+        <HomeScreen />
         {user ? (
           <>
             <div id="DailyCheckIn">

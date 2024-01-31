@@ -10,19 +10,25 @@ import LevelButton from '~/components/LevelButton';
 import { useEditProfileModal } from '~/context/EditProfileModalContext';
 import { signOut } from 'next-auth/react';
 import { usePopup } from '~/components/PopUp/popupContext';
+import ProgressBar from '~/components/TigerProfile/ProgressBar';
 
 const DesktopDropdown: NextPage = () => {
   const router = useRouter();
   const { user } = useMe();
-  const { points } = useGetPoints();
+  const { points = 0 } = useGetPoints();
   const { level } = useGetLevel();
   const { avatarUrl } = useGetAvatar();
   const truncatedWalletAddress = getTruncatedWalletAddress(
     user?.walletAddress ?? '',
   );
   const userId = user?.id ?? '';
-  const { isEligible, toNextLevel } = useCheckLevelEligibility(userId);
+  const {
+    isEligible,
+    toNextLevel,
+    nextLevelPoints = 0,
+  } = useCheckLevelEligibility(userId);
   const { openModal } = useEditProfileModal();
+  const progressPercentage = (points / nextLevelPoints) * 100 ?? 0;
   const handleButtonClick = () => {
     if (router.pathname === '/') {
       router.push('/profile');
@@ -58,8 +64,8 @@ const DesktopDropdown: NextPage = () => {
   };
 
   return (
-    <div className="relative rounded-[5px] z-8 box-border w-full h-[964px] overflow-hidden text-left text-[25.51px] text-white-gold-itsc font-sfpro">
-      <div className="absolute top-[16px] left-[16px] w-[351px] h-[932px]">
+    <div className="relative rounded-[5px] box-border w-full h-[964px] overflow-hidden max-h-[90%] text-left text-[25.51px] text-white-gold-itsc font-sfpro">
+      <div className="absolute top-[16px] left-[16px] w-[351px] h-[932px] z-1000">
         <div className="absolute top-[0px] left-[0px] rounded-lg bg-itsc-black box-border w-[357px] h-[932px] border-t-[3px] border-solid border-linear border-b-[3px] border-l-[3px]" />
         <div className="absolute top-[223px] left-[32px] flex flex-col items-start justify-start gap-[24px]">
           <b
@@ -117,136 +123,8 @@ const DesktopDropdown: NextPage = () => {
               {toNextLevel} Tiger points to next level!
             </div>
             <div className="absolute h-[48%] w-full top-[52%] right-[0%] bottom-[0%] left-[0%] rounded-[11.25px] overflow-hidden">
-              <div className="absolute w-full top-[calc(50%_-_3.38px)] right-[0%] left-[0%] rounded-[3.94px] bg-white-gold-itsc h-[6.75px]" />
-              <div className="absolute w-[57.19%] top-[0px] right-[42.81%] left-[0%] rounded-tl-[3.94px] rounded-tr-none rounded-br-none rounded-bl-[3.94px] bg-dusty-red flex flex-col items-start justify-start">
-                <div className="w-[102.94px] h-[6.75px] overflow-hidden shrink-0 flex flex-row items-start justify-start relative opacity-[0.28]">
-                  <img
-                    className="relative w-[18.41px] h-[27px] object-contain z-[0]"
-                    alt=""
-                    src="/line-1@2x.png"
-                  />
-                  <img
-                    className="relative w-[18.41px] h-[27px] object-contain z-[1] ml-[-9px]"
-                    alt=""
-                    src="/line-2@2x.png"
-                  />
-                  <img
-                    className="relative w-[18.41px] h-[27px] object-contain z-[2] ml-[-9px]"
-                    alt=""
-                    src="/line-3@2x.png"
-                  />
-                  <img
-                    className="relative w-[18.41px] h-[27px] object-contain z-[3] ml-[-9px]"
-                    alt=""
-                    src="/line-4@2x.png"
-                  />
-                  <img
-                    className="relative w-[18.41px] h-[27px] object-contain z-[4] ml-[-9px]"
-                    alt=""
-                    src="/line-5@2x.png"
-                  />
-                  <img
-                    className="relative w-[18.41px] h-[27px] object-contain z-[5] ml-[-9px]"
-                    alt=""
-                    src="/line-6@2x.png"
-                  />
-                  <img
-                    className="relative w-[18.41px] h-[27px] object-contain z-[6] ml-[-9px]"
-                    alt=""
-                    src="/line-7@2x.png"
-                  />
-                  <img
-                    className="relative w-[18.41px] h-[27px] object-contain z-[7] ml-[-9px]"
-                    alt=""
-                    src="/line-8@2x.png"
-                  />
-                  <img
-                    className="relative w-[18.41px] h-[27px] object-contain z-[8] ml-[-9px]"
-                    alt=""
-                    src="/line-14@2x.png"
-                  />
-                  <img
-                    className="relative w-[18.41px] h-[27px] object-contain z-[9] ml-[-9px]"
-                    alt=""
-                    src="/line-15@2x.png"
-                  />
-                  <img
-                    className="relative w-[18.41px] h-[27px] object-contain z-[10] ml-[-9px]"
-                    alt=""
-                    src="/line-16@2x.png"
-                  />
-                  <img
-                    className="relative w-[18.41px] h-[27px] object-contain z-[11] ml-[-9px]"
-                    alt=""
-                    src="/line-17@2x.png"
-                  />
-                  <img
-                    className="relative w-[18.41px] h-[27px] object-contain z-[12] ml-[-9px]"
-                    alt=""
-                    src="/line-17@2x.png"
-                  />
-                  <img
-                    className="relative w-[18.41px] h-[27px] object-contain z-[13] ml-[-9px]"
-                    alt=""
-                    src="/line-17@2x.png"
-                  />
-                  <img
-                    className="relative w-[18.41px] h-[27px] object-contain z-[14] ml-[-9px]"
-                    alt=""
-                    src="/line-17@2x.png"
-                  />
-                  <img
-                    className="relative w-[18.41px] h-[27px] object-contain z-[15] ml-[-9px]"
-                    alt=""
-                    src="/line-17@2x.png"
-                  />
-                  <img
-                    className="relative w-[18.41px] h-[27px] object-contain z-[16] ml-[-9px]"
-                    alt=""
-                    src="/line-17@2x.png"
-                  />
-                  <img
-                    className="relative w-[18.41px] h-[27px] object-contain z-[17] ml-[-9px]"
-                    alt=""
-                    src="/line-17@2x.png"
-                  />
-                  <img
-                    className="relative w-[18.41px] h-[27px] object-contain z-[18] ml-[-9px]"
-                    alt=""
-                    src="/line-17@2x.png"
-                  />
-                  <img
-                    className="relative w-[18.41px] h-[27px] object-contain z-[19] ml-[-9px]"
-                    alt=""
-                    src="/line-17@2x.png"
-                  />
-                  <img
-                    className="relative w-[18.41px] h-[27px] object-contain z-[20] ml-[-9px]"
-                    alt=""
-                    src="/line-17@2x.png"
-                  />
-                  <img
-                    className="relative w-[18.41px] h-[27px] object-contain z-[21] ml-[-9px]"
-                    alt=""
-                    src="/line-17@2x.png"
-                  />
-                  <img
-                    className="relative w-[18.41px] h-[27px] object-contain z-[22] ml-[-9px]"
-                    alt=""
-                    src="/line-17@2x.png"
-                  />
-                  <img
-                    className="relative w-[18.41px] h-[27px] object-contain z-[23] ml-[-9px]"
-                    alt=""
-                    src="/line-17@2x.png"
-                  />
-                  <img
-                    className="absolute my-0 mx-[!important] top-[0px] left-[-10.12px] w-[18.41px] h-[27px] object-contain z-[24]"
-                    alt=""
-                    src="/line-25@2x.png"
-                  />
-                </div>
-              </div>
+              <div className="absolute w-full top-[calc(50% - 3.38px)] right-[0%] left-[0%] rounded-[3.94px] bg-white-gold-itsc h-[6.75px]" />
+              <ProgressBar progressPercentage={progressPercentage} />
             </div>
           </div>
           <div className="shrink-0 flex flex-col items-start justify-start gap-[8px] text-[25.06px] text-itsc-black font-semibold">

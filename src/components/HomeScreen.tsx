@@ -20,7 +20,7 @@ const HomeScreen: NextPage = () => {
       <img
         src="/BG ELEMENTS CLOUDS.svg"
         alt="Clouds"
-        className="absolute top-[-24px] left-0 w-screen h-auto min-h-[85%] z-1 animate-marquee"
+        className="absolute top-[-24px] left-0 w-screen h-auto min-h-[85%] max-h-[950px] z-1 animate-marquee"
       />
       <img
         src="/megacloud.svg"
