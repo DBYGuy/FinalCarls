@@ -78,7 +78,7 @@ const Leaderboard: NextPage = () => {
         {/* Load More Button */}
         {!isLoading && leaderboard && (
           <button
-            className="mt-4 px-4 py-2 text-white bg-blue-500 hover:bg-blue-700 rounded"
+            className="relative inline-block tracking-[0.94px] leading-[31.33px] bg-transparent text-white rounded-[10.26px] shadow-[0px_2.9307847023010254px_8.79px_rgba(0,_0,_0,_0.1)] py-[5.861569404602051px] px-[11.723138809204102px] text-[14.2px] [background:linear-gradient(180deg,_rgba(0,_0,_0,_0.17),_rgba(0,_0,_0,_0)_57.81%,_rgba(0,_0,_0,_0.2)),_#d15454]"
             onClick={loadMore}
           >
             Load More
