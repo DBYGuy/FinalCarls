@@ -22,6 +22,9 @@ import {
   injectedWallet,
   rainbowWallet,
   walletConnectWallet,
+  ledgerWallet,
+  metaMaskWallet,
+  rabbyWallet,
 } from '@rainbow-me/rainbowkit/wallets';
 import { Session } from 'next-auth';
 import DesktopHeader from '~/components/DesktopHeader';
@@ -94,6 +97,9 @@ const connectors = connectorsForWallets([
       injectedWallet({ chains }),
       rainbowWallet({ projectId, chains }),
       walletConnectWallet({ projectId, chains }),
+      ledgerWallet({ projectId, chains }),
+      metaMaskWallet({ projectId, chains }),
+      rabbyWallet({ chains }),
     ],
   },
 ]);
