@@ -8,6 +8,7 @@ import { usePopup } from '../PopUp/popupContext';
 import NftModal from '../NftModal';
 import { useTigerNfts } from '~/hooks/useTigerNfts';
 import { NftProps } from '~/hooks/useTigerNfts';
+import { useGetAvatar } from '~/hooks/useGetAvatar';
 
 // Define the types for the form fields
 type EditProfileFormData = {
@@ -27,11 +28,13 @@ export const EditProfileModal: React.FC = () => {
     setValue,
     formState: { errors },
   } = useForm<EditProfileFormData>();
-  const { user, isLoading } = useMe();
+  const { user } = useMe();
   const utils = trpc.useContext();
   const { showPopup } = usePopup();
   const { closeModal } = useEditProfileModal();
   const { showAvatarModal } = useAvatarModal();
+  const { avatarUrl } = useGetAvatar();
+  const avatarToConfirm = avatarUrl ?? '';
 
   // Setup tRPC mutation for updating user and profile
   const { mutate: updateUser, isLoading: isUpdatingUser } =
@@ -63,7 +66,7 @@ export const EditProfileModal: React.FC = () => {
     showPopup(
       'Congratulations!',
       `You have successfully updated your profile!`,
-      '/scroll@2x.png',
+      avatarToConfirm,
     );
     closeModal();
   };

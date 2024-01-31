@@ -8,7 +8,7 @@ interface TraitProps {
 const Trait: React.FC<TraitProps> = ({ value, onSelect }) => {
   return (
     <footer
-      className="w-full relative flex flex-row items-start justify-start gap-[13px] text-left text-base text-white-gold-itsc font-paragraph"
+      className="w-[95%] relative flex flex-row items-start justify-start gap-[13px]  pt-2 pl-4 text-left text-base text-white-gold-itsc font-paragraph"
       onClick={onSelect}
     >
       <div className="h-[18px] w-[18px] relative box-border border-[1px] border-solid border-white-gold-itsc" />

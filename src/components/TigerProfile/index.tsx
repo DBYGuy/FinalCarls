@@ -53,10 +53,10 @@ const TigerProfile: NextPage = () => {
         <img
           src="/BG ELEMENTS CLOUDS.svg"
           alt="Clouds"
-          className="absolute top-[-24px] left-0 w-screen h-auto min-h-[85%] z-1 animate-marquee"
+          className="absolute top-[-24px] left-0 w-screen h-auto min-h-[85%] max-h-[100%] z-1 animate-marquee"
         />
         <img
-          className="absolute h-[2.21%] w-[17.79%] top-[33.08%] right-[77.84%] bottom-[74.71%] left-[1.37%] max-w-full overflow-hidden max-h-full z-1 animate-marquee"
+          className="absolute h-[2.21%] w-[17.79%] top-[33.08%] right-[77.84%] bottom-[74.71%] left-[1.37%] max-w-full overflow-hidden max-h-full z-1 animate-longMarquee"
           alt=""
           src="/right-gallery-cloud.svg"
         />

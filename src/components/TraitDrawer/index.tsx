@@ -42,7 +42,7 @@ const TraitDrawer: React.FC<TraitDrawerProps> = ({
   return (
     <RectangleComponent>
       <div className="flex flex-col h-full">
-        <div className="overflow-auto pt-1 mt-2 mb-16">
+        <div className="overflow-auto pt-1 mt-2 h-full mb-16 animate-slideInFromLeft">
           {Object.entries(traitTypesAndValues).map(([traitType, values]) => (
             <div key={traitType}>
               <TraitCategory

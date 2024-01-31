@@ -314,7 +314,7 @@ const DesktopDirectory = () => {
         {isDrawerOpen && (
           <div
             ref={drawerRef}
-            className="fixed left-0 top-[17px] w-[350px] h-[95%] shadow-md z-10 max-h-screen"
+            className="fixed left-0 top-[17px] w-[350px] h-[95%] shadow-md z-10 max-h-screen animate-slideOut"
           >
             <TraitDrawer
               onTraitSelect={handleTraitSelect}
