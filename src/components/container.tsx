@@ -3,6 +3,7 @@ import type { NextPage } from 'next';
 import Logo from './logo';
 import NavMenu from './nav-menu';
 import ConnectMenu from './connect-menu';
+import { useMe } from '~/hooks/useMe';
 
 type ContainerType = {
   /** Style props */
@@ -16,6 +17,7 @@ const Container: NextPage<ContainerType> = ({ propTop }) => {
       top: propTop,
     };
   }, [propTop]);
+  const { user } = useMe();
 
   useEffect(() => {
     // Function to update the state with the current window width
@@ -39,7 +41,7 @@ const Container: NextPage<ContainerType> = ({ propTop }) => {
       style={property1Variant2Style}
     >
       <Logo iTSCLogo1="/itsclogo-11.svg" />
-      {windowWidth > 1175 && (
+      {windowWidth > 1175 && user && (
         <div>
           <NavMenu />
         </div>

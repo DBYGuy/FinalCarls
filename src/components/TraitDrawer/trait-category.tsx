@@ -13,7 +13,7 @@ const TraitCategory: React.FC<TraitCategoryProps> = ({
 }) => {
   return (
     <header
-      className="w-full relative flex flex-row items-start justify-between text-right text-base text-white font-paragraph cursor-pointer"
+      className="w-full mt-1 relative flex flex-row items-start justify-between text-right text-base text-white font-paragraph cursor-pointer"
       onClick={onClick}
     >
       <div className="flex flex-row items-center justify-center">

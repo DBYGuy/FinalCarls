@@ -42,6 +42,7 @@ const DesktopDirectory = () => {
   const [searchResult, setSearchResult] = useState<TokenType | null>(null);
   const [searchResults, setSearchResults] = useState<TokenType[]>([]);
   const drawerRef = useRef<HTMLDivElement>(null);
+  const mainComponentRef = useRef<HTMLDivElement>(null);
   const [lastUpdated, setLastUpdated] = useState<
     'searchResult' | 'searchResults' | 'traits'
   >();
@@ -158,18 +159,21 @@ const DesktopDirectory = () => {
     return rowItems;
   };
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
+    const handleClickInside = (event: MouseEvent) => {
       if (
+        isDrawerOpen &&
+        mainComponentRef.current &&
         drawerRef.current &&
+        mainComponentRef.current.contains(event.target as Node) &&
         !drawerRef.current.contains(event.target as Node)
       ) {
         setIsDrawerOpen(false);
       }
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [drawerRef]);
+    document.addEventListener('mousedown', handleClickInside);
+    return () => document.removeEventListener('mousedown', handleClickInside);
+  }, [isDrawerOpen, mainComponentRef, drawerRef]);
 
   useEffect(() => {
     // Check if tokens are loaded and update isLoading accordingly
@@ -237,17 +241,15 @@ const DesktopDirectory = () => {
       }
     };
 
-    // Adding event listener to document
     document.addEventListener('mousedown', handleClickOutside);
-
-    return () => {
-      // Removing event listener
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [drawerRef, toggleDrawer]);
 
   return (
-    <div className="relative bg-gray-100 w-full min-h-screen overflow-hidden text-left text-5xl text-white font-outfit">
+    <div
+      ref={mainComponentRef}
+      className="relative bg-gray-100 w-full min-h-screen overflow-hidden text-left text-5xl text-white font-outfit"
+    >
       {isTigerModalOpen && (
         <TigerModal userId={currentUserId} onClose={closeTigerModal} />
       )}
@@ -314,7 +316,7 @@ const DesktopDirectory = () => {
 
         {/* Trait Drawer */}
         {isDrawerOpen && (
-          <div className="absolute left-0 top-[487px] w-[350px] h-[600px] shadow-md z-10">
+          <div className="fixed left-0 top-[17px] w-[350px] h-[600px] shadow-md z-10">
             <TraitDrawer onTraitSelect={handleTraitSelect} />
           </div>
         )}

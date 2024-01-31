@@ -5,7 +5,7 @@ import { useMe } from '~/hooks/useMe';
 const HomeScreen: NextPage = () => {
   const { user } = useMe();
   return (
-    <div className="bg-itsc-black w-full h-[75vh] overflow-hidden object-contain text-center text-[90px] relative">
+    <div className="bg-itsc-black w-full h-[75vh] overflow-hidden object-contain text-center text-[90px] relative min-h-[895px]">
       {/* Background SVG */}
       <img
         src="/BG ELEMENTS STARS A.svg"
@@ -45,16 +45,16 @@ const HomeScreen: NextPage = () => {
       </div>
 
       {!user && (
-        <div className="absolute top-[55%] left-[5vw] w-[224px] h-[15vh] text-left font-outfit">
+        <div className="absolute top-[600px] left-[5vw] w-[224px] h-[15vh] text-left font-outfit">
           <Button />
-          <div className="absolute top-1 left-[73%] text-[30px] lg:text-[30px] bg-clip-text text-transparent bg-gradient-to-r from-text-gold-start via-text-gold-middle to-text-gold-end hidden md2:block">
+          <div className="absolute top-1 left-[160px] text-[30px] lg:text-[30px] bg-clip-text text-transparent bg-gradient-to-r from-text-gold-start via-text-gold-middle to-text-gold-end hidden md2:block">
             to claim
           </div>
-          <div className="absolute top-[74%] left-[32%] text-[32px] lg:text-[32px] bg-clip-text text-transparent bg-gradient-to-r from-text-gold-start via-text-gold-middle to-text-gold-end hidden md2:block">
+          <div className="absolute top-[130px] left-[32%] text-[32px] lg:text-[32px] bg-clip-text text-transparent bg-gradient-to-r from-text-gold-start via-text-gold-middle to-text-gold-end hidden md2:block">
             <span>join the</span>
             <b> club</b>
           </div>
-          <div className="absolute top-[27%] left-[10%] text-[36px] lg:text-[36px] bg-clip-text text-transparent bg-gradient-to-r from-text-gold-start via-text-gold-middle to-text-gold-end hidden md2:block">
+          <div className="absolute top-[40px] left-[10%] text-[36px] lg:text-[36px] bg-clip-text text-transparent bg-gradient-to-r from-text-gold-start via-text-gold-middle to-text-gold-end hidden md2:block">
             <span>daily </span>
             <b>rewards </b>
             <span>& </span>

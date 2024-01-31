@@ -274,23 +274,45 @@ const DesktopDropdown: NextPage = () => {
       <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 mb-4 flex flex-col items-center">
         {/* Small Icons */}
         <div className="flex flex-row items-center justify-center gap-4 mb-4">
-          <div className="small-icon-background">
-            <img className="h-5 w-5 object-contain" alt="" src="/x-logo.svg" />
-          </div>
-          <div className="small-icon-background">
-            <img
-              className="h-5 w-5 object-contain"
-              alt=""
-              src="/opensea-ship@2x.png"
-            />
-          </div>
-          <div className="small-icon-background">
-            <img
-              className="h-5 w-5 object-contain"
-              alt=""
-              src="/vector@2x.png"
-            />
-          </div>
+          <a
+            href="https://twitter.com/ITSC_NFT"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <div className="small-icon-background">
+              <img
+                className="h-5 w-5 object-contain"
+                alt=""
+                src="/x-logo.svg"
+              />
+            </div>
+          </a>
+          <a
+            href="https://opensea.io/collection/i-t-s-c-g"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <div className="small-icon-background">
+              <img
+                className="h-5 w-5 object-contain"
+                alt=""
+                src="/opensea-ship@2x.png"
+              />
+            </div>
+          </a>
+          <a
+            href="https://discord.com/invite/itsc"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <div className="small-icon-background">
+              <img
+                className="h-5 w-5 object-contain"
+                alt=""
+                src="/vector@2x.png"
+              />
+            </div>
+          </a>
         </div>
 
         {/* Logout Button */}

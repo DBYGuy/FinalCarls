@@ -37,7 +37,7 @@ const TraitDrawer: React.FC<TraitDrawerProps> = ({ onTraitSelect }) => {
 
   return (
     <RectangleComponent>
-      <div className="overflow-auto h-full">
+      <div className="overflow-auto h-full pt-1 mt-2">
         {Object.entries(traitTypesAndValues).map(([traitType, values]) => (
           <div key={traitType}>
             <TraitCategory

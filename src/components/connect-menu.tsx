@@ -54,7 +54,11 @@ const ConnectMenu: NextPage<ConnectMenuType> = ({
   }, []);
 
   if (!user) {
-    return <Button />;
+    return (
+      <div className="flex pr-[16px]">
+        <Button />
+      </div>
+    );
   }
 
   if (isLoading) {

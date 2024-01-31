@@ -1,12 +1,15 @@
-import React from 'react';
 import Head from 'next/head';
 import HomeScreen from '~/components/HomeScreen';
 import DailyCheckIn from '~/components/DailyCheckIn';
 import DesktopDirectory from '~/components/DesktopDirectory';
 import Leaderboard from '~/components/Leaderboard';
 import Footer from '~/components/Footer';
+import SignedOutRewardsTiles from '~/components/SignedOutRewardsTiles'; // Make sure the path is correct
+import { useMe } from '~/hooks/useMe';
 
 const IndexPage = () => {
+  const { user } = useMe();
+
   return (
     <>
       <Head>
@@ -14,16 +17,22 @@ const IndexPage = () => {
         <title>Welcome to ITSCTigers</title>
       </Head>
       <main className="flex flex-col">
-        <HomeScreen />
-        <div id="DailyCheckIn">
-          <DailyCheckIn />
-        </div>
-        <div id="DesktopDirectory">
-          <DesktopDirectory />
-        </div>
-        <div id="Leaderboard">
-          <Leaderboard />
-        </div>
+      <HomeScreen />
+        {user ? (
+          <>
+            <div id="DailyCheckIn">
+              <DailyCheckIn />
+            </div>
+            <div id="DesktopDirectory">
+              <DesktopDirectory />
+            </div>
+            <div id="Leaderboard">
+              <Leaderboard />
+            </div>
+          </>
+        ) : (
+          <SignedOutRewardsTiles />
+        )}
         <Footer />
       </main>
     </>

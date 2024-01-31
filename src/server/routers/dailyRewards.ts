@@ -9,13 +9,17 @@ const prisma = new PrismaClient();
 export const dailyRewardRouter = router({
   // Procedure 1: Get an array of the entire daily reward table
   getAllDailyRewards: procedure.query(async ({ ctx }) => {
-    const rewards = await ctx.prisma.dailyReward.findMany();
+    const rewards = await ctx.prisma.dailyReward.findMany({
+      orderBy: {
+        day: 'asc', // Order by 'day' to ensure the rewards are in the correct order
+      },
+    });
     return rewards;
   }),
 
   // Procedure 2: Query the user's reward day and last claimed date
   getUserReward: procedure
-    .input(z.string()) // Expecting a user ID as input
+    .input(z.string())
     .query(async ({ input: userId, ctx }) => {
       const userReward = await ctx.prisma.userDailyReward.findUnique({
         where: { userId },
@@ -34,8 +38,8 @@ export const dailyRewardRouter = router({
   claimReward: protectedProcedure
     .input(
       z.object({
-        userId: z.string(), // User ID as input
-        tp: z.number(), // tp amount as input
+        userId: z.string(),
+        tp: z.number(),
       }),
     )
     .mutation(async ({ input, ctx }) => {
@@ -83,12 +87,12 @@ export const dailyRewardRouter = router({
         },
       });
 
-      return { success: true, newPointsTotal: tp }; // Return the tp amount as newPointsTotal
+      return { success: true, newPointsTotal: tp };
     }),
 
   // Procedure 4: Protected procedure which resets the user day to 0
   resetUserDay: protectedProcedure
-    .input(z.string()) // Expecting a user ID as input
+    .input(z.string())
     .mutation(async ({ input: userId, ctx }) => {
       await ctx.prisma.userDailyReward.update({
         where: { userId },

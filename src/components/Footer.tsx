@@ -8,31 +8,49 @@ const Footer: NextPage = () => {
         <div className="w-[300px] h-28 flex flex-col items-center justify-start gap-[21px]">
           <div className="w-72 flex-1 flex flex-row items-start justify-start z-[6] py-0 px-5 box-border gap-[16px]">
             {/* Icon 1 */}
-            <div className="icon-background flex-1 flex justify-center items-center h-14">
-              <img
-                className="h-10 w-10 object-contain"
-                alt=""
-                src="/x-logo.svg"
-              />
-            </div>
+            <a
+              href="https://twitter.com/ITSC_NFT"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <div className="icon-background flex-1 flex justify-center items-center h-14">
+                <img
+                  className="h-10 w-10 object-contain"
+                  alt="ITSC NFT Logo"
+                  src="/x-logo.svg"
+                />
+              </div>
+            </a>
 
             {/* Icon 2 - Middle Icon */}
-            <div className="icon-background flex-1 flex justify-center items-center h-14">
-              <img
-                className="h-10 w-10 object-contain"
-                alt=""
-                src="/opensea-ship@2x.png"
-              />
-            </div>
+            <a
+              href="https://opensea.io/collection/i-t-s-c-g"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <div className="icon-background flex-1 flex justify-center items-center h-14">
+                <img
+                  className="h-10 w-10 object-contain"
+                  alt="OpenSea Collection"
+                  src="/opensea-ship@2x.png"
+                />
+              </div>
+            </a>
 
             {/* Icon 3 */}
-            <div className="icon-background flex-1 flex justify-center items-center h-14">
-              <img
-                className="h-10 w-10 object-contain"
-                alt=""
-                src="/vector@2x.png"
-              />
-            </div>
+            <a
+              href="https://discord.com/invite/itsc"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <div className="icon-background flex-1 flex justify-center items-center h-14">
+                <img
+                  className="h-10 w-10 object-contain"
+                  alt="Discord"
+                  src="/vector@2x.png"
+                />
+              </div>
+            </a>
           </div>
 
           <style>{`
