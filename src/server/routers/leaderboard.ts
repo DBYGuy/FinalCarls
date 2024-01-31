@@ -19,9 +19,14 @@ export const leaderboardRouter = router({
         const leaderboard = await ctx.prisma.userPoints.findMany({
           take: pageSize,
           skip: skip,
-          orderBy: {
-            totalPoints: 'desc', // Ordering by points in descending order
-          },
+          orderBy: [
+            {
+              level: 'desc',
+            },
+            {
+              totalPoints: 'desc',
+            },
+          ],
           select: {
             user: {
               select: {
