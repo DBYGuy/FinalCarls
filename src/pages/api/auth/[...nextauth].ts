@@ -84,28 +84,13 @@ export function getServerContext(
                   userPoints: {
                     create: {
                       totalPoints: 0,
-                      level: 0,
                       lastUpdated: new Date(),
-                    },
-                  },
-                  userProfile: {
-                    create: {
-                      walletAddress: siwe.address,
-                      joinedDate: new Date(),
-                    },
-                  },
-                  userDailyReward: {
-                    create: {
-                      currentDay: 0, // Set the current day to 0
-                      lastClaimed: new Date(), // Set the last claimed date to now
                     },
                   },
                 },
                 update: {},
                 include: {
                   userPoints: true,
-                  userProfile: true,
-                  userDailyReward: true,
                 },
               });
 
