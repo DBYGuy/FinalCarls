@@ -1,4 +1,4 @@
-import { mainnet } from 'wagmi';
+import { mainnet } from 'wagmi/chains';
 
 /** Horizontal page padding to be used across the app */
 export const pagePaddingX = '5%';
@@ -12,19 +12,17 @@ export const LOCALSTORAGE_AUTH_TOKEN_KEY = 'authtoken';
 
 export const DOMAIN =
   process.env.NEXT_PUBLIC_APP_ENV === 'production'
-    ? 'itsc.vercel.app'
+    ? 'crazy-carl-rewards.vercel.app'
     : process.env.NEXT_PUBLIC_APP_ENV === 'development'
     ? 'localhost'
     : 'localhost';
 
 export const websiteUrl =
   process.env.NEXT_PUBLIC_APP_ENV === 'production'
-    ? `https://itsc.vercel.app`
+    ? `crazy-carl-rewards.vercel.app`
     : process.env.NEXT_PUBLIC_APP_ENV === 'development'
     ? `http://${DOMAIN}:3000`
     : `https://${DOMAIN}:3000`;
-export const websiteDescription =
-  'DBY Club is a solution for creators, fans, collectives, accelerators, web3 companies, distributors, other DAOs, and media outlets to pitch, select, and collaborate on creative DAO projects.';
 export const websiteLogoUrl = `${websiteUrl}/banner.png`;
 
 // export const docsUrl =
@@ -36,7 +34,7 @@ export const websiteLogoUrl = `${websiteUrl}/banner.png`;
 //   'https://www.linkedin.com/company/des-beaux-yeux-dao';
 // export const communityDeckUrl = 'https://info.dbyclub.xyz/CommunityDeck.html';
 
-export const titleAddon = 'Impatient Tiger Social Club';
+export const titleAddon = 'Crazy Carl Rewards';
 export const baseTitle = 'ITSC | ';
 export const homeTitle = baseTitle + titleAddon;
 
