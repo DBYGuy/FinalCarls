@@ -12,14 +12,14 @@ export const LOCALSTORAGE_AUTH_TOKEN_KEY = 'authtoken';
 
 export const DOMAIN =
   process.env.NEXT_PUBLIC_APP_ENV === 'production'
-    ? 'crazy-carl-rewards.vercel.app'
+    ? 'https://crazy-carl-rewards.vercel.app/'
     : process.env.NEXT_PUBLIC_APP_ENV === 'development'
     ? 'localhost'
     : 'localhost';
 
 export const websiteUrl =
   process.env.NEXT_PUBLIC_APP_ENV === 'production'
-    ? `crazy-carl-rewards.vercel.app`
+    ? `https://crazy-carl-rewards.vercel.app/`
     : process.env.NEXT_PUBLIC_APP_ENV === 'development'
     ? `http://${DOMAIN}:3000`
     : `https://${DOMAIN}:3000`;
