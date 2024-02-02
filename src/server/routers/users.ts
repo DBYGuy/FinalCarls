@@ -165,7 +165,6 @@ export const usersRouter = router({
         where: { id: userId },
         include: {
           userPoints: true, // Include user points
-          userProfile: true, // Include user profile
           // Include other related models as needed
         },
       });
@@ -177,14 +176,10 @@ export const usersRouter = router({
       // Extract and return relevant information
       return {
         username: user.username ?? user.ENSName ?? user.walletAddress,
-        level: user.userPoints?.level ?? 0,
         totalPoints: user.userPoints?.totalPoints ?? 0,
-        location: user.userProfile?.location ?? 'Not specified',
-        joinedDate: user.userProfile?.joinedDate?.toDateString() ?? 'Unknown',
         avatar: user.avatar ?? '',
         xHandle: user.Xhandle ?? 'Not Specified',
         discordID: user.discordID ?? 'Not Specified',
-        bio: user.userProfile?.bio ?? "I'm a tiger!",
       };
     }),
   getAvatar: procedure
