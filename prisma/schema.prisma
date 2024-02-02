@@ -51,12 +51,7 @@ model User {
   Xhandle           String?          @unique
   discordID         String?          @unique
   avatar            String?
-  referrals         Referral[]
-  tokens            Token[]
   userPoints        UserPoints?
-  userMissions      UserMission[]
-  userDailyReward   UserDailyReward?
-  userProfile       UserProfile?
   sessions          Session[]
   accounts          Account[]
 
@@ -72,88 +67,11 @@ model VerificationToken {
   @@map("verificationtokens")
 }
 
-model Mission {
-  id              Int           @id @default(autoincrement())
-  name            String
-  description     String
-  completionBonus Int
-  startAt         DateTime
-  endAt           DateTime
-  platform        String
-  userMissions    UserMission[]
-}
-
-model DailyReward {
-  day         Int    @id
-  bonusAmount Int
-}
-
-// Secondary Tables
-model Referral {
-  id           Int    @id @default(autoincrement())
-  userId       String @map("user_id")
-  referralCode Int
-  rewardAmount Int
-  user         User   @relation(fields: [userId], references: [id])
-}
-
-model Token {
-  tokenID     Int          @id
-  image       String
-  name        String
-  lastUpdated DateTime?
-  s3ImageUrl String?
-  ownerAddress String?
-  ownerID     String?      @map("owner_id")
-  owner       User?        @relation(fields: [ownerID], references: [id])
-  tokenTraits TokenTrait[]
-  @@index([ownerID])
-  @@index([tokenID])
-}
-
-model TokenTrait {
-  id       Int    @id @default(autoincrement())
-  tokenID  Int
-  traitType String
-  value    String
-  token    Token  @relation(fields: [tokenID], references: [tokenID])
-
-  @@index([tokenID])
-  @@index([traitType, value])
-}
-
 model UserPoints {
   userId      String @id @map("user_id")
   lastUpdated DateTime
   totalPoints Int
-  level       Int    @default(0)
   user        User   @relation(fields: [userId], references: [id])
-}
-
-model UserMission {
-  userId     String   @id @map("user_id")
-  missionId  Int      @map("mission_id")
-  startedAt  DateTime
-  isComplete Boolean
-  user       User     @relation(fields: [userId], references: [id])
-  mission    Mission  @relation(fields: [missionId], references: [id])
-}
-
-model UserDailyReward {
-  userId     String   @id @map("user_id")
-  currentDay Int      @default(0)
-  lastClaimed DateTime? 
-  user       User     @relation(fields: [userId], references: [id])
-}
-model UserProfile {
-  userId            String @id @map("user_id")
-  nickname          String?
-  bio               String?
-  walletAddress     String @unique
-  location          String?
-  joinedDate        DateTime
-  profile_image_url_https String?
-  user              User   @relation(fields: [userId], references: [id])
 }
 
 // Security
@@ -167,11 +85,6 @@ model Session {
   @@map("sessions")
 }
 
-// Leveling
-model Level {
-  level  Int @id
-  points Int
-}
 
 //API Tables
 model CronJobState {
@@ -179,17 +92,4 @@ model CronJobState {
   lastTokenId     Int    @default(0)
   lastImageTokenId Int   @default(0)
   updatedAt       DateTime @updatedAt
-}
-
-model TraitType {
-  id          Int          @id @default(autoincrement())
-  name        String       @unique
-  traitValues TraitValue[]
-}
-
-model TraitValue {
-  id          Int       @id @default(autoincrement())
-  value       String
-  traitTypeId Int
-  traitType   TraitType @relation(fields: [traitTypeId], references: [id])
 }

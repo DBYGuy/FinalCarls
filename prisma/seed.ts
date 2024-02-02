@@ -16,34 +16,6 @@ async function main() {
     19971, 21712, 23578, 25578, 27722, 30019, 32481, 35120, 37948, 40979, 44228,
     47710, 51442, 55442,
   ];
-
-  for (let i = 1; i < levels.length; i++) {
-    const points = levels[i]! - levels[i - 1]!;
-    await prisma.level.upsert({
-      where: { level: i },
-      create: { level: i, points: points },
-      update: {},
-    });
-  }
-
-  // Seed DailyRewards
-  const dailyRewards = [
-    { day: 1, bonusAmount: 10 },
-    { day: 2, bonusAmount: 15 },
-    { day: 3, bonusAmount: 20 },
-    { day: 4, bonusAmount: 20 },
-    { day: 5, bonusAmount: 25 },
-    { day: 6, bonusAmount: 30 },
-    { day: 7, bonusAmount: 40 },
-  ];
-
-  for (const reward of dailyRewards) {
-    await prisma.dailyReward.upsert({
-      where: { day: reward.day },
-      create: reward,
-      update: {},
-    });
-  }
 }
 
 main()
