@@ -12,7 +12,7 @@ export const LOCALSTORAGE_AUTH_TOKEN_KEY = 'authtoken';
 
 export const DOMAIN =
   process.env.NEXT_PUBLIC_APP_ENV === 'production'
-    ? 'https://crazy-carl-rewards.vercel.app/'
+    ? 'crazy-carl-rewards.vercel.app/'
     : process.env.NEXT_PUBLIC_APP_ENV === 'development'
     ? 'localhost'
     : 'localhost';
