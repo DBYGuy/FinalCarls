@@ -1,3 +1,4 @@
+import { ConnectButton } from '@rainbow-me/rainbowkit';
 import type { NextPage } from 'next';
 
 const Header: NextPage = () => {
@@ -24,23 +25,7 @@ const Header: NextPage = () => {
         <div className="flex flex-row items-center justify-center p-2">
           <div className="relative leading-[24px] font-semibold">MORE</div>
         </div>
-        <div className="self-stretch flex flex-row items-start justify-start text-left text-lg text-white">
-          <div className="self-stretch rounded-md bg-purple-400 flex flex-row items-center justify-center py-0 px-[23px] gap-[8px] border-[1px] border-solid border-purp-carl">
-            <img
-              className="h-4 w-4 relative overflow-hidden shrink-0 hidden"
-              alt=""
-              src="/lefticon.svg"
-            />
-            <div className="relative leading-[28px] font-semibold whitespace-nowrap">
-              Sign-in/Connect
-            </div>
-            <img
-              className="h-4 w-4 relative overflow-hidden shrink-0 hidden"
-              alt=""
-              src="/lefticon.svg"
-            />
-          </div>
-        </div>
+        <ConnectButton />
       </div>
     </header>
   );
